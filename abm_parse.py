@@ -6,6 +6,7 @@ import numpy as np
 import tarfile as tar
 from itertools import groupby
 from math import pi, sqrt
+from collections import Counter
 
 __author__ = "Jessica S. Yu"
 __email__ = "jessicayu@u.northwestern.edu"
@@ -13,7 +14,6 @@ __email__ = "jessicayu@u.northwestern.edu"
 '''
 ABM_PARSE takes a directory of (or a single) .tar.xz or .json simulation files
 and extracts the data into a matrix in the form:
-
     {
         "setup": {
             "radius": R,
@@ -30,20 +30,15 @@ and extracts the data into a matrix in the form:
             "tgfa": (N seeds) x (T timepoints) x (H height) x (R radius)
         }
     }
-
 where each entry in the agents array is a structured entry of the shape:
-
     "pop"       int8    population code
     "type"      int8    cell type code
     "volume"    int16   cell volume (rounded)
     "cycle"     int16   average cell cycle length (rounded)
-
 and saves it to a .pkl. Also include a number of utility functions for
 extracting data into metrics and plots.
-
-Usage: 
+Usage:
     python abm_parse.py FILES [-h] [--nosave] [--noprint]
-
     FILES
         Path to .json, .tar.xz, or directory
     [--nosave]
@@ -164,46 +159,54 @@ def get_type(D, seed, time, inds, typ):
 def get_pop(D, seed, time, inds, pop):
     return len([1 for i, p, k in inds if D['pop'][seed,time,k,i,p] == pop])
 
-def get_threshold(i):
-    if i < 4:
-        return 0.8
-    else:
-        return 0.9
+def get_symmetric(coord):
+    if len(coord) == 3:
+        u, v, w = coord
+        return {(u, v, w), (-w, -u, -v), (v, w, u), (-u, -v, -w), (w, u, v), (-v, -w, -u)}
+    elif len(coord) == 2:
+        x, y = coord
+        return {(x, y), (-y, x), (-x, -y), (y, -x)}
 
 def get_symmetry(C, R, inds):
     if len(inds) == 0:
         return np.nan
 
     layers = list(set([k for i, p, k in inds]))
-    sort = [[tuple(C[i]) for i, p, k in inds if k == layer] for layer in layers]
-    all_rads = [[get_radius(coord) for coord in list(set(coords))] for coords in sort]
-    all_counts = [[len([1 for r in rads if r == i]) for i in range(0,R)] for rads in all_rads]
-    rings = get_hex_rings(R) if len(C[0]) == 3 else get_rect_rings(R)
+    coord_sorted = [[tuple(C[i]) for i, p, k in inds if k == layer] for layer in layers]
+    all_coord_sets = [set(layer) for layer in coord_sorted]
+    unique_coord_sets = [set([tuple(sorted(list(np.abs(c)))) for c in coords]) for coords in all_coord_sets]
 
-    A = [[i for i in range(0, R) if counts[i] < get_threshold(i)*rings[i]
-        for n in range(0,counts[i])]
-        for counts in all_counts]
-    all_maxes = [np.max(rads) for rads in all_rads]
-    B = [[i for i in range(0, maxes + 1)] for maxes in all_maxes]
+    symmetries = []
+    add = 0
 
-    syms = [np.nan] * len(layers)
+    for unique_coord_set, all_coord_set in zip(unique_coord_sets, all_coord_sets):
+        checked = { unique_coord: False for unique_coord in unique_coord_set }
+        deltas = []
 
-    for i, layer in enumerate(layers):
-        if len(A[i]) == 0: # all rings are filled to at least 90%
-            syms[i] = 1
-        elif len(all_rads[i]) == 1: # only single location occupied
-            syms[i] = 1
-        else:
-            a = A[i]
-            b = B[i]
-            maxes = all_maxes[i]
-            if np.std(a) == 0: # ring is partially filled, pad with previous ring
-                a = a + [(maxes - 1) for _ in range(0, rings[maxes] - len(a))]
-            stda = np.std(a, ddof=1)
-            stdb = np.std(b, ddof=1)
-            syms[i] = 1 - stda/stdb
+        for coord in all_coord_set:
+            unique = tuple(sorted(list(np.abs(coord))))
 
-    return np.mean(syms)
+            # only check the symmetry if not yet checked
+            if not checked[unique]:
+                checked[unique] = True
+
+                sym_coords = get_symmetric(coord) # set of symmetric coordinates
+                delta_set = sym_coords - all_coord_set # symmetric coordinates not in full set
+                deltas.append(len(delta_set)/len(sym_coords))
+
+                # special case for rectangular coordinates where certain coordinate
+                # combos have twice as many possible symmetries
+                if len(coord) == 2 and not (0 in unique or unique[0] == unique[1]):
+                    alt_sym_coords = {(x, -y) for x, y in sym_coords}
+                    alt_delta_set = alt_sym_coords - all_coord_set
+                    deltas.append(len(alt_delta_set)/len(alt_sym_coords))
+                    add = add + 1
+
+        numer = np.sum(deltas)
+        denom = len(unique_coord_set) + add
+        symmetries.append(1 - numer/denom)
+
+    return np.mean(symmetries)
 
 def get_doubling(seed, inds, tp):
     n0 = get_count(inds[seed][0])
@@ -214,39 +217,102 @@ def get_doubling(seed, inds, tp):
 
 def get_counts(T, N, inds):
     return [[get_count(inds[i][t])
-        for t in range(0, len(T))] for i in range(0, N)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
 
 def get_volumes(D, T, N, inds):
     return [[get_volume(D, i, t, inds[i][t])
-        for t in range(0, len(T))] for i in range(0, N)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
 
 def get_cycles(D, T, N, inds):
     return [[get_cycle(D, i, t, inds[i][t])
-        for t in range(0, len(T))] for i in range(0, N)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
 
 def get_diameters(T, N, C, inds):
     return [[get_diameter(C, inds[i][t])
-        for t in range(0, len(T))] for i in range(0, N)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
 
 def get_types(D, T, N, inds, TYPES):
     return [[[get_type(D, i, t, inds[i][t], typ)
-        for t in range(0, len(T))] for i in range(0, N)] for typ in TYPES]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
+        for typ in TYPES]
 
 def get_pops(D, T, N, inds, POPS):
     return [[[get_pop(D, i, t, inds[i][t], pop)
-        for t in range(0, len(T))] for i in range(0, N)] for pop in POPS]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
+        for pop in POPS]
 
 def get_growths(T, N, C, inds, t0):
     diams = get_diameters(T, N, C, inds)
     return [[np.polyfit(T[t0:t], diams[i][t0:t], 1)[0]
-        for t in range(t0 + 2, len(T))] for i in range(0,N)]
+        for t in range(t0 + 2, len(T))]
+        for i in range(0,N)]
 
 def get_symmetries(T, N, C, R, inds):
     return [[get_symmetry(C, R, inds[i][t])
-        for t in range(0, len(T))] for i in range(0, N)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
 
 def get_doublings(N, tp, inds):
     return [get_doubling(i, inds, tp) for i in range(0, N)]
+
+# ------------------------------------------------------------------------------
+
+def get_counts_by_layer(T, N, H, inds):
+    return [[[get_count(inds[i][t][k])
+        for k in range(0, 2*H - 1)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
+
+def get_volumes_by_layer(D, T, N, H, inds):
+    return [[[get_volume(D, i, t, inds[i][t][k])
+        for k in range(0, 2*H - 1)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
+
+def get_cycles_by_layer(D, T, N, H, inds):
+    return [[[get_cycle(D, i, t, inds[i][t][k])
+        for k in range(0, 2*H - 1)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
+
+def get_diameters_by_layer(T, N, C, H, inds):
+    return [[[get_diameter(C, inds[i][t][k])
+        for k in range(0, 2*H - 1)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
+
+def get_types_by_layer(D, T, N, H, inds, TYPES):
+    return [[[[get_type(D, i, t, inds[i][t][k], typ)
+        for k in range(0, 2*H - 1)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
+        for typ in TYPES]
+
+def get_pops_by_layer(D, T, N, H, inds, POPS):
+    return [[[[get_pop(D, i, t, inds[i][t][k], pop)
+        for k in range(0, 2*H - 1)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
+        for pop in POPS]
+
+def get_growths_by_layer(T, N, C, H, inds, t0):
+    diams = get_diameters_by_layer(T, N, C, H, inds)
+    return [[[np.polyfit(T[t0:t], [diams[i][tt][k] for tt in range(t0,t)], 1)[0]
+        for k in range(0, 2*H - 1)]
+        for t in range(t0 + 2, len(T))]
+        for i in range(0,N)]
+
+def get_symmetries_by_layer(T, N, C, R, H, inds):
+    return [[[get_symmetry(C, R, inds[i][t][k])
+        for k in range(0, 2*H - 1)]
+        for t in range(0, len(T))]
+        for i in range(0, N)]
 
 # ------------------------------------------------------------------------------
 
