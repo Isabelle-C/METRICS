@@ -45,7 +45,13 @@ directions, and locs at width x produce a set of locations x distance from the s
 
 Usage: 
 
-    python location_maps.py [--save] [--saveLoc SAVELOC]
+    python location_maps.py [--save] [--saveLoc SAVELOC] [--error]
+    
+    [--save]
+        Flag to indicate whether or not to save locMaps as a pickle
+    [--saveLoc]
+        Location of where to save file, default will save here
+    [--error]
 
 '''
 
@@ -57,7 +63,8 @@ def get_parser():
                         help="Flag to indicate whether or not to save locMaps as a pickle")
     parser.add_argument("--saveLoc", default='./', dest="saveLoc",
                         help="Location of where to save file, default will save here")
-
+    parser.add_argument("--error", default=False, dest="error", action='store_true',
+                        help="")
     return parser
 
 

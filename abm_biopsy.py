@@ -3,9 +3,9 @@ from abm_parse import load as ABM_load
 import os
 import re
 import pickle
-import json
 import pandas as pd
 import numpy as np
+from itertools import combinations
 from argparse import ArgumentParser
 
 __author__ = "Alexis N. Prybutok"
@@ -87,6 +87,8 @@ Usage:
         Comma-separated, hyphen-separated range, or min:interval:max of samples to take for punch (max 7) and needle (max 6) biopsies; min 1, max 7 (default: 1-7)
     [--thickness THICKNESS]
         Comma-separated, hyphen-separated range, or min:interval:max of thicknesses to measure; min 0, max 34 (default: 0-34)
+    [--combos]
+        Flag indicating whether or not to do all combos of given samples
     [--saveLoc]
         Location of where to save results
     [--sampleMapsLoc]
@@ -113,6 +115,8 @@ def get_parser():
                         help="Comma-separated list or hyphen-separated range of samples to take for punch (max 7) and needle (max 6) biopsies; min 1, max 7 (default: 1-7)")
     parser.add_argument("--thickness", default="0-34", dest="thickness",
                         help="Comma-separated list or hyphen-separated range of thicknesses to measure; min 0, max 34")
+    parser.add_argument("--combos", default=False, dest="combos", action="store_true",
+                        help="Flag indicating whether or not to do all combos of given samples")
     parser.add_argument("--saveLoc", default='./', dest="saveLoc",
                         help="Location of where to save file, default will save here")
     parser.add_argument("--sampleMapsLoc", default='./', dest="sampleMapsLoc",
@@ -461,7 +465,6 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
                             for i in range(len(PARAM['timepoints'][TIME]['cells'][index][1])):
                                 if PARAM['timepoints'][TIME]['cells'][index][1][i][3] == p:
                                     pos = i
-                                    print(PARAM['timepoints'][TIME]['cells'][index][1][i][5])
                                     CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][3])
                                     METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][8])
                                     MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][9])
@@ -570,7 +573,7 @@ def take_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, TYPE, SA
                                                   str(int(TIME/2)) + "_SAMPLES_" + str(n) + ".pkl", "rb"))
 
                 for thickness in THICKNESS:
-                    if n == 7 and type == 'needle':
+                    if '7' in str(n) and type == 'needle':
                         continue
                     else:
                         # Set up empty dictionary to eventually be added to the DF
@@ -590,8 +593,6 @@ def take_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, TYPE, SA
                 if not SAVETOGETHER:
                     pickle.dump(biopsiesDF, open(SAVELOC + "BIOPSIES_" + str(type).upper() + "_DAY_" +
                                                     str(int(TIME/2)) + "_SAMPLES_" + str(n) + ".pkl", "wb"))
-                    # # Clear the dataframe
-                    # biopsiesDF = make_df()
 
     if SAVETOGETHER:
         return biopsiesDF
@@ -605,7 +606,6 @@ def biopsy(PKLFILES, PARAMLOC, sampleMaps, TIME, TYPE, SAMPLES, THICKNESS, SAVET
     PKLS = []
     if not SAVETOGETHER:
         for type in TYPE:
-            print(type)
             if type == 'punch' or type == 'needle':
                 for time in TIME:
                     for sample in SAMPLES:
@@ -671,6 +671,21 @@ if __name__ == "__main__":
     else:
         SAMPLES = [int(s) for s in str(args.samples).split(',')]
 
+    if args.combos:
+        sampleCombos = [[s] for s in SAMPLES]
+        for c in range(2, len(SAMPLES)+1):
+            comb = combinations(SAMPLES, c)
+            for i in comb:
+                sampleCombos.append(list(i))
+        sampleNames = []
+        for n in range(0, len(sampleCombos)):
+            string = ""
+            for i in range(0, len(sampleCombos[n])):
+                string += str(sampleCombos[n][i])
+            sampleNames.append(string)
+
+        SAMPLES = [int(m) for m in sampleNames]
+
     if ":" in args.thickness:
         tsplit = str(args.thickness).split(':')
         if len(tsplit) == 3:
@@ -687,7 +702,10 @@ if __name__ == "__main__":
     SAVELOC = args.saveLoc
 
     # Retrieve sample maps
-    sampleMaps = pickle.load(open(args.sampleMapsLoc + "sampleMaps.pkl", "rb"))
+    if args.combos:
+        sampleMaps = pickle.load(open(args.sampleMapsLoc + "sampleMapsCombos.pkl", "rb"))
+    else:
+        sampleMaps = pickle.load(open(args.sampleMapsLoc + "sampleMaps.pkl", "rb"))
 
     # Get files
     pklfiles = get_pkl_files(args.files)
