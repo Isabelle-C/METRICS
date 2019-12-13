@@ -7,7 +7,7 @@ __author__ = "Alexis N. Prybutok"
 __email__ = "aprybutok@u.northwestern.edu"
 
 '''
-LOCATION_MAPS makes a list of the mapping of all biopsy types to their associated 
+MAP_LOCATIONS makes a list of the mapping of all biopsy types to their associated 
 locations and those associated indices. It will extract data into dictionary locMaps in the form:
 
 {
@@ -45,7 +45,7 @@ directions, and locs at width x produce a set of locations x distance from the s
 
 Usage: 
 
-    python location_maps.py [--save] [--saveLoc SAVELOC] [--error]
+    python map_locations.py [--save] [--saveLoc SAVELOC] [--error]
     
     [--save]
         Flag to indicate whether or not to save locMaps as a pickle
@@ -169,4 +169,4 @@ if __name__ == "__main__":
     locMaps = get_location_maps()
 
     if args.save:
-        pickle.dump(locMaps, open(args.saveLoc + "locMaps.pkl", "wb"))
+        pickle.dump(locMaps, open(args.saveLoc + "locationMaps.pkl", "wb"))

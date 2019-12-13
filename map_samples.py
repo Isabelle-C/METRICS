@@ -1,7 +1,7 @@
 import ABM
 import os
 import pickle
-import location_maps
+import map_locations
 from argparse import ArgumentParser
 from itertools import combinations
 
@@ -9,7 +9,7 @@ __author__ = "Alexis N. Prybutok"
 __email__ = "aprybutok@u.northwestern.edu"
 
 '''
-SAMPLE_MAPS makes a list of the mapping of all full biopsies (at any one of 7 locations for punch 
+MAP_SAMPLES makes a list of the mapping of all full biopsies (at any one of 7 locations for punch 
 and 6 locations for needle) to their associated locations and those associated indices. 
 It will extract data into dictionary sampleMaps in the form:
 
@@ -74,7 +74,7 @@ and its assocaited index as follows:
 
 Usage: 
 
-    python sample_maps.py [--nosave] [--saveLoc SAVELOC] [--usePkl] [--pklLoc PKLLOC] [--combos]
+    python map_samples.py [--nosave] [--saveLoc SAVELOC] [--usePkl] [--pklLoc PKLLOC] [--combos]
     
     [--nosave]
         Flag to indicate whether or not to save samples as a pickle
@@ -239,10 +239,10 @@ if __name__ == "__main__":
     combos = args.combos
 
     if args.usePkl:
-        locMaps = pickle.load(open(args.pklLoc + "locMaps.pkl", "rb"))
+        locMaps = pickle.load(open(args.pklLoc + "locationMaps.pkl", "rb"))
 
     else:
-        locMaps = location_maps.get_location_maps()
+        locMaps = map_locations.get_location_maps()
 
     if not args.combos:
         sampleMaps = get_sample_maps(locMaps)

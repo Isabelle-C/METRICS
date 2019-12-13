@@ -26,7 +26,7 @@ where
     HET % = {0, 10, 20, 30, 40}
     TISSUE HET % = {0, 10, 20, 30, 40}
     CELL LINES = all possible combinations of {X, A, B, C}
-    TIME = Day of biopsy {14, 21}
+    TIME = Day of biopsy {15, 22}
     BIOPSY TYPE = {PUNCH, NEEDLE, TUMOR}
     THICNKESS = RADIUS/WIDTH of biopsy (0-34)
 
@@ -76,11 +76,11 @@ Usage:
         [--thickness THICKNESS] [--saveLoc] [--sampleMapsLoc] [--saveTogether]
 
     FILES
-        Path to .pkl files or directory
+        Path to .pkl file or directory
     [--param PARAM]
         Path to PARAM .json file or directory
     [--time TIME]
-        Comma-separated, hyphen-separated range, or min:interval:max of days to record data from (default: 14,21)
+        Comma-separated, hyphen-separated range, or min:interval:max of days to record data from (default: 15,22)
     [--type TYPE]
         Comma-separated list of sample types to take (punch, needle, and/or tumor) (default: punch,needle,tumor)
     [--samples SAMPLES]
@@ -105,10 +105,10 @@ Usage:
 def get_parser():
     # Setup argument parser.
     parser = ArgumentParser(description="Receord all biopsy data into a dataframe")
-    parser.add_argument(dest="files", help="Path to .json, .tar.xz, or directory")
+    parser.add_argument(dest="files", help="Path to .pkl file or directory")
     parser.add_argument("--param", default="", dest="param", help="Path to PARM .json file or directory")
-    parser.add_argument("--time", default="14,21", dest="time",
-                        help="Comma-separated list of days to record data from or min:interval:max (default: 14,21)")
+    parser.add_argument("--time", default="15,22", dest="time",
+                        help="Comma-separated list of days to record data from or min:interval:max (default: 15,22)")
     parser.add_argument("--type", default="punch,needle,tumor", dest="type",
                         help="Comma-separated list of sample types to take (punch, needle, and/or tumor) (default: punch,needle,tumor)")
     parser.add_argument("--samples", default="1-7", dest="samples",
@@ -312,14 +312,13 @@ def get_tumor(agents, PARAM, TIME, tumorDict, C):
                     VOLUMES[2].append(agents[loc]['volume'][p])
 
                     # Parse PARAM json and make sure grabbing the right cell information
-                    if loc < len(PARAM['timepoints'][TIME]['cells']):
-                        if UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc][0]:
-                            for i in range(len(PARAM['timepoints'][TIME]['cells'][loc][1])):
-                                if PARAM['timepoints'][TIME]['cells'][loc][1][i][3] == p:
-                                    CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][loc][1][i][5][3])
-                                    METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][loc][1][i][5][8])
-                                    MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][loc][1][i][5][9])
-                                    break
+                    if loc < len(PARAM['timepoints'][TIME]['cells']) and UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc][0]:
+                        for i in range(len(PARAM['timepoints'][TIME]['cells'][loc][1])):
+                            if PARAM['timepoints'][TIME]['cells'][loc][1][i][3] == p:
+                                CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][loc][1][i][4][3])
+                                METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][loc][1][i][4][8])
+                                MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][loc][1][i][4][9])
+                                break
 
                     else:
                         for t in range(0, len(PARAM['timepoints'][TIME]['cells'])):
@@ -328,9 +327,9 @@ def get_tumor(agents, PARAM, TIME, tumorDict, C):
                                 for i in range(len(PARAM['timepoints'][TIME]['cells'][index][1])):
                                     if PARAM['timepoints'][TIME]['cells'][index][1][i][3] == p:
                                         pos = i
-                                        CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][3])
-                                        METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][8])
-                                        MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][9])
+                                        CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][3])
+                                        METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][8])
+                                        MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][9])
                                         break
                                 break
 
@@ -342,16 +341,15 @@ def get_tumor(agents, PARAM, TIME, tumorDict, C):
                         VOLUMES[1].append(agents[loc]['volume'][p])
 
                         # Parse PARAM json and make sure grabbing the right cell information
-                        if loc < len(PARAM['timepoints'][TIME]['cells']):
-                            if UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc[1]][0]:
-                                CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][3])
-                                METAPREF[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][8])
-                                MIGRATHRESHOLD[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][9])
+                        if loc < len(PARAM['timepoints'][TIME]['cells']) and UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc][0]:
+                            CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][3])
+                            METAPREF[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][8])
+                            MIGRATHRESHOLD[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][9])
 
                         else:
-                            CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][3])
-                            METAPREF[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][8])
-                            MIGRATHRESHOLD[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][9])
+                            CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][3])
+                            METAPREF[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][8])
+                            MIGRATHRESHOLD[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][9])
 
                     else:
                         COUNTS[0] += 1
@@ -361,16 +359,15 @@ def get_tumor(agents, PARAM, TIME, tumorDict, C):
                         VOLUMES[0].append(agents[loc]['volume'][p])
 
                         # Parse PARAM json and make sure grabbing the right cell information
-                        if loc < len(PARAM['timepoints'][TIME]['cells']):
-                            if UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc[1]][0]:
-                                CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][3])
-                                METAPREF[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][8])
-                                MIGRATHRESHOLD[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][9])
+                        if loc < len(PARAM['timepoints'][TIME]['cells']) and UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc][0]:
+                            CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][3])
+                            METAPREF[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][8])
+                            MIGRATHRESHOLD[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][9])
 
                         else:
-                            CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][3])
-                            METAPREF[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][8])
-                            MIGRATHRESHOLD[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][9])
+                            CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][3])
+                            METAPREF[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][8])
+                            MIGRATHRESHOLD[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][9])
 
     # Store data in biopsiesDict
     tumorDict['CANCER'] = COUNTS[0]
@@ -433,6 +430,7 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
 
     # Itterate through locations and collect all data
     for loc in sampleMap:
+        UVW = list(loc[0])
         index = None
         for p in range(0,6):
             pos = None
@@ -448,15 +446,14 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
                 VOLUMES[2].append(agents[loc[1]]['volume'][p])
 
                 # Parse PARAM json and make sure grabbing the right cell information
-                if loc[1] < len(PARAM['timepoints'][TIME]['cells']):
-                    if list(loc[0])+[0] == PARAM['timepoints'][TIME]['cells'][loc[1]][0]:
-                        for i in range(len(PARAM['timepoints'][TIME]['cells'][loc[1]][1])):
-                            if PARAM['timepoints'][TIME]['cells'][loc[1]][1][i][3] == p:
-                                pos = i
-                                CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][3])
-                                METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][8])
-                                MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][9])
-                                break
+                if loc[1] < len(PARAM['timepoints'][TIME]['cells']) and UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc[1]][0]:
+                    for i in range(len(PARAM['timepoints'][TIME]['cells'][loc[1]][1])):
+                        if PARAM['timepoints'][TIME]['cells'][loc[1]][1][i][3] == p:
+                            pos = i
+                            CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][3])
+                            METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][8])
+                            MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][9])
+                            break
 
                 else:
                     for t in range(0, len(PARAM['timepoints'][TIME]['cells'])):
@@ -465,9 +462,9 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
                             for i in range(len(PARAM['timepoints'][TIME]['cells'][index][1])):
                                 if PARAM['timepoints'][TIME]['cells'][index][1][i][3] == p:
                                     pos = i
-                                    CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][3])
-                                    METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][8])
-                                    MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][9])
+                                    CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][3])
+                                    METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][8])
+                                    MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][9])
                                     break
                             break
 
@@ -480,16 +477,15 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
                     VOLUMES[1].append(agents[loc[1]]['volume'][p])
 
                     # Parse PARAM json and make sure grabbing the right cell information
-                    if loc[1] < len(PARAM['timepoints'][TIME]['cells']):
-                        if list(loc[0]) + [0] == PARAM['timepoints'][TIME]['cells'][loc[1]][0]:
-                            CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][3])
-                            METAPREF[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][8])
-                            MIGRATHRESHOLD[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][9])
+                    if loc[1] < len(PARAM['timepoints'][TIME]['cells']) and UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc[1]][0]:
+                        CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][3])
+                        METAPREF[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][8])
+                        MIGRATHRESHOLD[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][9])
 
                     else:
-                        CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][3])
-                        METAPREF[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][8])
-                        MIGRATHRESHOLD[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][9])
+                        CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][3])
+                        METAPREF[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][8])
+                        MIGRATHRESHOLD[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][9])
 
                 else:
                     COUNTS[0] += 1
@@ -499,16 +495,15 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
                     VOLUMES[0].append(agents[loc[1]]['volume'][p])
 
                     # Parse PARAM json and make sure grabbing the right cell information
-                    if loc[1] < len(PARAM['timepoints'][TIME]['cells']):
-                        if list(loc[0]) + [0] == PARAM['timepoints'][TIME]['cells'][loc[1]][0]:
-                            CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][3])
-                            METAPREF[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][8])
-                            MIGRATHRESHOLD[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][5][9])
+                    if loc[1] < len(PARAM['timepoints'][TIME]['cells']) and UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc[1]][0]:
+                        CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][3])
+                        METAPREF[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][8])
+                        MIGRATHRESHOLD[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][9])
 
                     else:
-                        CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][3])
-                        METAPREF[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][8])
-                        MIGRATHRESHOLD[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][5][9])
+                        CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][3])
+                        METAPREF[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][8])
+                        MIGRATHRESHOLD[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][9])
 
     # Store data in biopsiesDict
     biopsiesDict['CANCER'] = COUNTS[0]
