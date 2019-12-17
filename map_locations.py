@@ -12,13 +12,13 @@ locations and those associated indices. It will extract data into dictionary loc
 
 {
     "punch": {
-        "1": [[locs at rad 0], [locs at rad 1], .... , [locs at rad 34]],
-        "2": [[locs at rad 0], [locs at rad 1], .... , [locs at rad 34]],
-        "3": [[locs at rad 0], [locs at rad 1], .... , [locs at rad 34]],
-        "4": [[locs at rad 0], [locs at rad 1], .... , [locs at rad 34]],
-        "5": [[locs at rad 0], [locs at rad 1], .... , [locs at rad 34]],
-        "6": [[locs at rad 0], [locs at rad 1], .... , [locs at rad 34]],
-        "7": [[locs at rad 0], [locs at rad 1], .... , [locs at rad 34]]
+        "1": [[locs at rad 1], [locs at rad 2], .... , [locs at rad 34]],
+        "2": [[locs at rad 1], [locs at rad 2], .... , [locs at rad 34]],
+        "3": [[locs at rad 1], [locs at rad 2], .... , [locs at rad 34]],
+        "4": [[locs at rad 1], [locs at rad 2], .... , [locs at rad 34]],
+        "5": [[locs at rad 1], [locs at rad 2], .... , [locs at rad 34]],
+        "6": [[locs at rad 1], [locs at rad 2], .... , [locs at rad 34]],
+        "7": [[locs at rad 1], [locs at rad 2], .... , [locs at rad 34]]
     },
     
     "needle": {
@@ -139,7 +139,7 @@ def get_location_maps():
     punchCenters += make_punch_biop_centers_list(15)
 
     # Make lists for biopsies
-    for i in range(0,34):
+    for i in range(0, 35):
 
         # Make lists for punch biopsies
         locMaps["punch"]["1"].append(get_hexes_at_rad(locs, i, punchCenters[0]))

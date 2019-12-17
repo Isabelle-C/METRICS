@@ -28,7 +28,7 @@ where
     CELL LINES = all possible combinations of {X, A, B, C}
     TIME = Day of biopsy {15, 22}
     BIOPSY TYPE = {PUNCH, NEEDLE, TUMOR}
-    THICNKESS = RADIUS/WIDTH of biopsy (0-34)
+    THICNKESS = RADIUS/WIDTH of biopsy (1-34)
 
 and FEATURES (for which one column exists for each feature) includes
 
@@ -86,7 +86,7 @@ Usage:
     [--samples SAMPLES]
         Comma-separated, hyphen-separated range, or min:interval:max of samples to take for punch (max 7) and needle (max 6) biopsies; min 1, max 7 (default: 1-7)
     [--thickness THICKNESS]
-        Comma-separated, hyphen-separated range, or min:interval:max of thicknesses to measure; min 0, max 34 (default: 0-34)
+        Comma-separated, hyphen-separated range, or min:interval:max of thicknesses to measure; min 1, max 34 (default: 0-34)
     [--combos]
         Flag indicating whether or not to do all combos of given samples
     [--saveLoc]
@@ -113,7 +113,7 @@ def get_parser():
                         help="Comma-separated list of sample types to take (punch, needle, and/or tumor) (default: punch,needle,tumor)")
     parser.add_argument("--samples", default="1-7", dest="samples",
                         help="Comma-separated list or hyphen-separated range of samples to take for punch (max 7) and needle (max 6) biopsies; min 1, max 7 (default: 1-7)")
-    parser.add_argument("--thickness", default="0-34", dest="thickness",
+    parser.add_argument("--thickness", default="1-34", dest="thickness",
                         help="Comma-separated list or hyphen-separated range of thicknesses to measure; min 0, max 34")
     parser.add_argument("--combos", default=False, dest="combos", action="store_true",
                         help="Flag indicating whether or not to do all combos of given samples")
@@ -342,9 +342,9 @@ def get_tumor(agents, PARAM, TIME, tumorDict, C):
 
                         # Parse PARAM json and make sure grabbing the right cell information
                         if loc < len(PARAM['timepoints'][TIME]['cells']) and UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc][0]:
-                            CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][3])
-                            METAPREF[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][8])
-                            MIGRATHRESHOLD[1].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][9])
+                            CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][loc][1][pos][4][3])
+                            METAPREF[1].append(PARAM['timepoints'][TIME]['cells'][loc][1][pos][4][8])
+                            MIGRATHRESHOLD[1].append(PARAM['timepoints'][TIME]['cells'][loc][1][pos][4][9])
 
                         else:
                             CROWDINGTOLERANCE[1].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][3])
@@ -360,9 +360,9 @@ def get_tumor(agents, PARAM, TIME, tumorDict, C):
 
                         # Parse PARAM json and make sure grabbing the right cell information
                         if loc < len(PARAM['timepoints'][TIME]['cells']) and UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc][0]:
-                            CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][3])
-                            METAPREF[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][8])
-                            MIGRATHRESHOLD[0].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][9])
+                            CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][loc][1][pos][4][3])
+                            METAPREF[0].append(PARAM['timepoints'][TIME]['cells'][loc][1][pos][4][8])
+                            MIGRATHRESHOLD[0].append(PARAM['timepoints'][TIME]['cells'][loc][1][pos][4][9])
 
                         else:
                             CROWDINGTOLERANCE[0].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][3])
@@ -450,9 +450,9 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
                     for i in range(len(PARAM['timepoints'][TIME]['cells'][loc[1]][1])):
                         if PARAM['timepoints'][TIME]['cells'][loc[1]][1][i][3] == p:
                             pos = i
-                            CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][3])
-                            METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][8])
-                            MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][index][1][pos][4][9])
+                            CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][3])
+                            METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][8])
+                            MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][loc[1]][1][pos][4][9])
                             break
 
                 else:
@@ -548,7 +548,7 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
 
 # ---------- TAKE ALL BIOPSIES FOR A GIVEN SEED ----------------
 
-def take_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, TYPE, SAMPLES, THICKNESS, PKLS, SAVETOGETHER, SAVELOC):
+def take_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, TYPE, SAMPLES, THICKNESS, SAVETOGETHER, SAVELOC):
 
     # Parse file name
     fileName = re.sub('.*VIVO', 'VIVO', f)
@@ -614,11 +614,12 @@ def biopsy(PKLFILES, PARAMLOC, sampleMaps, TIME, TYPE, SAMPLES, THICKNESS, SAVET
         for s in range(N):
             fileName = re.sub('.*VIVO', 'VIVO', f)
             TUMORID = fileName.replace('.pkl', '')
+            print("\t" + TUMORID + "_0" + str(s))
             paramName = PARAMLOC + TUMORID + "_0" + str(s) + ".PARAM.json"
             PARAM = ABM.load_json(paramName)
             for time in TIME:
                 agents = D['agents'][s][time][0]
-                biopsiesDF = take_biopsies(f, PARAM, s, time, agents, sampleMaps, biopsiesDF, TYPE, SAMPLES, THICKNESS, PKLS, SAVETOGETHER, SAVELOC)
+                biopsiesDF = take_biopsies(f, PARAM, s, time, agents, sampleMaps, biopsiesDF, TYPE, SAMPLES, THICKNESS, SAVETOGETHER, SAVELOC)
                 if 'tumor' in TYPE:
                     tumorDF = parse_tumor(f, PARAM, s, time, agents, tumorDF, C)
 
@@ -689,7 +690,7 @@ if __name__ == "__main__":
             THICKNESS = [t for t in range(int(tsplit[0]), int(tsplit[1]) + 1)]
     elif "-" in args.thickness:
         tsplit = str(args.thickness).split('-')
-        THICKNESS = [t for t in range(int(tsplit[0]), int(tsplit[1])+1)]
+        THICKNESS = [t for t in range(int(tsplit[0]), int(tsplit[1]) + 1)]
     else:
         THICKNESS = [int(t) for t in str(args.thickness).split(',')]
 

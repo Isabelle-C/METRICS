@@ -16,21 +16,21 @@ It will extract data into dictionary sampleMaps in the form:
 {
     "punch": {
         "1": {
-            "0": [locs at rad 0 for "center" sample]
-            "1": [locs at rad 0 for "center" sample, locs at rad 1 for "center" sample]
+            "1": [locs at rad 1 for "center" sample]
+            "2": [locs at rad 1 for "center" sample, locs at rad 2 for "center" sample]
             .
             .
             .
-            "34": [locs at rad 0 for "center" sample, locs at rad 1 for "center" sample, ..., 
+            "34": [locs at rad 1 for "center" sample, locs at rad 2 for "center" sample, ..., 
                         locs at rad 34 for "center" sample]
         }
         "2": {
-            "0": [locs at rad 0 for "u" samples]
-            "1": [locs at rad 0 for "u" samples, locs at rad 1 for "u" samples]
+            "1": [locs at rad 1 for "u" samples]
+            "2": [locs at rad 1 for "u" samples, locs at rad 2 for "u" samples]
             .
             .
             .
-            "34": [locs at rad 0 for "u" samples, locs at rad 1 for "u" samples,
+            "34": [locs at rad 1 for "u" samples, locs at rad 2 for "u" samples,
                         ..., locs at rad 34 for "u" samples]
         }
         "3": -- dict of samples at all radii for "v" samples --
@@ -42,21 +42,21 @@ It will extract data into dictionary sampleMaps in the form:
     
     "needle": {
         "1": {
-            "0": [locs at width 0 for "u" sample]
-            "1": [locs at width 1 for "u" sample, locs at width 1 for "u" sample]
+            "1": [locs at width 1 for "u" sample]
+            "2": [locs at width 1 for "u" sample, locs at width 2 for "u" sample]
             .
             .
             .
-            "34": [locs at width 0 for "u" sample, locs at width 1 for "u" sample, ..., 
+            "34": [locs at width 1 for "u" sample, locs at width 2 for "u" sample, ..., 
                         locs at width 34 for "u" sample]
         }
         "2": {
-            "0": [locs at width 0 for "v" samples]
-            "1": [locs at width 0 for "v" samples, locs at width 1 for "v" samples]
+            "1": [locs at width 1 for "v" samples]
+            "2": [locs at width 1 for "v" samples, locs at width 2 for "v" samples]
             .
             .
             .
-            "34": [locs at width 0 for "v" samples, locs at width 1 for "v" samples,
+            "34": [locs at width 1 for "v" samples, locs at width 2 for "v" samples,
                         ..., locs at width 34 for "v" samples]
         }
         "3": -- dict of samples at all widths for "w" samples --
@@ -173,7 +173,7 @@ def get_sample_maps(locMaps):
 
     # Make lists for biopsies
     for i in range(1, 8):
-        for thickness in range(0, 34):
+        for thickness in range(1, 35):
 
             # Make lists for punch biopsies
             sampleMaps["punch"][str(i)][str(thickness)] = make_biops("punch", locMaps, thickness, i)
@@ -218,7 +218,7 @@ def get_sample_maps_combos(locMaps):
     for i in range(0, len(punchCombos)):
         punchCombo = punchCombos[i]
         punchName = punchNames[i]
-        for thickness in range(0, 34):
+        for thickness in range(1, 35):
 
             # Make lists for punch biopsies
             sampleMaps["punch"][punchName][str(thickness)] = make_biops_combos("punch", locMaps, thickness, punchCombo)

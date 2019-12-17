@@ -14,6 +14,7 @@ __email__ = "jessicayu@u.northwestern.edu"
 '''
 ABM_PARSE takes a directory of (or a single) .tar.xz or .json simulation files
 and extracts the data into a matrix in the form:
+
     {
         "setup": {
             "radius": R,
@@ -30,13 +31,17 @@ and extracts the data into a matrix in the form:
             "tgfa": (N seeds) x (T timepoints) x (H height) x (R radius)
         }
     }
+    
 where each entry in the agents array is a structured entry of the shape:
+
     "pop"       int8    population code
     "type"      int8    cell type code
     "volume"    int16   cell volume (rounded)
     "cycle"     int16   average cell cycle length (rounded)
+    
 and saves it to a .pkl. Also include a number of utility functions for
 extracting data into metrics and plots.
+
 Usage:
     python abm_parse.py FILES [-h] [--nosave] [--noprint]
     FILES

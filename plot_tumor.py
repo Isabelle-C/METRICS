@@ -12,8 +12,10 @@ __email__ = "aprybutok@u.northwestern.edu"
 
 '''
 PLOT_TUMOR takes a .pkl file of a dataframe containing all tumor information and makes 
-individual distribution plots for the following features of interest:
+individual bar or distribution plots for the following features of interest:
     
+    CELL LINES (X, A, B, C, H)
+    CELL STATES (MIGRA, PROLI, QUIES, APOPT, NECRO)
     CYCLE LENGTH
     AVERAGE VOLUME
     CROWDING TOLERANCE
@@ -24,19 +26,20 @@ Usage:
 
     python plot_tumor.py FILE
 
-    FILES
-        Path to .pkl file or directory
+    FILE
+        Path to .pkl file
     [--tumor TUMOR]
         Tumor ID to plot
     [--seed SEED]
         Tumor seed to plot
     [--time TIME]
         Day to record data from (default: 22.0)
-    [--saveLoc SAVELOC]
+    [--saveFigs SAVEFIGS]
         Path designating where figures are saved (default: figures not saved)
     
 
 '''
+
 # -------------- COLORS ---------------------------------------
 
 neutral = '#555555'
@@ -59,15 +62,15 @@ CANCER = '#187178'
 
 def get_parser():
     # Setup argument parser.
-    parser = ArgumentParser(description="Receord all biopsy data into a dataframe")
-    parser.add_argument(dest="file", help="Path to .pkl file or directory")
+    parser = ArgumentParser(description="Plot tumor feature data for given tumor")
+    parser.add_argument(dest="file", help="Path to .pkl file")
     parser.add_argument("--tumor", default="VIVO_HET_DAMAGE_140_140_XABC", dest="tumor",
                         help='Tumor ID to plot')
     parser.add_argument("--seed", default="0", dest="seed",
                         help='Tumor seed to plot')
     parser.add_argument("--time", default="22", dest="time",
                         help="Day to record data from (default: 22)")
-    parser.add_argument("--saveLoc", default="", dest="saveLoc",
+    parser.add_argument("--saveFigs", default="", dest="saveFigs",
                         help="Path designating where figures are saved (default: figures not saved)")
 
     return parser
@@ -109,8 +112,8 @@ def plot_cell_lines(tumorDF, args):
     plt.xticks(xCL, lineNames)
     plt.show()
 
-    if args.saveLoc != "":
-        plt.savefig(args.saveLoc + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLLINES" + ".svg", bbox_inches='tight')
+    if args.saveFigs != "":
+        plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLLINES" + ".svg", bbox_inches='tight')
 
 def plot_cell_states(tumorDF, args):
 
@@ -138,8 +141,8 @@ def plot_cell_states(tumorDF, args):
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
     plt.show()
 
-    if args.saveLoc != "":
-        plt.savefig(args.saveLoc + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLSTATES" + ".svg", bbox_inches='tight')
+    if args.saveFigs != "":
+        plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLSTATES" + ".svg", bbox_inches='tight')
 
 def plot_cell_cycles(tumorDF, nbins, args):
 
@@ -160,8 +163,8 @@ def plot_cell_cycles(tumorDF, nbins, args):
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
     plt.show()
 
-    if args.saveLoc != "":
-        plt.savefig(args.saveLoc + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLCYCLES" + ".svg", bbox_inches='tight')
+    if args.saveFigs != "":
+        plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLCYCLES" + ".svg", bbox_inches='tight')
 
 def plot_cell_volumes(tumorDF, nbins, args):
 
@@ -182,8 +185,8 @@ def plot_cell_volumes(tumorDF, nbins, args):
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
     plt.show()
 
-    if args.saveLoc != "":
-        plt.savefig(args.saveLoc + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLVOLUMES" + ".svg", bbox_inches='tight')
+    if args.saveFigs != "":
+        plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLVOLUMES" + ".svg", bbox_inches='tight')
 
 
 def plot_crowding_tolerance(tumorDF, nbins, args):
@@ -205,8 +208,8 @@ def plot_crowding_tolerance(tumorDF, nbins, args):
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
     plt.show()
 
-    if args.saveLoc != "":
-        plt.savefig(args.saveLoc + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CROWDINGTOLERANCE" + ".svg",bbox_inches='tight')
+    if args.saveFigs != "":
+        plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CROWDINGTOLERANCE" + ".svg",bbox_inches='tight')
 
 def plot_meta_pref(tumorDF, nbins, args):
 
@@ -225,8 +228,8 @@ def plot_meta_pref(tumorDF, nbins, args):
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
     plt.show()
 
-    if args.saveLoc != "":
-        plt.savefig(args.saveLoc + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_METAPREF" + ".svg", bbox_inches='tight')
+    if args.saveFigs != "":
+        plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_METAPREF" + ".svg", bbox_inches='tight')
 
 def plot_migratory_threshold(tumorDF, nbins, args):
 
@@ -247,8 +250,8 @@ def plot_migratory_threshold(tumorDF, nbins, args):
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
     plt.show()
 
-    if args.saveLoc != "":
-        plt.savefig(args.saveLoc + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_MIGRATORYTHRESHOLD" + ".svg", bbox_inches='tight')
+    if args.saveFigs != "":
+        plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_MIGRATORYTHRESHOLD" + ".svg", bbox_inches='tight')
 
 # -------------------- MAIN FUNCTION --------------------------
 
