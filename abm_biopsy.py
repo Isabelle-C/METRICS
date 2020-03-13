@@ -28,6 +28,7 @@ where
     CELL LINES = all possible combinations of {X, A, B, C}
     TIME = Day of biopsy {15, 22}
     BIOPSY TYPE = {PUNCH, NEEDLE, TUMOR}
+    BIOPSY NUMBER = {1, 2, 3, 4, 5, 6, (7)}
     THICNKESS = RADIUS/WIDTH of biopsy (1-34)
 
 and FEATURES (for which one column exists for each feature) includes
@@ -548,7 +549,7 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
 
 # ---------- TAKE ALL BIOPSIES FOR A GIVEN SEED ----------------
 
-def take_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, TYPE, SAMPLES, THICKNESS, SAVETOGETHER, SAVELOC):
+def take_many_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, TYPE, SAMPLES, THICKNESS, SAVETOGETHER, SAVELOC):
 
     # Parse file name
     fileName = re.sub('.*VIVO', 'VIVO', f)
@@ -562,15 +563,14 @@ def take_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, TYPE, SA
     for type in TYPE:
         if type == 'needle' or type == 'punch':
             for n in SAMPLES:
-
-                if not SAVETOGETHER:
-                    biopsiesDF = pickle.load(open(SAVELOC + "BIOPSIES_" + str(type).upper() + "_DAY_" +
-                                                  str(int(TIME/2)) + "_SAMPLES_" + str(n) + ".pkl", "rb"))
-
                 for thickness in THICKNESS:
                     if '7' in str(n) and type == 'needle':
                         continue
                     else:
+                        if not SAVETOGETHER:
+                            biopsiesDF = pickle.load(open(SAVELOC + "BIOPSIES_" + str(type).upper() + "_DAY_" +
+                                str(int(TIME/2)) + "_SAMPLES_" + str(n) + "_THICKNESS_" + str(thickness) + ".pkl", "rb"))
+
                         # Set up empty dictionary to eventually be added to the DF
                         biopsiesDict = make_dict()
                         biopsiesDict['TUMOR ID'] = TUMORID
@@ -585,12 +585,40 @@ def take_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, TYPE, SA
                         biopsiesDict = take_biopsy(agents, PARAM, TIME, sampleMaps[type][str(n)][str(thickness)], biopsiesDict)
                         biopsiesDF = biopsiesDF.append(biopsiesDict, ignore_index=True)
 
-                if not SAVETOGETHER:
-                    pickle.dump(biopsiesDF, open(SAVELOC + "BIOPSIES_" + str(type).upper() + "_DAY_" +
-                                                    str(int(TIME/2)) + "_SAMPLES_" + str(n) + ".pkl", "wb"))
+                        if not SAVETOGETHER:
+                            pickle.dump(biopsiesDF, open(SAVELOC + "BIOPSIES_" + str(type).upper() + "_DAY_" +
+                                str(int(TIME/2)) + "_SAMPLES_" + str(n) + "_THICKNESS_" + str(thickness) + ".pkl", "wb"))
 
     if SAVETOGETHER:
         return biopsiesDF
+
+def take_single_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, type, n, thickness, SAVETOGETHER, SAVELOC):
+
+    # Parse file name
+    fileName = re.sub('.*VIVO', 'VIVO', f)
+    TUMORID = fileName.replace('.pkl', '')
+    fsplit = str(TUMORID).split('_')
+    HET = int(fsplit[-3])
+    TISSUEHET = int(fsplit[-2])
+    CELLLINES = fsplit[-1]
+
+
+    # Set up empty dictionary to eventually be added to the DF
+    biopsiesDict = make_dict()
+    biopsiesDict['TUMOR ID'] = TUMORID
+    biopsiesDict['SEED'] = SEED
+    biopsiesDict['HET %'] = HET - 100
+    biopsiesDict['TISSUE HET %'] = TISSUEHET - 100
+    biopsiesDict['CELL LINES'] = CELLLINES
+    biopsiesDict['TIME'] = TIME / 2
+    biopsiesDict['BIOPSY TYPE'] = type.upper()
+    biopsiesDict['BIOPSY NUMBER'] = n
+    biopsiesDict['THICKNESS'] = thickness
+    biopsiesDict = take_biopsy(agents, PARAM, TIME, sampleMaps[type][str(n)][str(thickness)], biopsiesDict)
+    biopsiesDF = biopsiesDF.append(biopsiesDict, ignore_index=True)
+
+    return biopsiesDF
+
 
 def biopsy(PKLFILES, PARAMLOC, sampleMaps, TIME, TYPE, SAMPLES, THICKNESS, SAVETOGETHER, SAVELOC):
 
@@ -598,30 +626,63 @@ def biopsy(PKLFILES, PARAMLOC, sampleMaps, TIME, TYPE, SAMPLES, THICKNESS, SAVET
     biopsiesDF = make_df()
     tumorDF = make_df()
 
-    PKLS = []
-    if not SAVETOGETHER:
-        for type in TYPE:
-            if type == 'punch' or type == 'needle':
-                for time in TIME:
-                    for sample in SAMPLES:
-                        pklName = "BIOPSIES_" + str(type).upper() + "_DAY_" + str(int(time/2)) + "_SAMPLES_" + str(sample)
-                        PKLS.append(pklName)
-    for pkl in PKLS:
-        pickle.dump(biopsiesDF, open(SAVELOC + pkl + ".pkl", "wb"))
+    # If only one biopsy type (not tumor), sample, time point, and thickness, only open pkl file once.
+    if len(TYPE) == 1 and len(SAMPLES) == 1 and len(TIME) == 1 and len(THICKNESS) == 1 and 'tumor' not in TYPE:
+        for time in TIME:
+            for type in TYPE:
+                if type == 'needle' or type == 'punch':
+                    for n in SAMPLES:
+                        for thickness in THICKNESS:
+                            if '7' in str(n) and type == 'needle':
+                                continue
+                            else:
+                                for f in PKLFILES:
+                                    D, d, R, H, T, N, C, POPS, TYPES = ABM_load(f)
+                                    for s in range(N):
+                                        fileName = re.sub('.*VIVO', 'VIVO', f)
+                                        TUMORID = fileName.replace('.pkl', '')
+                                        print("\t" + TUMORID + "_0" + str(s))
+                                        paramName = PARAMLOC + TUMORID + "_0" + str(s) + ".PARAM.json"
+                                        PARAM = ABM.load_json(paramName)
+                                        agents = D['agents'][s][time][0]
+                                        biopsiesDF = take_single_biopsies(f, PARAM, s, time, agents, sampleMaps,
+                                                                        biopsiesDF, type, n, thickness,
+                                                                        SAVETOGETHER, SAVELOC)
 
-    for f in PKLFILES:
-        D, d, R, H, T, N, C, POPS, TYPES = ABM_load(f)
-        for s in range(N):
-            fileName = re.sub('.*VIVO', 'VIVO', f)
-            TUMORID = fileName.replace('.pkl', '')
-            print("\t" + TUMORID + "_0" + str(s))
-            paramName = PARAMLOC + TUMORID + "_0" + str(s) + ".PARAM.json"
-            PARAM = ABM.load_json(paramName)
-            for time in TIME:
-                agents = D['agents'][s][time][0]
-                biopsiesDF = take_biopsies(f, PARAM, s, time, agents, sampleMaps, biopsiesDF, TYPE, SAMPLES, THICKNESS, SAVETOGETHER, SAVELOC)
-                if 'tumor' in TYPE:
-                    tumorDF = parse_tumor(f, PARAM, s, time, agents, tumorDF, C)
+                                if not SAVETOGETHER:
+                                    pickle.dump(biopsiesDF, open(SAVELOC + "BIOPSIES_" + str(type).upper() + "_DAY_" +
+                                                                 str(int(time / 2)) + "_SAMPLES_" + str(n) + "_THICKNESS_" +
+                                                                 str(thickness) + ".pkl", "wb"))
+
+    # If more than one biopsy type, sample, time point, and thickness, open each ABM file once.
+    else:
+
+        PKLS = []
+        if not SAVETOGETHER:
+            for type in TYPE:
+                if type == 'punch' or type == 'needle':
+                    for time in TIME:
+                        for sample in SAMPLES:
+                            for thickness in THICKNESS:
+                                pklName = "BIOPSIES_" + str(type).upper() + "_DAY_" + str(
+                                    int(time / 2)) + "_SAMPLES_" + str(sample) + "_THICKNESS_" + str(thickness)
+                                PKLS.append(pklName)
+        for pkl in PKLS:
+            pickle.dump(biopsiesDF, open(SAVELOC + pkl + ".pkl", "wb"))
+
+        for f in PKLFILES:
+            D, d, R, H, T, N, C, POPS, TYPES = ABM_load(f)
+            for s in range(N):
+                fileName = re.sub('.*VIVO', 'VIVO', f)
+                TUMORID = fileName.replace('.pkl', '')
+                print("\t" + TUMORID + "_0" + str(s))
+                paramName = PARAMLOC + TUMORID + "_0" + str(s) + ".PARAM.json"
+                PARAM = ABM.load_json(paramName)
+                for time in TIME:
+                    agents = D['agents'][s][time][0]
+                    biopsiesDF = take_many_biopsies(f, PARAM, s, time, agents, sampleMaps, biopsiesDF, TYPE, SAMPLES, THICKNESS, SAVETOGETHER, SAVELOC)
+                    if 'tumor' in TYPE:
+                        tumorDF = parse_tumor(f, PARAM, s, time, agents, tumorDF, C)
 
     if SAVETOGETHER:
         totalDF = pd.concat([tumorDF, biopsiesDF])
