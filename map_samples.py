@@ -110,7 +110,7 @@ def get_parser():
 
 def make_biops(strategy, locMaps, thickness, number):
     locs = set()
-    for t in range(0, thickness+1):
+    for t in range(0, thickness):
         for m in range(len(locMaps[strategy][str(number)][t])):
             locs.add(locMaps[strategy][str(number)][t][m])
     return locs
@@ -141,7 +141,7 @@ def make_combos(punchLocs, needleLocs):
 def make_biops_combos(strategy, locMaps, thickness, combosList):
     locs = set()
     for n in combosList:
-        for t in range(0, thickness+1):
+        for t in range(0, thickness):
             for m in range(len(locMaps[strategy][str(n)][t])):
                 locs.add(locMaps[strategy][str(n)][t][m])
     return locs
@@ -226,7 +226,7 @@ def get_sample_maps_combos(locMaps):
     for i in range(0, len(needleCombos)):
         needleCombo = needleCombos[i]
         needleName = needleNames[i]
-        for thickness in range(0, 34):
+        for thickness in range(1, 35):
                 sampleMaps["needle"][needleName][str(thickness)] = make_biops_combos("needle", locMaps, thickness, needleCombo)
 
     return sampleMaps

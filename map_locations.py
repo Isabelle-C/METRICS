@@ -139,7 +139,7 @@ def get_location_maps():
     punchCenters += make_punch_biop_centers_list(15)
 
     # Make lists for biopsies
-    for i in range(0, 35):
+    for i in range(0, 34):
 
         # Make lists for punch biopsies
         locMaps["punch"]["1"].append(get_hexes_at_rad(locs, i, punchCenters[0]))

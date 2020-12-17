@@ -17,7 +17,7 @@ biopsy on the tumor, and creates a list of each biopsy, with it's associated mea
 a record of the tumor it came from. It will also take all associated measurements for the full tumor. 
 It will extract all data into dataframe biopsies in the form:
 
-    TUMOR ID | SEED |  HET % | TISSUE HET % | CELL LINES | TIME | BIOPSY TYPE | THICKNESS | FEATURES |   
+    TUMOR ID | SEED |  HET % | TISSUE HET % | CELL LINES | TIME | BIOPSY TYPE | BIOPSY NUMBER | THICKNESS | FEATURES |   
 
 where
 
@@ -73,8 +73,8 @@ and FEATURES (for which one column exists for each feature) includes
     
 Usage: 
 
-    python abm_biopsy.py FILES [--time TIME] [--type TYPE] [--samples SAMPLES] 
-        [--thickness THICKNESS] [--saveLoc] [--sampleMapsLoc] [--saveTogether]
+    python abm_biopsy.py FILES [--param PARAM] [--time TIME] [--type TYPE] [--samples SAMPLES] 
+        [--thickness THICKNESS] [--combos] [--saveLoc] [--sampleMapsLoc] [--saveTogether]
 
     FILES
         Path to .pkl file or directory
@@ -269,8 +269,8 @@ def parse_tumor(f, PARAM, SEED, TIME, agents, tumorDF, C):
     tumorDict = make_dict()
     tumorDict['TUMOR ID'] = TUMORID
     tumorDict['SEED'] = SEED
-    tumorDict['HET %'] = HET - 100
-    tumorDict['TISSUE HET %'] = TISSUEHET - 100
+    tumorDict['HET %'] = HET
+    tumorDict['TISSUE HET %'] = TISSUEHET
     tumorDict['CELL LINES'] = CELLLINES
     tumorDict['TIME'] = TIME / 2
     tumorDict['BIOPSY TYPE'] = 'TUMOR'
@@ -431,7 +431,7 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
 
     # Itterate through locations and collect all data
     for loc in sampleMap:
-        UVW = list(loc[0])
+        UVW = list(loc[0])  # loc ([u, v, w], loc_index)
         index = None
         for p in range(0,6):
             pos = None
@@ -575,8 +575,8 @@ def take_many_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, TYP
                         biopsiesDict = make_dict()
                         biopsiesDict['TUMOR ID'] = TUMORID
                         biopsiesDict['SEED'] = SEED
-                        biopsiesDict['HET %'] = HET - 100
-                        biopsiesDict['TISSUE HET %'] = TISSUEHET - 100
+                        biopsiesDict['HET %'] = HET
+                        biopsiesDict['TISSUE HET %'] = TISSUEHET
                         biopsiesDict['CELL LINES'] = CELLLINES
                         biopsiesDict['TIME'] = TIME / 2
                         biopsiesDict['BIOPSY TYPE'] = type.upper()
@@ -602,13 +602,12 @@ def take_single_biopsies(f, PARAM, SEED, TIME, agents, sampleMaps, biopsiesDF, t
     TISSUEHET = int(fsplit[-2])
     CELLLINES = fsplit[-1]
 
-
     # Set up empty dictionary to eventually be added to the DF
     biopsiesDict = make_dict()
     biopsiesDict['TUMOR ID'] = TUMORID
     biopsiesDict['SEED'] = SEED
-    biopsiesDict['HET %'] = HET - 100
-    biopsiesDict['TISSUE HET %'] = TISSUEHET - 100
+    biopsiesDict['HET %'] = HET
+    biopsiesDict['TISSUE HET %'] = TISSUEHET
     biopsiesDict['CELL LINES'] = CELLLINES
     biopsiesDict['TIME'] = TIME / 2
     biopsiesDict['BIOPSY TYPE'] = type.upper()
