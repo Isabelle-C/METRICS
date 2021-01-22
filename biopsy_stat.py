@@ -36,7 +36,7 @@ Usage:
     FILES
         Path to .pkl file or directory of .pkl files
     [--time TIME]
-        Either single time point to use for both tumor and biopsies or comma-separated times for biopsy:tumor (default: 22)
+        Either single time point to use for both tumor and biopsies or comma-separated list of times for biopsy:tumor (default: 22)
     [--features]
         List of features to analyze (default: all)
     [--saveData SAVEDATA]
@@ -53,9 +53,9 @@ def get_parser():
     parser = ArgumentParser(description="Receord all biopsy data into a dataframe")
     parser.add_argument(dest="files", help="Path to .pkl file or directory")
     parser.add_argument("--features", default="all", dest="features",
-                        help="Day to record data from (default: 22)")
+                        help="List of features to analyze (default: all)")
     parser.add_argument("--time", default="22", dest="time",
-                        help="Either single time point to use for both tumor and biopsies or comma-separated times for biopsy:tumor (default: 22)")
+                        help="Either single time point to use for both tumor and biopsies or comma-separated times for biopsy,tumor (default: 22)")
     parser.add_argument("--saveData", default="", dest="saveData",
                         help="Location of where to save resulting analysis data (default: data not saved)")
     parser.add_argument("--saveFigs", default="", dest="saveFigs",
@@ -251,7 +251,7 @@ def compare(biopsiesDF, tumorsDF, dataDF):
             # Sum tumor data
             tumorDF = tumorsDF.loc[tumorsDF['TUMOR ID'] == tumorID]
             tumorDF = sum_tumor_replicates(tumorDF)
-            tumorDF = tumorDF.iloc[0]
+            tumorDF = tumorDF.iloc[0] # CHECK THIS
             prevTumorID = tumorID
 
         biopsyDF = biopsiesDF.iloc[ind]
@@ -270,7 +270,7 @@ def compare(biopsiesDF, tumorsDF, dataDF):
         dataDict = compare_discrete(biopsyDF, tumorDF, dataDict)
         dataDict = compare_continuous(biopsyDF, tumorDF, dataDict)
 
-        dataDF = dataDF.append(dataDict)
+        dataDF = dataDF.append(dataDict, ignore_index=True)
 
     return dataDF
 
@@ -327,5 +327,5 @@ if __name__ == "__main__":
         pd.set_option('display.max_colwidth', -1)
 
         dataDF = compare(biopsiesDF, tumorsDF, dataDF)
-    #
+
     # pickle.dump(dataDF, open(args.saveData + "BIOPSIES_ANALYZED_" + timeString + ".pkl", "wb"))
