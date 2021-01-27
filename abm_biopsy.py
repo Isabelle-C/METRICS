@@ -316,6 +316,7 @@ def get_tumor(agents, PARAM, TIME, tumorDict, C):
                     if loc < len(PARAM['timepoints'][TIME]['cells']) and UVW + [0] == PARAM['timepoints'][TIME]['cells'][loc][0]:
                         for i in range(len(PARAM['timepoints'][TIME]['cells'][loc][1])):
                             if PARAM['timepoints'][TIME]['cells'][loc][1][i][3] == p:
+                                pos = i
                                 CROWDINGTOLERANCE[2].append(PARAM['timepoints'][TIME]['cells'][loc][1][i][4][3])
                                 METAPREF[2].append(PARAM['timepoints'][TIME]['cells'][loc][1][i][4][8])
                                 MIGRATHRESHOLD[2].append(PARAM['timepoints'][TIME]['cells'][loc][1][i][4][9])
