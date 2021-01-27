@@ -211,11 +211,11 @@ def compare_discrete(biopsyDF, tumorDF, dataDict):
 
     states = ['APOPT', 'QUIES', 'MIGRA', 'PROLI', 'NECRO']
     for state in states:
-        biopState = biopsyDF[state + ' TOTAL']
+        biopState = biopsyDF[state + ' CANCER'] + biopsyDF[state + ' HEALTHY']
         tumorState = tumorDF[state + ' CANCER']
-        biopsyTot = biopsyDF['TOTAL']
+        biopsyTot = biopsyDF['CANCER'] + biopsyDF['HEALTHY']
         # TO DO: DECIDE IF THIS SHOULD BE COMPARE BIOP CANCER TO TUMOR CANCER OR BIOP TOTAL TO TUMOR TOTAL
-        prob = hypergeom.pmf(biopsyDF[state + ' TOTAL'], N, tumorDF[state + ' CANCER'], biopsyDF['TOTAL'])
+        prob = hypergeom.pmf(biopState, N, tumorState, biopsyTot)
         dataDict['PROB FRAC ' + state] = prob
 
     return dataDict
@@ -226,10 +226,10 @@ def compare_continuous(biopsyDF, tumorDF, dataDict):
     features = ['AVG CELL CYCLES', 'CELL VOLUMES', 'CROWDING TOLERANCE', 'METABOLIC PREFERENCE', 'MIGRATORY THRESHOLD']
 
     for feature in features:
-        biopFeat = biopsyDF[feature + ' TOTAL']
+        biopFeat = biopsyDF[feature + ' CANCER'] + [feature + ' HEALTHY']
         tumorFeat = tumorDF[feature + ' CANCER']
-        tumorCDF = ECDF(tumorDF[feature + ' CANCER'])
-        pval = kstest(biopsyDF[feature + ' TOTAL'], tumorCDF)
+        tumorCDF = ECDF(tumorFeat)
+        pval = kstest(biopFeat, tumorCDF)
         print(pval[1])
         dataDict['P-VALUE ' + feature] = pval[1]
 
@@ -262,7 +262,7 @@ def compare(biopsiesDF, tumorsDF, dataDF):
         dataDict['TISSUE HET%'] = biopsyDF['TISSUE HET %']
         dataDict['CELL LINES'] = biopsyDF['CELL LINES']
         dataDict['BIOPSY TIME'] = biopsyDF['TIME']
-        dataDict['TUMOR TIME'] = biopsyDF['TIME']
+        dataDict['TUMOR TIME'] = tumorDF['TIME']
         dataDict['BIOPSY TYPE'] = biopsyDF['BIOPSY TYPE']
         dataDict['BIOPSY NUMBER'] = biopsyDF['BIOPSY NUMBER']
         dataDict['BIOPSY THICKNESS'] = biopsyDF['THICKNESS']

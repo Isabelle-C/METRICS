@@ -162,41 +162,41 @@ def make_df():
                'THICKNESS',
                'CANCER',
                'HEALTHY',
-               'TOTAL',
+               #'TOTAL',
                'POP X',
                'POP A',
                'POP B',
                'POP C',
                'APOPT CANCER',
                'APOPT HEALTHY',
-               'APOPT TOTAL',
+               #'APOPT TOTAL',
                'QUIES CANCER',
                'QUIES HEALTHY',
-               'QUIES TOTAL',
+               #'QUIES TOTAL',
                'MIGRA CANCER',
                'MIGRA HEALTHY',
-               'MIGRA TOTAL',
+               #'MIGRA TOTAL',
                'PROLI CANCER',
                'PROLI HEALTHY',
-               'PROLI TOTAL',
+               #'PROLI TOTAL',
                'NECRO CANCER',
                'NECRO HEALTHY',
-               'NECRO TOTAL',
+               #'NECRO TOTAL',
                'AVG CELL CYCLES CANCER',
                'AVG CELL CYCLES HEALTHY',
-               'AVG CELL CYCLES TOTAL',
+               #'AVG CELL CYCLES TOTAL',
                'CELL VOLUMES CANCER',
                'CELL VOLUMES HEALTHY',
-               'CELL VOLUMES TOTAL',
+               #'CELL VOLUMES TOTAL',
                'CROWDING TOLERANCE CANCER',
                'CROWDING TOLERANCE HEALTHY',
-               'CROWDING TOLERANCE TOTAL',
+               #'CROWDING TOLERANCE TOTAL',
                'METABOLIC PREFERENCE CANCER',
                'METABOLIC PREFERENCE HEALTHY',
-               'METABOLIC PREFERENCE TOTAL',
+               #'METABOLIC PREFERENCE TOTAL',
                'MIGRATORY THRESHOLD CANCER',
                'MIGRATORY THRESHOLD HEALTHY',
-               'MIGRATORY THRESHOLD TOTAL'
+               #'MIGRATORY THRESHOLD TOTAL'
     ]
     biopsiesDF = pd.DataFrame(columns=columns)
 
@@ -214,41 +214,41 @@ def make_dict():
                     'THICKNESS': None,
                     'CANCER': None,
                     'HEALTHY': None,
-                    'TOTAL': None,
+                    #'TOTAL': None,
                     'POP X':  None,
                     'POP A': None,
                     'POP B': None,
                     'POP C': None,
                     'APOPT CANCER': None,
                     'APOPT HEALTHY': None,
-                    'APOPT TOTAL': None,
+                    #'APOPT TOTAL': None,
                     'QUIES CANCER': None,
                     'QUIES HEALTHY': None,
-                    'QUIES TOTAL': None,
+                    #'QUIES TOTAL': None,
                     'MIGRA CANCER': None,
                     'MIGRA HEALTHY': None,
-                    'MIGRA TOTAL': None,
+                    #'MIGRA TOTAL': None,
                     'PROLI CANCER': None,
                     'PROLI HEALTHY': None,
-                    'PROLI TOTAL': None,
+                    #'PROLI TOTAL': None,
                     'NECRO CANCER': None,
                     'NECRO HEALTHY': None,
-                    'NECRO TOTAL': None,
+                    #'NECRO TOTAL': None,
                     'AVG CELL CYCLES CANCER': None,
                     'AVG CELL CYCLES HEALTHY': None,
-                    'AVG CELL CYCLES TOTAL': None,
+                    #'AVG CELL CYCLES TOTAL': None,
                     'CELL VOLUMES CANCER': None,
                     'CELL VOLUMES HEALTHY': None,
-                    'CELL VOLUMES TOTAL': None,
+                    #'CELL VOLUMES TOTAL': None,
                     'CROWDING TOLERANCE CANCER': None,
                     'CROWDING TOLERANCE HEALTHY': None,
-                    'CROWDING TOLERANCE TOTAL': None,
+                    #'CROWDING TOLERANCE TOTAL': None,
                     'METABOLIC PREFERENCE CANCER': None,
                     'METABOLIC PREFERENCE HEALTHY': None,
-                    'METABOLIC PREFERENCE TOTAL': None,
+                    #'METABOLIC PREFERENCE TOTAL': None,
                     'MIGRATORY THRESHOLD CANCER': None,
                     'MIGRATORY THRESHOLD HEALTHY': None,
-                    'MIGRATORY THRESHOLD TOTAL': None
+                    #'MIGRATORY THRESHOLD TOTAL': None
     }
 
     return biopsiesDict
@@ -373,41 +373,41 @@ def get_tumor(agents, PARAM, TIME, tumorDict, C):
     # Store data in biopsiesDict
     tumorDict['CANCER'] = COUNTS[0]
     tumorDict['HEALTHY'] = COUNTS[1]
-    tumorDict['TOTAL'] = COUNTS[2]
+    #tumorDict['TOTAL'] = COUNTS[2]
     tumorDict['POP X'] = POPS[0]
     tumorDict['POP A'] = POPS[1]
     tumorDict['POP B'] = POPS[2]
     tumorDict['POP C'] = POPS[3]
     tumorDict['APOPT CANCER'] = TYPES[0][1]
     tumorDict['APOPT HEALTHY'] = TYPES[1][1]
-    tumorDict['APOPT TOTAL'] = TYPES[2][1]
+    #tumorDict['APOPT TOTAL'] = TYPES[2][1]
     tumorDict['QUIES CANCER'] = TYPES[0][2]
     tumorDict['QUIES HEALTHY'] = TYPES[1][2]
-    tumorDict['QUIES TOTAL'] = TYPES[2][2]
+    #tumorDict['QUIES TOTAL'] = TYPES[2][2]
     tumorDict['MIGRA CANCER'] = TYPES[0][3]
     tumorDict['MIGRA HEALTHY'] = TYPES[1][3]
-    tumorDict['MIGRA TOTAL'] = TYPES[2][3]
+    #tumorDict['MIGRA TOTAL'] = TYPES[2][3]
     tumorDict['PROLI CANCER'] = TYPES[0][4]
     tumorDict['PROLI HEALTHY'] = TYPES[1][4]
-    tumorDict['PROLI TOTAL'] = TYPES[2][4]
+    #tumorDict['PROLI TOTAL'] = TYPES[2][4]
     tumorDict['NECRO CANCER'] = TYPES[0][6]
     tumorDict['NECRO HEALTHY'] = TYPES[1][6]
-    tumorDict['NECRO TOTAL'] = TYPES[2][6]
+    #tumorDict['NECRO TOTAL'] = TYPES[2][6]
     tumorDict['AVG CELL CYCLES CANCER'] = CYCLES[0]
     tumorDict['AVG CELL CYCLES HEALTHY'] = CYCLES[1]
-    tumorDict['AVG CELL CYCLES TOTAL'] = CYCLES[2]
+    #tumorDict['AVG CELL CYCLES TOTAL'] = CYCLES[2]
     tumorDict['CELL VOLUMES CANCER'] = VOLUMES[0]
     tumorDict['CELL VOLUMES HEALTHY'] = VOLUMES[1]
-    tumorDict['CELL VOLUMES TOTAL'] = VOLUMES[2]
+    #tumorDict['CELL VOLUMES TOTAL'] = VOLUMES[2]
     tumorDict['CROWDING TOLERANCE CANCER'] = CROWDINGTOLERANCE[0]
     tumorDict['CROWDING TOLERANCE HEALTHY'] = CROWDINGTOLERANCE[1]
-    tumorDict['CROWDING TOLERANCE TOTAL'] = CROWDINGTOLERANCE[2]
+    #tumorDict['CROWDING TOLERANCE TOTAL'] = CROWDINGTOLERANCE[2]
     tumorDict['METABOLIC PREFERENCE CANCER'] = METAPREF[0]
     tumorDict['METABOLIC PREFERENCE HEALTHY'] = METAPREF[1]
-    tumorDict['METABOLIC PREFERENCE TOTAL'] = METAPREF[2]
+    #tumorDict['METABOLIC PREFERENCE TOTAL'] = METAPREF[2]
     tumorDict['MIGRATORY THRESHOLD CANCER'] = MIGRATHRESHOLD[0]
     tumorDict['MIGRATORY THRESHOLD HEALTHY'] = MIGRATHRESHOLD[1]
-    tumorDict['MIGRATORY THRESHOLD TOTAL'] = MIGRATHRESHOLD[2]
+    #tumorDict['MIGRATORY THRESHOLD TOTAL'] = MIGRATHRESHOLD[2]
 
     return tumorDict
 
@@ -509,41 +509,41 @@ def take_biopsy(agents, PARAM, TIME, sampleMap, biopsiesDict):
     # Store data in biopsiesDict
     biopsiesDict['CANCER'] = COUNTS[0]
     biopsiesDict['HEALTHY'] = COUNTS[1]
-    biopsiesDict['TOTAL'] = COUNTS[2]
+    #biopsiesDict['TOTAL'] = COUNTS[2]
     biopsiesDict['POP X'] = POPS[0]
     biopsiesDict['POP A'] = POPS[1]
     biopsiesDict['POP B'] = POPS[2]
     biopsiesDict['POP C'] = POPS[3]
     biopsiesDict['APOPT CANCER'] = TYPES[0][1]
     biopsiesDict['APOPT HEALTHY'] = TYPES[1][1]
-    biopsiesDict['APOPT TOTAL'] = TYPES[2][1]
+    #biopsiesDict['APOPT TOTAL'] = TYPES[2][1]
     biopsiesDict['QUIES CANCER'] = TYPES[0][2]
     biopsiesDict['QUIES HEALTHY'] = TYPES[1][2]
-    biopsiesDict['QUIES TOTAL'] = TYPES[2][2]
+    #biopsiesDict['QUIES TOTAL'] = TYPES[2][2]
     biopsiesDict['MIGRA CANCER'] = TYPES[0][3]
     biopsiesDict['MIGRA HEALTHY'] = TYPES[1][3]
-    biopsiesDict['MIGRA TOTAL'] = TYPES[2][3]
+    #biopsiesDict['MIGRA TOTAL'] = TYPES[2][3]
     biopsiesDict['PROLI CANCER'] = TYPES[0][4]
     biopsiesDict['PROLI HEALTHY'] = TYPES[1][4]
-    biopsiesDict['PROLI TOTAL'] = TYPES[2][4]
+    #biopsiesDict['PROLI TOTAL'] = TYPES[2][4]
     biopsiesDict['NECRO CANCER'] = TYPES[0][6]
     biopsiesDict['NECRO HEALTHY'] = TYPES[1][6]
-    biopsiesDict['NECRO TOTAL'] = TYPES[2][6]
+    #biopsiesDict['NECRO TOTAL'] = TYPES[2][6]
     biopsiesDict['AVG CELL CYCLES CANCER'] = CYCLES[0]
     biopsiesDict['AVG CELL CYCLES HEALTHY'] = CYCLES[1]
-    biopsiesDict['AVG CELL CYCLES TOTAL'] = CYCLES[2]
+    #biopsiesDict['AVG CELL CYCLES TOTAL'] = CYCLES[2]
     biopsiesDict['CELL VOLUMES CANCER'] = VOLUMES[0]
     biopsiesDict['CELL VOLUMES HEALTHY'] = VOLUMES[1]
-    biopsiesDict['CELL VOLUMES TOTAL'] = VOLUMES[2]
+    #biopsiesDict['CELL VOLUMES TOTAL'] = VOLUMES[2]
     biopsiesDict['CROWDING TOLERANCE CANCER'] = CROWDINGTOLERANCE[0]
     biopsiesDict['CROWDING TOLERANCE HEALTHY'] = CROWDINGTOLERANCE[1]
-    biopsiesDict['CROWDING TOLERANCE TOTAL'] = CROWDINGTOLERANCE[2]
+    #biopsiesDict['CROWDING TOLERANCE TOTAL'] = CROWDINGTOLERANCE[2]
     biopsiesDict['METABOLIC PREFERENCE CANCER'] = METAPREF[0]
     biopsiesDict['METABOLIC PREFERENCE HEALTHY'] = METAPREF[1]
-    biopsiesDict['METABOLIC PREFERENCE TOTAL'] = METAPREF[2]
+    #biopsiesDict['METABOLIC PREFERENCE TOTAL'] = METAPREF[2]
     biopsiesDict['MIGRATORY THRESHOLD CANCER'] = MIGRATHRESHOLD[0]
     biopsiesDict['MIGRATORY THRESHOLD HEALTHY'] = MIGRATHRESHOLD[1]
-    biopsiesDict['MIGRATORY THRESHOLD TOTAL'] = MIGRATHRESHOLD[2]
+    #biopsiesDict['MIGRATORY THRESHOLD TOTAL'] = MIGRATHRESHOLD[2]
 
     return biopsiesDict
 
