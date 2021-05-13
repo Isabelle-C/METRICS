@@ -202,7 +202,7 @@ def count_population(D_in, N_in, H_in, C_in, time_list):
     '''
     for seed in range(0, N_in):
         for time_given in time_list:
-            time = int(time_given) * 2
+            time = int(time_given* 2)
             matrix_pop_type = np.zeros((5, 7))  # -- amount of cells per population/type
             matrix_pop_type.astype(int)
             for height in range(0, H_in):
@@ -242,7 +242,7 @@ def collect_cont_properties(sub_parameter_dict, parameter_list, pop_list, time_l
 
     for seed in range(0, N_in):
         for time_given in time_list:
-            time = int(time_given) * 2
+            time = int(time_given * 2)
             for height in range(0, H_in):
                 for location in range(0, len(C_in)):
                     for position in range(0, 6):
@@ -275,22 +275,21 @@ def collect_cont_properties(sub_parameter_dict, parameter_list, pop_list, time_l
             cont_param_dict['T_HET'].append(T_HET)
             cont_param_dict['C_HET'].append(C_HET)
             cont_param_dict['populations'].append(POP_NAME)
-            for p in range(0, 6):
-                for location in range(len(JSON_IN['timepoints'][time]['cells'])):
-                    for cells in range(len(JSON_IN['timepoints'][time]['cells'][location][1])):
-                        # -- Extract which cell population the cell belongs to
+            #for p in range(0, 6):
+            for location in range(len(JSON_IN['timepoints'][time]['cells'])):
+                for cells in range(len(JSON_IN['timepoints'][time]['cells'][location][1])):
+                    # -- Extract which cell population the cell belongs to
 
-                        t_info = JSON_IN['timepoints'][time]['cells'][location][1][cells][1]
-                        type_out = get_population_name(t_in=t_info)
-                        if JSON_IN['timepoints'][time]['cells'][location][1][cells][3] == p:
-                            # -- Add the continuous properties into the dictionary
-                            for j in range(len(JSON_IN['timepoints'][time]['cells'][location][1][cells][4])):
-                                parameter_select = get_property_name(j)
-                                cont_info = str(JSON_IN['timepoints'][time]['cells'][location][1][cells][4][j])
-                                param_name = f"{type_out}_{parameter_select}_S{seed_select}_T{str(time_select).replace('.', '_')}"
-                                sub_parameter_dict[param_name].append(cont_info)
-                        else:
-                            print('Validation of # of position >6')
+                    t_info = JSON_IN['timepoints'][time]['cells'][location][1][cells][1]
+                    type_out = get_population_name(t_in=t_info)
+                    #if JSON_IN['timepoints'][time]['cells'][location][1][cells][3] == p:
+                    # -- Add the continuous properties into the dictionary
+                    for j in range(len(JSON_IN['timepoints'][time]['cells'][location][1][cells][4])):
+                        parameter_select = get_property_name(j)
+                        cont_info = str(JSON_IN['timepoints'][time]['cells'][location][1][cells][4][j])
+                        param_name = f"{type_out}_{parameter_select}_S{seed_select}_T{str(time_select).replace('.', '_')}"
+                        sub_parameter_dict[param_name].append(cont_info)
+
     for seed_select in seed_list:
         for pop_select in pop_list:
             type_out = get_population_name(pop_select)
