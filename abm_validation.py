@@ -90,8 +90,6 @@ for pkl_i in pkllist:
     FILENAME_i2 = 'VIVO_HET_GRAPH_' + C_HET + '_' + T_HET + '_' + POP_NAME + '_collected'
     FILENAME2 = os.path.join(args.save_collect, FILENAME_i2)
 
-
-
     with open(FILENAME2 + '.pkl', 'rb') as d:
         count_pkl = pickle.load(d)
 
@@ -126,21 +124,13 @@ for pkl_i in pkllist:
     PARAM_COUNT = pd.DataFrame(VALIDATION)
     PKL_COUNT = count_pkl[['total_X','total_A','total_B','total_C','total_H','seed','timepoint']]
 
-    p_name = 'param_count_'+C_HET+'_'+T_HET+'.csv'
-    pkl_name = 'pkl_count_'+C_HET+'_'+T_HET+'.csv'
-
-    pfname = os.path.join(args.validation_path, p_name)
-    pklfname = os.path.join(args.validation_path, pkl_name)
-
-    PARAM_COUNT.to_csv(pfname)
-    PKL_COUNT.to_csv(pklfname)
-
     ERROR_TABLE = {}
     ERROR_TABLE['time'] = []
     ERROR_TABLE['seed'] = []
     ERROR_TABLE['population'] = []
     ERROR_TABLE['PKL'] = []
     ERROR_TABLE['PARAM'] = []
+
     for time_given in time_list:
         PKL_T = PKL_COUNT[PKL_COUNT['timepoint'] == time_given]
         PARAM_T = PARAM_COUNT[PARAM_COUNT['time'] == time_given]
@@ -160,10 +150,23 @@ for pkl_i in pkllist:
                     ERROR_TABLE['PKL'].append(PKL_VALUE)
                     ERROR_TABLE['PARAM'].append(PARAM_VALUE)
 
-    ERROR_TABLE2 = pd.DataFrame(ERROR_TABLE)
-    error_save_i = 'Error_'+C_HET+'_'+T_HET+'.csv'
-    error_save = os.path.join(args.validation_path, error_save_i)
+    #-- Saving csv Files...
+    if len(ERROR_TABLE['PKL']) != 0:
+        p_name = 'param_count_' + C_HET + '_' + T_HET + '.csv'
+        pkl_name = 'pkl_count_' + C_HET + '_' + T_HET + '.csv'
 
-    ERROR_TABLE2.to_csv(error_save)
+        pfname = os.path.join(args.validation_path, p_name)
+        pklfname = os.path.join(args.validation_path, pkl_name)
+
+        PARAM_COUNT.to_csv(pfname)
+        PKL_COUNT.to_csv(pklfname)
+
+        ERROR_TABLE2 = pd.DataFrame(ERROR_TABLE)
+        error_save_i = 'Error_'+C_HET+'_'+T_HET+'.csv'
+        error_save = os.path.join(args.validation_path, error_save_i)
+
+        ERROR_TABLE2.to_csv(error_save)
+    else:
+        print('Validated!')
 
 
