@@ -300,24 +300,36 @@ if __name__ == "__main__":
     for file in files:
         if 'TUMORS' in file:
             tumorFiles.append(file)
-    tumorsDF = pd.concat([pickle.load(open(f, "rb")) for f in tumorFiles])
+    #tumorsDF = pd.concat([pickle.load(open(f, "rb")) for f in tumorFiles])
+
+    tumorsDF=pd.DataFrame()
+    for f in tumorFiles:
+        with open(f, 'rb') as file_opened:
+            if tumorsDF.empty==True:
+                tumorsDF = pd.read_pickle(file_opened, compression=None)
+            else:
+                add_file =  pd.read_pickle(file_opened, compression=None)
+                tumorsDF = tumorsDF.append(add_file, ignore_index=True)
+
 
     # If didn't find single tumor file.
     if tumorFiles == []:
         for file in files:
             if 'BIOPSIES.pkl' in file:
-                DF = pickle.load(open(file, "rb"))
-
+                with open(file, 'rb') as d:
+                    DF = pd.read_pickle(d, compression=None)
                 tumorsDF = DF.loc[DF['BIOPSY TYPE'] == 'TUMOR']
 
     tumorsDF = tumorsDF.loc[tumorsDF['TIME'] == TIME[1]]
 
     for file in files:
         if 'NEEDLE' in file or 'PUNCH' in file:
-            biopsiesDF = pickle.load(open(file, "rb"))
+            with open(file, 'rb') as d:
+                biopsiesDF = pd.read_pickle(d, compression=None)
         if 'BIOPSIES.pkl' in file:
-            DF = pickle.load(open(file, "rb"))
-            biopsiesDF = DF.loc[DF['BIOPSY TYPE'] != 'TUMOR']
+            with open(file, 'rb') as d:
+                biopsiesDF = pd.read_pickle(d, compression=None)
+            biopsiesDF = biopsiesDF.loc[DF['BIOPSY TYPE'] != 'TUMOR']
 
         biopsiesDF = biopsiesDF.loc[tumorsDF['TIME'] == TIME[0]]
 

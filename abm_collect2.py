@@ -16,6 +16,32 @@ from argparse import ArgumentParser
 __author__ = "Isabelle Chen"
 __email__ = "isabellechen2023@u.northwestern.edu"
 
+'''
+
+Read from pkl and json and produce two pkl files for each set:
+
+1. Count pkl files:
+'seed','timepoint','T_HET','C_HET','populations',
+'total_X','total_A','total_B','total_C','total_H',
+'X_NEU', 'X_APO', 'X_QUI', 'X_MIG', 'X_PRO', 'X_SEN', 'X_NEC',
+'A_NEU', 'A_APO', 'A_QUI', 'A_MIG', 'A_PRO', 'A_SEN', 'A_NEC',
+'B_NEU', 'B_APO', 'B_QUI', 'B_MIG', 'B_PRO', 'B_SEN', 'B_NEC',
+'C_NEU', 'C_APO', 'C_QUI', 'C_MIG', 'C_PRO', 'C_SEN', 'C_NEC',
+'H_NEU', 'H_APO', 'H_QUI', 'H_MIG', 'H_PRO', 'H_SEN', 'H_NEC'
+
+    
+2. Continuous properties pkl files:
+'seed','timepoint','T_HET','C_HET','populations',
+'X_Cycle','A_Cycle','B_Cycle','C_Cycle','H_Cycle',
+'X_Volume','A_Volume','B_Volume','C_Volume','H_Volume',
+'X_NECRO_FRAC', 'X_SENES_FRAC', 'X_ENERGY_THRESHOLD', 'X_MAX_HEIGHT', 'X_ACCURACY', 'X_AFFINITY', 'X_DEATH_AGE_AVG', 'X_DIVISION_POTENTIAL', 'X_META_PREF', 'X_MIGRA_THRESHOLD',
+'A_NECRO_FRAC', 'A_SENES_FRAC', 'A_ENERGY_THRESHOLD', 'A_MAX_HEIGHT', 'A_ACCURACY', 'A_AFFINITY', 'A_DEATH_AGE_AVG', 'A_DIVISION_POTENTIAL', 'A_META_PREF', 'A_MIGRA_THRESHOLD',
+'B_NECRO_FRAC', 'B_SENES_FRAC', 'B_ENERGY_THRESHOLD', 'B_MAX_HEIGHT', 'B_ACCURACY', 'B_AFFINITY', 'B_DEATH_AGE_AVG', 'B_DIVISION_POTENTIAL', 'B_META_PREF', 'B_MIGRA_THRESHOLD',
+'C_NECRO_FRAC', 'C_SENES_FRAC', 'C_ENERGY_THRESHOLD', 'C_MAX_HEIGHT', 'C_ACCURACY', 'C_AFFINITY', 'C_DEATH_AGE_AVG', 'C_DIVISION_POTENTIAL', 'C_META_PREF', 'C_MIGRA_THRESHOLD',
+'H_NECRO_FRAC', 'H_SENES_FRAC', 'H_ENERGY_THRESHOLD', 'H_MAX_HEIGHT', 'H_ACCURACY', 'H_AFFINITY', 'H_DEATH_AGE_AVG', 'H_DIVISION_POTENTIAL', 'H_META_PREF', 'H_MIGRA_THRESHOLD'
+
+'''
+
 # -- Variable Declaration ####
 pkllist = []
 parameter_list = ['NECRO_FRAC', 'SENES_FRAC', 'E_THRES', 'MAX_HEIGHT', 'ACCURACY', 'AFFINITY', 'DEATH_AGE_AVG',

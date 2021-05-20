@@ -7,6 +7,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from argparse import ArgumentParser
 
+#pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+#pd.set_option('display.width', None)
+#pd.set_option('display.max_colwidth', -1)
+
 __author__ = "Alexis N. Prybutok"
 __email__ = "aprybutok@u.northwestern.edu"
 
@@ -64,7 +69,7 @@ def get_parser():
     # Setup argument parser.
     parser = ArgumentParser(description="Plot tumor feature data for given tumor")
     parser.add_argument(dest="file", help="Path to .pkl file")
-    parser.add_argument("--tumor", default="VIVO_HET_DAMAGE_140_140_XABC", dest="tumor",
+    parser.add_argument("--tumor", default="VIVO_HET_GRAPH_040_040_XABC", dest="tumor",
                         help='Tumor ID to plot')
     parser.add_argument("--seed", default="0", dest="seed",
                         help='Tumor seed to plot')
@@ -110,7 +115,7 @@ def plot_cell_lines(tumorDF, args):
     axCL.set_xlabel("CELL LINES")
     axCL.set_ylabel("COUNT")
     plt.xticks(xCL, lineNames)
-    plt.show()
+    #plt.show()
 
     if args.saveFigs != "":
         plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLLINES" + ".svg", bbox_inches='tight')
@@ -125,7 +130,7 @@ def plot_cell_states(tumorDF, args):
         s = stateNames[i]
         statesC.append(tumorDF[s + ' CANCER'].values[0])
         statesH.append(tumorDF[s + ' HEALTHY'].values[0])
-        stateNames.append(s)
+
 
     xS = range(0, len(statesC))
     width = 0.35
@@ -139,7 +144,7 @@ def plot_cell_states(tumorDF, args):
     axS.set_ylabel("COUNT")
     plt.xticks(xS, stateNames)
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
-    plt.show()
+    #plt.show()
 
     if args.saveFigs != "":
         plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLSTATES" + ".svg", bbox_inches='tight')
@@ -161,7 +166,7 @@ def plot_cell_cycles(tumorDF, nbins, args):
     axC.set_xlabel("AVG CELL CYCLE")
     axC.set_ylabel("FREQUENCY")
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
-    plt.show()
+    #plt.show()
 
     if args.saveFigs != "":
         plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLCYCLES" + ".svg", bbox_inches='tight')
@@ -183,7 +188,7 @@ def plot_cell_volumes(tumorDF, nbins, args):
     axV.set_xlabel("VOLUME")
     axV.set_ylabel("FREQUENCY")
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
-    plt.show()
+    #plt.show()
 
     if args.saveFigs != "":
         plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CELLVOLUMES" + ".svg", bbox_inches='tight')
@@ -206,7 +211,7 @@ def plot_crowding_tolerance(tumorDF, nbins, args):
     axCT.set_xlabel("CROWDING TOLERANCE")
     axCT.set_ylabel("FREQUENCY")
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
-    plt.show()
+    #plt.show()
 
     if args.saveFigs != "":
         plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_CROWDINGTOLERANCE" + ".svg",bbox_inches='tight')
@@ -226,7 +231,7 @@ def plot_meta_pref(tumorDF, nbins, args):
     axMP.set_xlabel("METABOLIC PREFERENCE")
     axMP.set_ylabel("FREQUENCY")
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
-    plt.show()
+    #plt.show()
 
     if args.saveFigs != "":
         plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_METAPREF" + ".svg", bbox_inches='tight')
@@ -248,7 +253,7 @@ def plot_migratory_threshold(tumorDF, nbins, args):
     axMT.set_xlabel("MIGRATORY THRESHOLD")
     axMT.set_ylabel("FREQUENCY")
     plt.legend(bbox_to_anchor=(1.3, 1), frameon=False)
-    plt.show()
+    #plt.show()
 
     if args.saveFigs != "":
         plt.savefig(args.saveFigs + "FIG_1B_" + args.tumor + "_0" + args.seed + "_DAY_" + args.time + "_MIGRATORYTHRESHOLD" + ".svg", bbox_inches='tight')
@@ -261,13 +266,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Get files
-    DF = pickle.load(open(args.file, "rb"))
+
+    with open(args.file, 'rb') as f:
+        DF = pd.read_pickle(f, compression=None)
+
     tumorDF = DF.loc[DF['BIOPSY TYPE'] == 'TUMOR']
     tumorDF = tumorDF.loc[tumorDF['TIME'] == float(args.time)]
     tumorDF = tumorDF.loc[tumorDF['TUMOR ID'] == args.tumor]
-    tumorDF = tumorDF.loc[tumorDF['SEED'] == int(args.seed)]
+    tumorDF = tumorDF.loc[tumorDF['SEED'] == float(args.seed)]
+
+
+    #-- This is the test file saved from previous run
+    #with open('/Users/cheni/Desktop/TUMOR_sample.pkl', 'rb') as f:
+    #    tumorDF = pd.read_pickle(f, compression=None)
 
     plot_params(tumorDF, args)
-
-
-

@@ -16,6 +16,10 @@ from argparse import ArgumentParser
 __author__ = "Isabelle Chen"
 __email__ = "isabellechen2023@u.northwestern.edu"
 
+'''
+Validates the pkl files from the abm_collect2 are consistent with each other.
+
+'''
 # -- Variable Declaration ####
 pkllist = []
 parameter_list = ['NECRO_FRAC', 'SENES_FRAC', 'E_THRES', 'MAX_HEIGHT', 'ACCURACY', 'AFFINITY', 'DEATH_AGE_AVG',
