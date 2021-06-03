@@ -142,6 +142,7 @@ def path_create(path_needed):
     if not os.path.exists(path_needed):
         os.mkdir(path_needed)
 # -------------- PROBABILITY CALCULATING FUNCTIONS -------------
+'''
 def sum_tumor_replicates(replicatesDF):
     sumDict = make_abm_biopsy_dict()
     sumDF = make_abm_biopsy_df()
@@ -203,7 +204,7 @@ def sum_tumor_replicates(replicatesDF):
     print(sumDF)
 
     return sumDF
-
+'''
 def compare_discrete(tumorID, seed, file, biopsyDF, tumorDF, dataDict,pop_direct,cell_state_direct):
     '''
     Use of hypergeometric test, specifically hypergeom.pmf in scipy.stats package, to
@@ -376,7 +377,7 @@ def compare(file,biopsiesDF, tumorsDF, dataDF,sample_direct):
             if tumorID != prevTumorID:
                 tumorDF = tumorsDF.loc[tumorsDF['TUMOR ID'] == tumorID]
                 tumorDF = tumorDF.reset_index(drop=True)
-                tumorDF = sum_tumor_replicates(tumorDF) # Sum tumor data
+                #tumorDF = sum_tumor_replicates(tumorDF) # Sum tumor data
                 tumorDF = tumorDF.iloc[0] # CHECK THIS
                 prevTumorID = tumorID
 
@@ -465,7 +466,7 @@ if __name__ == "__main__":
     tumorsDF = tumorsDF.loc[tumorsDF['TIME'] == TIME[1]]
 
     for file in biopsy_files:
-        if 'THICKNESS_7' in file:
+        if 'THICKNESS_5' in file:
             if 'NEEDLE' in file or 'PUNCH' in file:
                 with open(file, 'rb') as d:
                     biopsiesDF = pd.read_pickle(d, compression=None)
@@ -486,12 +487,12 @@ if __name__ == "__main__":
 
             dataDF = compare(file,biopsiesDF, tumorsDF, dataDF, sample_direct)
 
-        print('Saving PKL File...')
-        FILENAME_i = f"{file[35:-4]}_ANALYZED"
-        FILENAME = os.path.join(args.saveData, FILENAME_i)
+            print('Saving PKL File...')
+            FILENAME_i = f"{file[35:-4]}_ANALYZED"
+            FILENAME = os.path.join(args.saveData, FILENAME_i)
 
-        with open(FILENAME + '.pkl', 'wb') as f:
-            pickle.dump(dataDF, f)
+            with open(FILENAME + '.pkl', 'wb') as f:
+                pickle.dump(dataDF, f)
 
 
 
