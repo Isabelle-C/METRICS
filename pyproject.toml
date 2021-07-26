@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "abm_biopsy"
+name = "abmbiopsy"
 version = "0.1.0"
 description = "TODO add description here"
 authors = ["Isabelle Chen <isabellechen2023@u.northwestern.edu>", "Alexis N. Prybutok <aprybutok@u.northwestern.edu", "Jessica S. Yu <jesyu@uw.edu>"]
