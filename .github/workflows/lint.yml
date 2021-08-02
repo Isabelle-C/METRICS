@@ -1,24 +1,30 @@
-# Name of the workflow
 name: lint
 
-# Events that the workflow should run on
-on: [push, pull_request]
+on: [push]
 
 jobs:
   lint:
-    # Select machine
     runs-on: ubuntu-latest
 
     steps:
 
-    # First step: Checkout the repository
     - name: Checkout the repo
       uses: actions/checkout@v2
 
-    # Second step: Lint the code base
-    - name: Lint code base
-      uses: nosborn/github-action-markdown-cli@v1.1.1
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
       with:
-        files: .
-        config_file: ".github/linting/config.yml"
-        ignore_files: "README.md"
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint black
+
+    - name: Lint with pylint
+      run: |
+        python lint.py --path ./src --threshold 7.0
+
+    - name: Check with black
+      run: |
+        black --check src/ tests/
