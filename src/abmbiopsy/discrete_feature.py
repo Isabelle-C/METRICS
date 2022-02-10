@@ -2,7 +2,8 @@ class DiscreteFeature(Feature):
     """
     Representation of a discrete feature of simulated tumor or sample.
     """
-    feature_type = 'discrete'
+
+    feature_type = "discrete"
 
     def compare_feature(self, sample_df, tumors_df):
         """

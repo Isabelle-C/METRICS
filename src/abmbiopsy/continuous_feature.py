@@ -2,7 +2,8 @@ class ContinuousFeature(Feature):
     """
     Representation of a continuous feature of simulated tumor or sample.
     """
-    feature_type = 'continuous'
+
+    feature_type = "continuous"
 
     def compare_feature(self, sample_df, tumors_df):
         """
