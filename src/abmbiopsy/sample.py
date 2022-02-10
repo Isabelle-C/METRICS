@@ -28,9 +28,7 @@ class Sample:
         """
         valid_sample_shape = {"needle", "punch"}
         if sample_shape not in valid_sample_shape:
-            raise ValueError(
-                "results: sample_shape must be one of %r." % valid_sample_shape
-            )
+            raise ValueError("results: sample_shape must be one of %r." % valid_sample_shape)
 
     def select_sample_location(input_path, sample_size, sample_shape, time):
         """

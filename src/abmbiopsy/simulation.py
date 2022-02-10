@@ -2,11 +2,13 @@ class Simulation:
     """
     Container for simulated tumor object data.
     """
+
     def __init__(self):
-        '''
-        #TODO: add docstring
-        '''
+        """
+        Initialize Simulation.
+        """
         pass
+
     def load_simulation_input(input_path):
         """
         Load one simulated tumor file into memory.
@@ -40,7 +42,7 @@ class Simulation:
             Tumor simulation file in a Dataframe.
         """
         pass
-        #TODO: save? Based on run time.
+        # TODO: save? Based on run time.
         # grab data from load simulation input
 
     def make_feature_list(self):

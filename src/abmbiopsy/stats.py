@@ -22,7 +22,6 @@ class Stats:
 
         pass
 
-
     def load_sample_file(input_path):
         """
         Load parsed sample simulation into memory.
@@ -39,7 +38,6 @@ class Stats:
         """
         pass
 
-
     def load_tumor_file(input_path):
         """
         Load parsed tumor simulation into memory.
@@ -55,7 +53,6 @@ class Stats:
             Loaded tumor file.
         """
         pass
-
 
     def get_feature(feature_list):
         """
