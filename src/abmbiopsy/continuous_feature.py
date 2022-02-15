@@ -25,5 +25,5 @@ class ContinuousFeature(Feature):
         stats_result : float
             Result of statistical test.
         """
-
+        pass
         # TODO: run KS test

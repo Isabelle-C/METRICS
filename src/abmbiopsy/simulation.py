@@ -9,7 +9,7 @@ class Simulation:
         """
         pass
 
-    def load_simulation_input(input_path):
+    def load_simulation_input(self,input_path):
         """
         Load one simulated tumor file into memory.
 
@@ -25,7 +25,7 @@ class Simulation:
         """
         pass
 
-    def parse_simulation_input(output_path, loaded_simulation):
+    def parse_simulation_input(self,output_path, loaded_simulation):
         """
         Convert raw simulation data into a Dataframe.
 

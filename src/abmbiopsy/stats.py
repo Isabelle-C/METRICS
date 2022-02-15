@@ -3,7 +3,7 @@ class Stats:
     Workflow for statistical testing on features of simulated tumor sample data.
     """
 
-    def run_stats(input_sample_path, input_tumor_path, output_path, feature):
+    def run_stats(self,input_sample_path, input_tumor_path, output_path, feature):
         """
         Run workflow to perform statistical tests to compare simulation and
         sample data.
@@ -22,7 +22,7 @@ class Stats:
 
         pass
 
-    def load_sample_file(input_path):
+    def load_sample_file(self,input_path):
         """
         Load parsed sample simulation into memory.
 
@@ -38,7 +38,7 @@ class Stats:
         """
         pass
 
-    def load_tumor_file(input_path):
+    def load_tumor_file(self,input_path):
         """
         Load parsed tumor simulation into memory.
 
@@ -54,7 +54,7 @@ class Stats:
         """
         pass
 
-    def get_feature(feature_list):
+    def get_feature(self,feature_list):
         """
         Parse feature list input into lists of Feature objects.
 
@@ -72,7 +72,7 @@ class Stats:
         # TODO: determine what the code would look like and add extended description in docstring
         pass
 
-    def compare_features(sample_df, tumors_df, feature_objects):
+    def compare_features(self,sample_df, tumors_df, feature_objects):
         """
         Run statistical tests on each feature.
 
@@ -91,11 +91,11 @@ class Stats:
             Result of statistical tests.
         """
 
-        # TODO : extract the feature list from input lists
+        # TODO: extract the feature list from input lists
 
         pass
 
-    def save_features(output_path, stats_df):
+    def save_features(self,output_path, stats_df):
         """
         Save statistical test results to files.
 

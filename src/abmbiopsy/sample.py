@@ -3,7 +3,7 @@ class Sample:
     Workflow for sampling biopsies from simulated tumor data.
     """
 
-    def run_sample(input_path, sample_size, sample_shape, time, output_path):
+    def run_sample(self,input_path, sample_size, sample_shape, time, output_path):
         """
         Run workflow to extract samples from simulated tumor data.
 
@@ -21,16 +21,16 @@ class Sample:
             Radius or range of radii of sample taken.
         sample_shape : {'punch', 'needle'}
             Shape of the sample.
-        time : float or list of floatine
+        time : float or list of floats
             Time point(s) (in days) at which sample is taken.
         output_path : str
             File path for output sample data.
         """
         valid_sample_shape = {"needle", "punch"}
         if sample_shape not in valid_sample_shape:
-            raise ValueError("results: sample_shape must be one of %r." % valid_sample_shape)
+            raise ValueError(f"results: sample_shape must be one of{valid_sample_shape}.")
 
-    def select_sample_location(input_path, sample_size, sample_shape, time):
+    def select_sample_location(self,input_path, sample_size, sample_shape, time):
         """
         Get a list of sampling locations for given sample conditions.
 
@@ -54,7 +54,7 @@ class Sample:
         # TODO: edit the loc_map returns with keys and values in this dictionary. Likely tuples.
         pass
 
-    def extract_simulation_sample(loc_map):
+    def extract_simulation_sample(self,loc_map):
         """
         Extract simulated tumor data at specific sampling locations.
 
@@ -72,7 +72,7 @@ class Sample:
         """
         pass
 
-    def save_simulation_sample(output_path, sample_extract_df):
+    def save_simulation_sample(self,output_path, sample_extract_df):
         """
         Save extracted samples to files.
 
