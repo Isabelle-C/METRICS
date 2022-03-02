@@ -71,17 +71,4 @@ class Sample:
             in loc_map.
         """
         pass
-
-    def save_simulation_sample(self, output_path, sample_extract_df):
-        """
-        Save extracted samples to files.
-
-        Parameters
-        ----------
-        output_path : str
-            File path for output sample data.
-        sample_extract_df : DateFrame
-            Samples produced from extracting tumor data at locations specified
-            in loc_map.
-        """
-        pass
+        #TODO: convert with szudiki
