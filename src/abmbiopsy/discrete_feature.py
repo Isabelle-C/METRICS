@@ -1,9 +1,15 @@
+from abmbiopsy.feature import Feature
+
+
 class DiscreteFeature(Feature):
     """
-    Representation of a discrete feature of simulated tumor or sample.
+    Representation of a discrete data feature.
     """
 
     feature_type = "discrete"
+
+    def __str__(self):
+        return "DISCRETE " + super().__str__()
 
     def compare_feature(self, sample_df, tumors_df):
         """
@@ -27,5 +33,5 @@ class DiscreteFeature(Feature):
             Result of statistical test.
         """
 
-        pass
         # TODO: run hypergeometric test
+        return 0

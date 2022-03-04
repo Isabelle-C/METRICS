@@ -4,78 +4,6 @@ abmbiopsy package
 Submodules
 ----------
 
-abmbiopsy.ABM module
---------------------
-
-.. automodule:: abmbiopsy.ABM
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.abm\_biopsy module
-----------------------------
-
-.. automodule:: abmbiopsy.abm_biopsy
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.abm\_collect module
------------------------------
-
-.. automodule:: abmbiopsy.abm_collect
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.abm\_cont\_figs module
---------------------------------
-
-.. automodule:: abmbiopsy.abm_cont_figs
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.abm\_discrete\_figs module
-------------------------------------
-
-.. automodule:: abmbiopsy.abm_discrete_figs
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.abm\_group module
----------------------------
-
-.. automodule:: abmbiopsy.abm_group
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.abm\_parse module
----------------------------
-
-.. automodule:: abmbiopsy.abm_parse
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.abm\_validation module
---------------------------------
-
-.. automodule:: abmbiopsy.abm_validation
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.biopsy\_stat module
------------------------------
-
-.. automodule:: abmbiopsy.biopsy_stat
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 abmbiopsy.cli module
 --------------------
 
@@ -84,34 +12,66 @@ abmbiopsy.cli module
    :undoc-members:
    :show-inheritance:
 
-abmbiopsy.fibonacci module
+abmbiopsy.continuous\_feature module
+------------------------------------
+
+.. automodule:: abmbiopsy.continuous_feature
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+abmbiopsy.database module
+-------------------------
+
+.. automodule:: abmbiopsy.database
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+abmbiopsy.discrete\_feature module
+----------------------------------
+
+.. automodule:: abmbiopsy.discrete_feature
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+abmbiopsy.feature module
+------------------------
+
+.. automodule:: abmbiopsy.feature
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+abmbiopsy.sample module
+-----------------------
+
+.. automodule:: abmbiopsy.sample
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+abmbiopsy.simulation module
+---------------------------
+
+.. automodule:: abmbiopsy.simulation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+abmbiopsy.stats module
+----------------------
+
+.. automodule:: abmbiopsy.stats
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+abmbiopsy.workflows module
 --------------------------
 
-.. automodule:: abmbiopsy.fibonacci
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.map\_locations module
--------------------------------
-
-.. automodule:: abmbiopsy.map_locations
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.map\_samples module
------------------------------
-
-.. automodule:: abmbiopsy.map_samples
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-abmbiopsy.plot\_tumor module
-----------------------------
-
-.. automodule:: abmbiopsy.plot_tumor
+.. automodule:: abmbiopsy.workflows
    :members:
    :undoc-members:
    :show-inheritance:

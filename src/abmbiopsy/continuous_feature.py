@@ -1,9 +1,15 @@
+from abmbiopsy.feature import Feature
+
+
 class ContinuousFeature(Feature):
     """
-    Representation of a continuous feature of simulated tumor or sample.
+    Representation of a continuous data feature.
     """
 
     feature_type = "continuous"
+
+    def __str__(self):
+        return "CONTINUOUS " + super().__str__()
 
     def compare_feature(self, sample_df, tumors_df):
         """
@@ -25,5 +31,6 @@ class ContinuousFeature(Feature):
         stats_result : float
             Result of statistical test.
         """
-        pass
+
         # TODO: run KS test
+        return 0

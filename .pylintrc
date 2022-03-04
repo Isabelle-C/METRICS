@@ -4,7 +4,7 @@
 disable=too-few-public-methods
 
 # Set good names.
-good-names=i,j
+good-names=i,j,u,v,w,z,p
 
 [DESIGN]
 

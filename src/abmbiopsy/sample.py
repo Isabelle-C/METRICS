@@ -1,74 +1,46 @@
 class Sample:
     """
-    Workflow for sampling biopsies from simulated tumor data.
+    Representation of a simulated sample.
+
+    Sampling is intended to represent a clinical biopsy of a tumor. The
+    punch samples represent punch biopsies, which use a circular blade to
+    remove a tissue sample. The needle samples represent fine-needle
+    aspiration biopsies, which use a hollow needle to remove a tissue
+    sample.
+
+    Attributes
+    ----------
+    shape : {'punch', 'needle'}
+        Shape of the sample.
+    radius : int
+        Radius at which sample is taken.
     """
 
-    def run_sample(self, input_path, sample_size, sample_shape, time, output_path):
+    def __init__(self, sample_shape, sample_radius):
         """
-        Run workflow to extract samples from simulated tumor data.
-
-        Sampling is intended to represent a clinical biopsy of a tumor. The
-        punch samples represent punch biopsies, which use a circular blade to
-        remove a tissue sample. The needle samples represent fine-needle
-        aspiration biopsies, which use a hollow needle to remove a tissue
-        sample.
-
-        Parameters
-        ----------
-        input_path : str
-            File path to simulated tumor data files.
-        sample_size : int or list of int
-            Radius or range of radii of sample taken.
-        sample_shape : {'punch', 'needle'}
-            Shape of the sample.
-        time : float or list of floats
-            Time point(s) (in days) at which sample is taken.
-        output_path : str
-            File path for output sample data.
+        TODO: add docstring
         """
-        valid_sample_shape = {"needle", "punch"}
-        if sample_shape not in valid_sample_shape:
-            raise ValueError(f"results: sample_shape must be one of{valid_sample_shape}.")
+        self.shape = sample_shape
+        self.radius = sample_radius
 
-    def select_sample_location(self, input_path, sample_size, sample_shape, time):
+    def __str__(self):
+        attributes = [
+            ("shape", self.shape),
+            ("radius", self.radius),
+        ]
+
+        attribute_strings = [f"{key} = {value}" for key, value in attributes]
+        string = " | ".join(attribute_strings)
+        return f"SAMPLE [{string}]"
+
+    def sample_data(self, data):
         """
-        Get a list of sampling locations for given sample conditions.
-
-        Parameters
-        ----------
-        input_path : str
-            File path to simulated tumor data files.
-        sample_size : int or list of ints
-            Radius or range of radii of sample taken.
-        sample_shape : {'punch', 'needle'}
-            Shape of the sample.
-        time : float or list of float
-            Time point(s) (in days) at which sample is taken.
-
-        Returns
-        -------
-        loc_map : dict
-            Dictionary with the locations in the whole tumor as sample
-            simulation.
+        Extract sample from given data.
+        TODO: update docstring
         """
-        # TODO: edit the loc_map returns with keys and values in this dictionary. Likely tuples.
-        pass
+        # TODO: make list of coordinates for the given sample
 
-    def extract_simulation_sample(self, loc_map):
-        """
-        Extract simulated tumor data at specific sampling locations.
+        # TODO: filter the dataframe for coordinates that match the list of
+        # sample coordinates
 
-        Parameters
-        ----------
-        loc_map : dict
-            Dictionary with the locations in the whole tumor as sample
-            simulation.
-
-        Returns
-        -------
-        sample_extract_df : DateFrame
-            Samples produced from extracting tumor data at locations specified
-            in loc_map.
-        """
-        pass
-        #TODO: convert with szudiki
+        return data

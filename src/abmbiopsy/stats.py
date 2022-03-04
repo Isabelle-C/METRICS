@@ -1,109 +1,81 @@
+import pandas as pd
+
+from abmbiopsy.simulation import Simulation
+from abmbiopsy.sample import Sample
+from abmbiopsy.feature import Feature
+from abmbiopsy.continuous_feature import ContinuousFeature
+from abmbiopsy.discrete_feature import DiscreteFeature
+
+
 class Stats:
     """
     Workflow for statistical testing on features of simulated tumor sample data.
+    TODO: update docstring
     """
 
-    def run_stats(self, input_sample_path, input_tumor_path, output_path, feature):
+    def __init__(self, simulation_key, sample, timepoint):
         """
-        Run workflow to perform statistical tests to compare simulation and
-        sample data.
-
-        Parameters
-        ----------
-        input_sample_path : str
-            File path to sample files.
-        input_tumor_path : str
-            File path to tumor files.
-        output_path : str
-            File path for statistical analysis files.
-        feature : str or list of str
-            Features for statistical test.
+        Initialize Simulation.
+        TODO: update docstring
         """
+        self.key = simulation_key
+        self.sample = sample
+        self.timepoint = timepoint
 
-        pass
+    def __str__(self):
+        attributes = [
+            ("key", self.key),
+            ("sample", self.sample),
+            ("timepoint", self.timepoint),
+        ]
 
-    def load_sample_file(self, input_path):
+        attribute_strings = [f"{key:10} = {value}" for key, value in attributes]
+        string = "\n\t".join(attribute_strings)
+        return "STATS\n\t" + string
+
+    def calculate_feature(self, feature, data):
         """
-        Load parsed sample simulation into memory.
-
-        Parameters
-        ----------
-        input_path : str
-            File path to sample files.
-
-        Returns
-        -------
-        sample_df : DateFrame
-           Loaded sample file.
+        TODO: add docstring
         """
-        pass
+        # TODO: get instance of feature object given feature name (what method
+        # to call?)
 
-    def load_tumor_file(self, input_path):
+        # TODO: iterate through each seed, filter the data for the relevant
+        # timepoint, sample the data (what method? where to get the sample?),
+        # and create rows in the form of:
+        #  [key, seed, timepoint for the tumor, timepoint for the sample,
+        #  sample_type, sample radius, feature name, p value]
+
+        # TODO: get names of the feature columsn (what method to call?)
+
+        # TODO: return parsed data as a dataframe
+        return pd.DataFrame()
+
+    @staticmethod
+    def get_feature_object(feature_name):
         """
-        Load parsed tumor simulation into memory.
-
-        Parameters
-        ----------
-        input_path : str
-            File path to tumor files.
-
-        Returns
-        -------
-        tumors_df : DateFrame
-            Loaded tumor file.
+        TODO: add docstring
         """
-        pass
+        # TODO: return an instnace of Feature for the given feature name
+        #  - where do we get a list of Simulation features?
+        #  - what subset of those features are valid feature to calculate
+        #    statistics on?
+        #  - what should happen if the given feature name doesn't exist OR is
+        #    not valid?
+        return Feature("", "", False)
 
-    def get_feature(self, feature_list):
+    @staticmethod
+    def get_feature_list():
         """
-        Parse feature list input into lists of Feature objects.
-
-        Parameters
-        ----------
-        feature_list : list of str
-            Features for statistical test.
-
-        Returns
-        -------
-        feature_objects : list
-            List of Feature objects.
+        TODO: add docstring
         """
-        # TODO: Edit the feature_list param in docstring
-        # TODO: determine what the code would look like and add extended description in docstring
-        pass
-
-    def compare_features(self, sample_df, tumors_df, feature_objects):
-        """
-        Run statistical tests on each feature.
-
-        Parameters
-        ----------
-        sample_df : DateFrame
-            Loaded sample file
-        tumors_df : DateFrame
-            Loaded tumor file.
-        feature_objects : list
-            List of Feature objects.
-
-        Returns
-        -------
-        stats_dict : dict
-            Result of statistical tests.
-        """
-
-        # TODO: extract the feature list from input lists
-
-        pass
-
-    def save_features(self, output_path, stats_df):
-        """
-        Save statistical test results to files.
-
-        Parameters
-        ----------
-        output_path : str
-            File path for statistical analysis files.
-        stats_df : DateFrame
-            Result of statistical tests.
-        """
-        pass
+        return [
+            Feature("key", "string", False),
+            Feature("seed", "int", False),
+            Feature("tumor_time", "float", False),
+            Feature("sample_time", "float", False),
+            Feature("sample_type", "string", False),
+            Feature("sample_radius", "int", False),
+            Feature("feature", "string", False),
+            Feature("pvalue", "float", False),
+        ]

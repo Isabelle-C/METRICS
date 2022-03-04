@@ -1,7 +1,6 @@
 # Python project template repository
 
 [![Build Status](https://github.com/aprybutok/abm_biopsy/workflows/build/badge.svg)](https://github.com/aprybutok/abm_biopsy/actions?query=workflow%3Abuild)
-<!-- [![Codecov](https://img.shields.io/codecov/c/gh/jessicasyu/sandbox?token=YQTHAS0315)](https://codecov.io/gh/jessicasyu/sandbox) -->
 [![Lint Status](https://github.com/aprybutok/abm_biopsy/workflows/lint/badge.svg)](https://github.com/aprybutok/abm_biopsy/actions?query=workflow%3Alint)
 [![Documentation](https://github.com/aprybutok/abm_biopsy/workflows/documentation/badge.svg)](https://aprybutok.github.io/abm_biopsy/)
 

@@ -1,9 +1,10 @@
 class Feature:
     """
-    Representation of a simulated tumor or sample feature.
+    Representation of a data feature.
+    TODO: update docstring with attributes
     """
 
-    def __init__(self, name):
+    def __init__(self, name, dtype, is_null):
         """
         Initialize Feature with name.
 
@@ -11,23 +12,29 @@ class Feature:
         ----------
         name : str
             The name of the feature.
+
+        TODO: update docstring
         """
         self.name = name
+        self.dtype = dtype
+        self.is_null = is_null
 
-    def compare_feature(self, sample_df, tumors_df):
+    def __str__(self):
+        attributes = [
+            ("name", self.name),
+            ("dtype", self.dtype),
+            ("is_null", self.is_null),
+        ]
+
+        attribute_strings = [f"{key} = {value}" for key, value in attributes]
+        string = " | ".join(attribute_strings)
+        return f"FEATURE [{string}]"
+
+    def make_query(self):
         """
-        Calculate statistical similarity between two feature distributions.
-
-        Parameters
-        ----------
-        sample_df : DateFrame
-            Loaded sample file
-        tumors_df : DateFrame
-            Loaded tumor file.
-
-        Returns
-        -------
-        stats_result : float
-            Result of statistical test.
+        TODO: add docstring
         """
-        pass
+        # Create query that defines the SQL column for the feature:
+        #    name dtype NOT NULL (if is_null is False) OR
+        #    name dtype NULL (if is_null is True)
+        return ""
