@@ -1,28 +1,30 @@
 class Feature:
     """
     Representation of a data feature.
-    TODO: update docstring with attributes
+
+    Attributes
+    ----------
+    name :
+        The name of the feature.
+    affinity : {"NUMERIC", "INTEGER", "REAL", "TEXT", "BLOB"}
+        The SQLite3 type affinity of the feature.
+    is_null :
+        True if feature data can be null, False otherwise.
     """
 
-    def __init__(self, name, dtype, is_null):
-        """
-        Initialize Feature with name.
+    def __init__(self, name: str, affinity: str, is_null: bool):
+        valid_dtypes = ["NUMERIC", "INTEGER", "REAL", "TEXT", "BLOB"]
+        if affinity.upper() not in valid_dtypes:
+            raise TypeError(f"Data type must be one of {valid_dtypes}")
 
-        Parameters
-        ----------
-        name : str
-            The name of the feature.
-
-        TODO: update docstring
-        """
         self.name = name
-        self.dtype = dtype
+        self.affinity = affinity
         self.is_null = is_null
 
-    def __str__(self):
+    def __str__(self) -> str:
         attributes = [
             ("name", self.name),
-            ("dtype", self.dtype),
+            ("affinity", self.affinity),
             ("is_null", self.is_null),
         ]
 
@@ -30,11 +32,20 @@ class Feature:
         string = " | ".join(attribute_strings)
         return f"FEATURE [{string}]"
 
-    def make_query(self):
+    def make_query(self) -> str:
         """
-        TODO: add docstring
+        Make SQLite3 CREATE TABLE query column definition.
+
+        Column definition is ``(name AFFINITY)`` if the feature can be null.
+        Column definition is ``(name AFFINITY NOT NULL)`` if the feature can not be null.
+
+        Returns
+        -------
+        str
+            SQLite3 column definition.
         """
-        # Create query that defines the SQL column for the feature:
-        #    name dtype NOT NULL (if is_null is False) OR
-        #    name dtype NULL (if is_null is True)
-        return ""
+        if self.is_null:
+            whether_null = ""
+        else:
+            whether_null = "NOT NULL"
+        return f"{self.name} {self.affinity} {whether_null}"

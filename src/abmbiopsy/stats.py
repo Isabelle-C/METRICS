@@ -1,10 +1,6 @@
 import pandas as pd
 
-from abmbiopsy.simulation import Simulation
-from abmbiopsy.sample import Sample
 from abmbiopsy.feature import Feature
-from abmbiopsy.continuous_feature import ContinuousFeature
-from abmbiopsy.discrete_feature import DiscreteFeature
 
 
 class Stats:
@@ -22,7 +18,7 @@ class Stats:
         self.sample = sample
         self.timepoint = timepoint
 
-    def __str__(self):
+    def __str__(self) -> str:
         attributes = [
             ("key", self.key),
             ("sample", self.sample),
@@ -65,17 +61,22 @@ class Stats:
         return Feature("", "", False)
 
     @staticmethod
-    def get_feature_list():
+    def get_feature_list() -> list:
         """
-        TODO: add docstring
+        Return a list of valid Feature objects.
+
+        Returns
+        -------
+        list
+           List of Feature objects.
         """
         return [
-            Feature("key", "string", False),
-            Feature("seed", "int", False),
-            Feature("tumor_time", "float", False),
-            Feature("sample_time", "float", False),
-            Feature("sample_type", "string", False),
-            Feature("sample_radius", "int", False),
-            Feature("feature", "string", False),
-            Feature("pvalue", "float", False),
+            Feature("key", "TEXT", False),
+            Feature("seed", "INTEGER", False),
+            Feature("tumor_time", "REAL", False),
+            Feature("sample_time", "REAL", False),
+            Feature("sample_type", "TEXT", False),
+            Feature("sample_radius", "INTEGER", False),
+            Feature("feature", "TEXT", False),
+            Feature("pvalue", "REAL", False),
         ]

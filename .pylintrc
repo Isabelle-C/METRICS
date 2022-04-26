@@ -1,7 +1,7 @@
 [MESSAGES CONTROL]
 
 # Disable specific messages
-disable=too-few-public-methods
+disable=too-few-public-methods,missing-module-docstring,fixme
 
 # Set good names.
 good-names=i,j,u,v,w,z,p

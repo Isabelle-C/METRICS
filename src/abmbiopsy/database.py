@@ -1,70 +1,158 @@
-import sqlite3
+from typing import Union
+
 import pandas as pd
+import sqlite3
+
+from abmbiopsy.simulation import Simulation
+from abmbiopsy.stats import Stats
 
 
 class Database:
     """
-    TODO: add docstring
+    Wrapper for interacting with SQLite3 database.
+
+    Attributes
+    ----------
+    file :
+        Database file name.
     """
 
-    def __init__(self, database_file):
-        """
-        TODO: add docstring
-        """
+    def __init__(self, database_file: str):
+        if database_file == ":memory:":
+            raise AttributeError("Cannot use in-memory database.")
+
+        if ".db" not in database_file:
+            raise AttributeError("Input should be a database file with .db extension.")
+
+        if " " in database_file:
+            raise AttributeError("Cannot have space in database name.")
+
         self.file = database_file
 
-    def __str__(self):
+    def __str__(self) -> str:
         attributes = [("file", self.file)]
 
         attribute_strings = [f"{key:10} = {value}" for key, value in attributes]
         string = "\n\t".join(attribute_strings)
         return "DATABASE\n\t" + string
 
-    def get_connection(self):
+    def get_connection(self) -> sqlite3.Connection:
         """
-        TODO: add docstring
-        """
-        # TODO: connect to database and return connection
-        return None
+        Obtains connection to a SQLite database.
 
-    def create_table(self, table, simulation):
+        Returns
+        -------
+        connection :
+            Connection to the database file.
         """
-        TODO: add docstring
-        """
-        # TODO: connect to table, create table, and close connection (what
-        # method is useful here?)
+        connection = sqlite3.connect(self.file, uri=True)
+        return connection
 
-    def add_dataframe(self, table, dataframe):
+    def create_table(self, table_name: str, table_spec: Union[Simulation, Stats]) -> None:
         """
-        TODO: add docstring
-        """
-        # TODO: connect to table, check if table exists (create if not), add
-        # dataframe to the table (check if data already exists!), and close
-        # connection
+        Creates table in connected database.
 
-    def load_dataframe(self, table, key):
+        Parameters
+        ----------
+        table_name :
+            The name of the table.
+        table_spec :
+            Object specifying the table columns (Simulation or Stats object).
         """
-        TODO: add docstring
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        query = Database.make_create_table_query(table_name, table_spec)
+
+        cursor.execute(query)
+        connection.commit()
+        connection.close()
+
+    def add_dataframe(self, table_name: str, dataframe: pd.DataFrame) -> None:
         """
-        # TODO: connect to table, get data for the specific simulation key as a
-        # dataframe, and close connection (what method is useful here?)
-        return pd.DataFrame()
+        Adds data into specified table.
+
+        If table exists, then data is appended to the existing table.
+
+        Parameters
+        ----------
+        table_name :
+            The name of the table.
+        dataframe :
+            Data to add to table.
+        """
+        connection = self.get_connection()
+
+        dataframe.to_sql(name=table_name, con=connection, if_exists="append", index=False)
+
+        connection.commit()
+        connection.close()
+
+    def load_dataframe(self, table_name: str, key: str) -> pd.DataFrame:
+        """
+        Load data for specified simulation key.
+
+        Parameters
+        ----------
+        table_name :
+            The name of the table.
+        key :
+            Simulation key.
+
+        Returns
+        -------
+        pd.DataFrame :
+            Selected data from the SQLite table.
+        """
+        connection = self.get_connection()
+        query = self.make_select_from_query(table_name, key)
+        data = pd.read_sql_query(sql=query, con=connection)
+
+        connection.commit()
+        connection.close()
+        return data
 
     @staticmethod
-    def make_create_table_query(table):
+    def make_create_table_query(table_name: str, table_spec: Union[Simulation, Stats]) -> str:
         """
-        TODO: add docstring
+        Return query string that creates the SQLite table.
+
+        Parameters
+        ----------
+        table_name :
+            The name of the table.
+        table_spec :
+            Object specifying the table columns (Simulation or Stats object).
+
+        Returns
+        -------
+        str :
+            Query string for creating table.
         """
-        # TODO: return query string that creates table (if it doesn't exist)
-        # from the feature list of the given table type (what methods from
-        # Feature are useful here?)
-        return ""
+        feature_list = table_spec.get_feature_list()
+
+        table_columns = []
+        for feature in feature_list:
+            table_columns.append(feature.make_query())
+
+        query = f"CREATE TABLE IF NOT EXIST {table_name} ({','.join(table_columns)});"
+        return query
 
     @staticmethod
-    def make_select_from_query(table, key):
+    def make_select_from_query(table_name: str, key: str) -> str:
         """
-        TODO: add docstring
+        Return query string that selects rows with the specified key.
+
+        Parameters
+        ----------
+        table_name :
+            The name of the table.
+        key :
+            Simulation key.
+
+        Returns
+        -------
+        str :
+            Query string for selecting from database table.
         """
-        # TODO: return query string that selects items matching the key from
-        # the given table
-        return ""
+        query = f"SELECT * FROM {table_name} WHERE key= '{key}';"
+        return query

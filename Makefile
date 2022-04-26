@@ -20,7 +20,5 @@ build: # run tox tests and lint
 	tox
 
 docs: # generates documentation
-	rm -f docs/sandbox.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ src/ **/tests/
+	sphinx-apidoc -o docs/ -f -M -e src/* **/tests/
 	make -C docs html

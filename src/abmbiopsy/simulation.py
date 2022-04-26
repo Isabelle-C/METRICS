@@ -1,8 +1,8 @@
 import pandas as pd
 
-from abmbiopsy.feature import Feature
 from abmbiopsy.continuous_feature import ContinuousFeature
 from abmbiopsy.discrete_feature import DiscreteFeature
+from abmbiopsy.feature import Feature
 
 
 class Simulation:
@@ -11,7 +11,7 @@ class Simulation:
     TODO: update docstring with attributes
     """
 
-    def __init__(self, simulation_file):
+    def __init__(self, simulation_file: str):
         """
         Initialize Simulation.
         TODO: update docstring
@@ -20,7 +20,7 @@ class Simulation:
         self.parse_file()
         self.parse_config()
 
-    def __str__(self):
+    def __str__(self) -> str:
         attributes = [
             ("file", self.file),
             ("path", self.path),
@@ -98,32 +98,30 @@ class Simulation:
         return 0
 
     @staticmethod
-    def get_feature_list():
+    def get_feature_list() -> list:
         """
-        Return the list of valid features
+        Return a list of valid Feature objects.
 
         Returns
         -------
-        feature_list : list
-           List of valid features that can be extracted.
-
-        TODO: update docstring
+        list
+           List of Feature objects.
         """
         return [
-            Feature("key", "string", False),
-            Feature("seed", "int", False),
-            Feature("time", "float", False),
-            Feature("coordinate", "int", False),
-            Feature("u", "int", False),
-            Feature("v", "int", False),
-            Feature("w", "int", False),
-            Feature("z", "int", False),
-            Feature("p", "int", False),
-            DiscreteFeature("population", "int", False),
-            DiscreteFeature("state", "int", False),
-            ContinuousFeature("volume", "float", False),
-            ContinuousFeature("cycle", "float", True),
-            ContinuousFeature("max_height", "float", False),
-            ContinuousFeature("meta_pref", "float", False),
-            ContinuousFeature("migra_threshold", "float", False),
+            Feature("key", "TEXT", False),
+            Feature("seed", "INTEGER", False),
+            Feature("time", "REAL", False),
+            Feature("coordinate", "INTEGER", False),
+            Feature("u", "INTEGER", False),
+            Feature("v", "INTEGER", False),
+            Feature("w", "INTEGER", False),
+            Feature("z", "INTEGER", False),
+            Feature("p", "INTEGER", False),
+            DiscreteFeature("population", "REAL", False),
+            DiscreteFeature("state", "INTEGER", False),
+            ContinuousFeature("volume", "REAL", False),
+            ContinuousFeature("cycle", "REAL", True),
+            ContinuousFeature("max_height", "REAL", False),
+            ContinuousFeature("meta_pref", "REAL", False),
+            ContinuousFeature("migra_threshold", "REAL", False),
         ]
