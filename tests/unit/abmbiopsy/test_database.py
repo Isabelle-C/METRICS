@@ -1,7 +1,8 @@
-import pandas as pd
-import sqlite3
 import unittest
 from unittest import mock
+
+import pandas as pd
+import sqlite3
 
 from abmbiopsy.database import Database
 from abmbiopsy.feature import Feature

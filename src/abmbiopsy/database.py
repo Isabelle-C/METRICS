@@ -1,7 +1,7 @@
 from typing import Union
 
-import pandas as pd
 import sqlite3
+import pandas as pd
 
 from abmbiopsy.simulation import Simulation
 from abmbiopsy.stats import Stats
