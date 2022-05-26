@@ -93,6 +93,22 @@ class TestSimulation(unittest.TestCase):
         json_mock.load.assert_called_with(open_mock())
         self.assertDictEqual(simulation_contents, loaded_simulation)
 
+    def test_get_szudzik_pair_returns_correct_pairing_number(self):
+        tests = [
+            (0, 0, 0),
+            (1, 1, 4),
+            (2, 1, 11),
+            (2, 3, 20),
+            (3, 2, 23),
+            (-5, 4, 49),
+            (5, -4, 58.5),
+            (-6, -3, 68.5),
+        ]
+        for u_given, v_given, expected in tests:
+            with self.subTest(u_given=u_given, v_given=v_given):
+                found = Simulation.get_szudzik_pair(u_given, v_given)
+                self.assertEqual(found, expected)
+
     def test_get_feature_list_returns_list(self):
         output = Simulation.get_feature_list()
         self.assertIsInstance(output, list)

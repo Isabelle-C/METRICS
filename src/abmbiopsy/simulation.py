@@ -119,21 +119,49 @@ class Simulation:
         return pd.DataFrame()
 
     @staticmethod
-    def get_szudzik_pair(u: float, v: float) -> float:
+    def get_szudzik_pair(u: int, v: int) -> float:
         """
-        TODO: add docstring
+        Convert positions with positive or negative UV coordinates into a coordinate ID with
+        signed Szudzik pairing function.
+
+        A pairing function on a set associates each pair of numbers with a unique number through
+        mathematical functions.
+
+        Parameters
+        ----------
+        u :
+            U coordinate of the position.
+        v :
+            V coordinate of the position.
+
+        Returns
+        -------
+        float :
+            The unique ID of the position coordinate.
         """
-        # TODO calculate szudzik pairing function for given signed values
-        return 0.0
+        if u >= 0:
+            new_u = 2 * u
+        else:
+            new_u = (-2 * u) - 1
+
+        if v >= 0:
+            new_v = 2 * v
+        else:
+            new_v = (-2 * v) - 1
+
+        if new_u >= new_v:
+            return (new_u**2 + new_u + new_v) * 0.5
+        else:
+            return (new_v**2 + new_u) * 0.5
 
     @staticmethod
-    def get_feature_list() -> list:
+    def get_feature_list() -> List[Feature]:
         """
         Return a list of valid Feature objects.
 
         Returns
         -------
-        list :
+        List[Feature] :
            List of Feature objects.
         """
         return [
