@@ -4,6 +4,7 @@ import ntpath
 import json
 
 import pandas as pd
+import numpy as np
 
 from abmbiopsy.continuous_feature import ContinuousFeature
 from abmbiopsy.discrete_feature import DiscreteFeature
@@ -70,7 +71,7 @@ class Simulation:
             Loaded simulation file.
         """
         file_name = f"{self.path}/{self.key}_{self.seed:02}{suffix}{self.extension}"
-        with open(file_name, "r") as json_file:
+        with open(file_name, "r", encoding="utf-8") as json_file:
             loaded_simulation = json.load(json_file)
         return loaded_simulation
 
@@ -94,26 +95,73 @@ class Simulation:
         self.max_radius = loaded_simulation["config"]["size"]["radius"]
         self.seed = loaded_simulation["seed"]
 
-    def parse_timepoint(self, timepoint: list) -> pd.DataFrame:
+    def parse_timepoint(self, timepoint: float) -> pd.DataFrame:
         """
-        TODO: add docstring
+        Parse data from simulation.
+
+        Parameters
+        ----------
+        timepoint :
+            Time point to parse simulation.
+
+        Returns
+        -------
+        :
+            Dataframe with simulation data.
         """
-        # TODO: get the index of the timepoint
 
-        # TODO: load in the simulation jsons for the main file and the .PARAM
-        # file (what method to call? what specific parameter is helpful here?)
+        loaded_simulation = self.load_simulation()
+        loaded_param_simulation = self.load_simulation(suffix=".PARAM")
 
-        # TODO: get the specified timepoint from the loaded json dictionaries
+        if timepoint not in self.timepoints:
+            raise ValueError("The timepoint not included in simulation file.")
 
-        # TODO: iterate through all the locations and cells in the timepoint to
-        # parse out rows in the form of:
-        #  [key, seed, timepoint, szudzik coordinate, u, v, w, z, position,
-        #  population, state, volume, cycle, max_height, meta_pref, migra_threshold ]
+        time_index = self.timepoints.index(timepoint)
 
-        # TODO: get names of the feature columsn (what method to call?)
+        parsed_data = []
+        sim_timepoint = loaded_simulation["timepoints"][time_index]["cells"]
+        param_timepoint = loaded_param_simulation["timepoints"][time_index]["cells"]
 
-        # TODO: return parsed data as a dataframe
-        return pd.DataFrame()
+        for (location, cells), (_, param_cells) in zip(sim_timepoint, param_timepoint):
+            u = int(location[0])
+            v = int(location[1])
+            w = int(location[2])
+            z = int(location[3])
+            szudzik_coordinate = self.get_szudzik_pair(u, v)
+
+            for cell, param_cell in zip(cells, param_cells):
+                population = cell[1]
+                state = cell[2]
+                position = cell[3]
+                volume = np.round(cell[4])
+                cycle = np.round(np.mean(cell[5]))
+                max_height = param_cell[5][3]
+                meta_pref = param_cell[5][8]
+                migra_threshold = param_cell[5][9]
+
+                data_list = [
+                    self.key,
+                    self.seed,
+                    timepoint,
+                    szudzik_coordinate,
+                    u,
+                    v,
+                    w,
+                    z,
+                    position,
+                    population,
+                    state,
+                    volume,
+                    cycle,
+                    max_height,
+                    meta_pref,
+                    migra_threshold,
+                ]
+
+                parsed_data.append(data_list)
+
+        columns = [feature.name for feature in self.get_feature_list()]
+        return pd.DataFrame(parsed_data, columns=columns)
 
     @staticmethod
     def get_szudzik_pair(u: int, v: int) -> float:
