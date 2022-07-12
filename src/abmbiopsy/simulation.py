@@ -205,7 +205,7 @@ class Simulation:
     def get_feature_list() -> List[Feature]:
         """
         Return a list of valid Feature objects.
-        
+
         Returns
         -------
         List[Feature] :
