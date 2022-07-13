@@ -14,6 +14,7 @@ from abmbiopsy.feature import Feature
 class Simulation:
     """
     Container for simulated tumor object data.
+
     Attributes
     ----------
     file : str
@@ -61,10 +62,12 @@ class Simulation:
     def load_simulation(self, suffix: str = "") -> dict:
         """
         Load simulation file into memory.
+
         Parameters
         ----------
         suffix :
             Suffix of the file.
+
         Returns
         -------
         dict :
@@ -170,12 +173,14 @@ class Simulation:
         signed Szudzik pairing function.
         A pairing function on a set associates each pair of numbers with a unique number through
         mathematical functions.
+
         Parameters
         ----------
         u :
             U coordinate of the position.
         v :
             V coordinate of the position.
+
         Returns
         -------
         float :
@@ -200,6 +205,7 @@ class Simulation:
     def get_feature_list() -> List[Feature]:
         """
         Return a list of valid Feature objects.
+
         Returns
         -------
         List[Feature] :
