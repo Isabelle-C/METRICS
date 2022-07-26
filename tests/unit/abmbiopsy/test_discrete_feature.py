@@ -38,7 +38,7 @@ class TestDiscreteFeature(unittest.TestCase):
 
         returned_nan = discrete_feature.compare_feature(sample_dataframe, tumor_dataframe)
 
-        self.assertEqual(True, math.isnan(returned_nan))
+        self.assertTrue(math.isnan(returned_nan))
 
     def test_compare_feature_feature_not_in_tumor_returns_nan(self):
         feature_name = "feature_name"
@@ -52,7 +52,7 @@ class TestDiscreteFeature(unittest.TestCase):
 
         returned_nan = discrete_feature.compare_feature(sample_dataframe, tumor_dataframe)
 
-        self.assertEqual(True, math.isnan(returned_nan))
+        self.assertTrue(math.isnan(returned_nan))
 
 
 if __name__ == "__main__":
