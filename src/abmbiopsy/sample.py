@@ -16,10 +16,7 @@ class Sample:
         Radius at which sample is taken.
     """
 
-    def __init__(self, sample_shape, sample_radius):
-        """
-        TODO: add docstring
-        """
+    def __init__(self, sample_shape: str, sample_radius: int):
         self.shape = sample_shape
         self.radius = sample_radius
 
@@ -32,6 +29,25 @@ class Sample:
         attribute_strings = [f"{key} = {value}" for key, value in attributes]
         string = " | ".join(attribute_strings)
         return f"SAMPLE [{string}]"
+
+    def select_punch_sample_locations(self) -> list:
+        """
+        Get a list of punch sampling locations.
+
+        Returns
+        -------
+        :
+            Coordinates for punch sample locations.
+        """
+
+        punch_locations = [
+            (u, v, w)
+            for u in range(-self.radius + 1, self.radius)
+            for v in range(-self.radius + 1, self.radius)
+            for w in range(-self.radius + 1, self.radius)
+            if (u + v + w) == 0 and (abs(u - 0) + abs(v - 0) + abs(w - 0)) / 2 <= self.radius
+        ]
+        return punch_locations
 
     def sample_data(self, data):
         """
