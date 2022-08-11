@@ -42,7 +42,7 @@ class Database:
 
         Returns
         -------
-        connection :
+        :
             Connection to the database file.
         """
         connection = sqlite3.connect(self.file, uri=True)
@@ -100,7 +100,7 @@ class Database:
 
         Returns
         -------
-        pd.DataFrame :
+        :
             Selected data from the SQLite table.
         """
         connection = self.get_connection()
@@ -125,7 +125,7 @@ class Database:
 
         Returns
         -------
-        str :
+        :
             Query string for creating table.
         """
         feature_list = table_spec.get_feature_list()
@@ -151,7 +151,7 @@ class Database:
 
         Returns
         -------
-        str :
+        :
             Query string for selecting from database table.
         """
         query = f"SELECT * FROM {table_name} WHERE key= '{key}';"

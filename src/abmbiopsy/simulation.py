@@ -70,7 +70,7 @@ class Simulation:
 
         Returns
         -------
-        dict :
+        :
             Loaded simulation file.
         """
         file_name = f"{self.path}/{self.key}_{self.seed:02}{suffix}{self.extension}"
@@ -183,7 +183,7 @@ class Simulation:
 
         Returns
         -------
-        float :
+        :
             The unique ID of the position coordinate.
         """
         if u >= 0:
@@ -208,7 +208,7 @@ class Simulation:
 
         Returns
         -------
-        List[Feature] :
+        :
            List of Feature objects.
         """
         return [

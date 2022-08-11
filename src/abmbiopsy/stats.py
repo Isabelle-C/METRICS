@@ -67,7 +67,7 @@ class Stats:
 
         Returns
         -------
-        list
+        :
            List of Feature objects.
         """
         return [

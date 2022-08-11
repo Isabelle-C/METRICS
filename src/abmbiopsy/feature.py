@@ -41,7 +41,7 @@ class Feature:
 
         Returns
         -------
-        str
+        :
             SQLite3 column definition.
         """
         if self.is_null:

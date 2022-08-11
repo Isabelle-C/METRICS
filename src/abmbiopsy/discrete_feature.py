@@ -50,7 +50,7 @@ class DiscreteFeature(Feature):
 
         Returns
         -------
-        float
+        :
             Result of statistical test.
         """
         if self.name not in tumors_dataframe.columns or self.name not in sample_dataframe.columns:
