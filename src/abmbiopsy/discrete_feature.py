@@ -1,5 +1,7 @@
+from typing import Dict, List
 import pandas as pd
 from scipy.stats import hypergeom
+
 
 from abmbiopsy.feature import Feature
 
@@ -16,23 +18,23 @@ class DiscreteFeature(Feature):
         The SQLite3 type affinity of the feature.
     is_null :
         True if feature data can be null, False otherwise.
-    category :
-        Category of the feature.
+    categories :
+        Categories of the feature.
     """
 
     feature_type = "discrete"
     """string: Type of the feature."""
 
-    def __init__(self, name: str, affinity: str, is_null: bool, category: str):
+    def __init__(self, name: str, affinity: str, is_null: bool, categories: List[str]):
         super().__init__(name, affinity, is_null)
-        self.category = category
+        self.categories = categories
 
     def __str__(self) -> str:
         return "DISCRETE " + super().__str__()
 
     def compare_feature(
         self, sample_dataframe: pd.DataFrame, tumors_dataframe: pd.DataFrame
-    ) -> float:
+    ) -> Dict[str, float]:
         """
         Uses statistical tests to compare discrete features.
 
@@ -51,14 +53,18 @@ class DiscreteFeature(Feature):
         Returns
         -------
         :
-            Result of statistical test.
+            Result of statistical tests that are keyed by the category.
         """
+        hypergeom_pmfs = {}
         if self.name not in tumors_dataframe.columns or self.name not in sample_dataframe.columns:
-            return float("nan")
+            hypergeom_pmfs = {category: float("nan") for category in self.categories}
+            return hypergeom_pmfs
 
-        k = list(sample_dataframe[self.name]).count(self.category)
         M = len(tumors_dataframe)
-        n = list(tumors_dataframe[self.name]).count(self.category)
         N = len(sample_dataframe)
+        for category in self.categories:
+            k = list(sample_dataframe[self.name]).count(category)
+            n = list(tumors_dataframe[self.name]).count(category)
+            hypergeom_pmfs[category] = hypergeom.pmf(k, M, n, N)
 
-        return hypergeom.pmf(k, M, n, N)
+        return hypergeom_pmfs
