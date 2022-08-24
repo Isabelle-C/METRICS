@@ -1,3 +1,6 @@
+from typing import List
+
+
 class Sample:
     """
     Representation of a simulated sample.
@@ -20,7 +23,7 @@ class Sample:
         self.shape = sample_shape
         self.radius = sample_radius
 
-    def __str__(self):
+    def __str__(self) -> str:
         attributes = [
             ("shape", self.shape),
             ("radius", self.radius),
@@ -48,6 +51,33 @@ class Sample:
             if (u + v + w) == 0 and (abs(u - 0) + abs(v - 0) + abs(w - 0)) / 2 <= self.radius
         ]
         return punch_locations
+
+    def select_needle_sample_location(self, width: int) -> List[tuple]:
+        """
+        Get a list of needle sampling locations.
+
+        Parameters
+        ----------
+        width : int
+            Width of the sample.
+
+        Returns
+        -------
+        :
+            Coordinates for needle sample locations.
+        """
+        if (width % 2) == 0:
+            raise ValueError("Width has to be an even number.")
+
+        half_width = (width + 1) / 2
+
+        return [
+            (u, v, w)
+            for u in range(-self.radius + 1, self.radius)
+            for v in range(-self.radius + 1, self.radius)
+            for w in range(-self.radius + 1, self.radius)
+            if (u + v + w) == 0 and abs(u) < half_width and v <= 0 and w >= 0
+        ]
 
     def sample_data(self, data):
         """
