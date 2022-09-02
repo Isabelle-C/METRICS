@@ -86,6 +86,7 @@ class Simulation:
         base = ntpath.basename(self.file)
         remove_extension = path.splitext(base)[0]
         remove_suffix = path.splitext(remove_extension)[0]
+        self.seed = int(remove_suffix[-2:])
         self.extension = path.splitext(base)[1]
         self.key = remove_suffix[:-3]
 
@@ -96,7 +97,6 @@ class Simulation:
         loaded_simulation = self.load_simulation()
         self.timepoints = [tp["time"] for tp in loaded_simulation["timepoints"]]
         self.max_radius = loaded_simulation["config"]["size"]["radius"]
-        self.seed = loaded_simulation["seed"]
 
     def parse_timepoint(self, timepoint: float) -> pd.DataFrame:
         """
@@ -138,9 +138,9 @@ class Simulation:
                 position = cell[3]
                 volume = np.round(cell[4])
                 cycle = np.round(np.mean(cell[5]))
-                max_height = param_cell[5][3]
-                meta_pref = param_cell[5][8]
-                migra_threshold = param_cell[5][9]
+                max_height = param_cell[4][3]
+                meta_pref = param_cell[4][8]
+                migra_threshold = param_cell[4][9]
 
                 data_list = [
                     self.key,

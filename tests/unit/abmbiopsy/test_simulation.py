@@ -150,7 +150,7 @@ class TestSimulation(unittest.TestCase):
             "timepoints": [
                 {
                     "time": time,
-                    "cells": [[cell_location, [[0, 4, 6, 0, 250, param_values]]]],
+                    "cells": [[cell_location, [[0, 4, 6, 0, param_values]]]],
                 }
             ],
         }
@@ -231,8 +231,8 @@ class TestSimulation(unittest.TestCase):
                 {
                     "time": time,
                     "cells": [
-                        [cell_locations[0], [[1, 0, 0, 1, 3200, cell_0_param_values]]],
-                        [cell_locations[1], [[1, 3, 1, 2, 3000, cell_1_param_values]]],
+                        [cell_locations[0], [[1, 0, 0, 1, cell_0_param_values]]],
+                        [cell_locations[1], [[1, 3, 1, 2, cell_1_param_values]]],
                     ],
                 }
             ],
@@ -321,8 +321,8 @@ class TestSimulation(unittest.TestCase):
                         [
                             [-3, 2, -1, 2],
                             [
-                                [0, 1, 3, 4, 3001, cell_0_param_values],
-                                [4, 0, 1, 0, 2500, cell_1_param_values],
+                                [0, 1, 3, 4, cell_0_param_values],
+                                [4, 0, 1, 0, cell_1_param_values],
                             ],
                         ]
                     ],
