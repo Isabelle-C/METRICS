@@ -1,5 +1,9 @@
 from typing import List
 
+import pandas as pd
+
+from abmbiopsy.simulation import Simulation
+
 
 class Sample:
     """
@@ -79,14 +83,25 @@ class Sample:
             if (u + v + w) == 0 and abs(u) < half_width and v <= 0 and w >= 0
         ]
 
-    def sample_data(self, data):
+    def sample_data(self, coordinates: List[tuple], data: pd.DataFrame) -> pd.DataFrame:
         """
         Extract sample from given data.
-        TODO: update docstring
+
+        Parameters
+        ----------
+        coordinates :
+            Sample coordinates.
+        data :
+            Simulation data.
+
+        Returns
+        -------
+        :
+            Extracted sample data.
         """
-        # TODO: make list of coordinates for the given sample
+        szudzik_coordinates = [Simulation.get_szudzik_pair(u, v) for u, v, _ in coordinates]
 
-        # TODO: filter the dataframe for coordinates that match the list of
-        # sample coordinates
+        sample_data = data[data["coordinate"].isin(szudzik_coordinates)]
+        sample_data = sample_data.reset_index(drop=True)
 
-        return data
+        return sample_data
