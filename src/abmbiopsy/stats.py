@@ -1,6 +1,11 @@
+from typing import List
+
 import pandas as pd
 
+from abmbiopsy.continuous_feature import ContinuousFeature
+from abmbiopsy.discrete_feature import DiscreteFeature
 from abmbiopsy.feature import Feature
+from abmbiopsy.simulation import Simulation
 
 
 class Stats:
@@ -48,20 +53,32 @@ class Stats:
         return pd.DataFrame()
 
     @staticmethod
-    def get_feature_object(feature_name):
+    def get_feature_object(feature_name: str) -> Feature:
         """
-        TODO: add docstring
+        Return feature object valid for statistics calculation.
+
+        Parameters
+        ----------
+        feature_name :
+            Name of feature.
+
+        Returns
+        -------
+        :
+            Feature object.
         """
-        # TODO: return an instnace of Feature for the given feature name
-        #  - where do we get a list of Simulation features?
-        #  - what subset of those features are valid feature to calculate
-        #    statistics on?
-        #  - what should happen if the given feature name doesn't exist OR is
-        #    not valid?
-        return Feature("", "", False)
+        feature_list = Simulation.get_feature_list()
+
+        for feature in feature_list:
+            if feature.name == feature_name:
+                if isinstance(feature, ContinuousFeature) or isinstance(feature, DiscreteFeature):
+                    return feature
+                else:
+                    raise ValueError("Feature is not valid for statistics calculation.")
+        raise ValueError("Feature does not exist.")
 
     @staticmethod
-    def get_feature_list() -> list:
+    def get_feature_list() -> List[Feature]:
         """
         Return a list of valid Feature objects.
 
