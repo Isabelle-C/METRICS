@@ -16,10 +16,11 @@ as well as GitHub Actions to automatically build, test, lint, and generate docum
 ## Getting started
 
 1. Clone the repo.
-2. Initialize the repository with Poetry by running:
+
+2. Activate the environment.
 
 ```bash
-$ poetry init
+$ poetry shell
 ```
 
 3. Install dependencies.
@@ -28,13 +29,7 @@ $ poetry init
 $ poetry install
 ```
 
-4. Activate the environment.
-
-```bash
-$ poetry shell
-```
-
-5. Run the CLI.
+4. Run the CLI.
 
 ```bash
 $ python src/sandbox/cli.py 10
