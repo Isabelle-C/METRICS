@@ -18,12 +18,20 @@ class SampleNeedle(Sample):
         Width of the sample.
     """
 
-    sample_shape = "needle"
-    """string: Shape of the sample."""
-
     def __init__(self, simulation_radius: int, sample_width: int):
         self.simulation_radius = simulation_radius
         self.sample_width = sample_width
+
+    def get_sample_key(self) -> str:
+        """
+        Get key that describes sample method.
+
+        Returns
+        -------
+        :
+            Sample key which includes sampling method, simulation radius, and sample width.
+        """
+        return f"needle-R{self.simulation_radius}-W{self.sample_width}"
 
     def select_sample_locations(self) -> List[tuple]:
         """

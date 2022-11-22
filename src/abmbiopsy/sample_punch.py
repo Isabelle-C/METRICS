@@ -16,11 +16,19 @@ class SamplePunch(Sample):
         Radius at which sample is taken.
     """
 
-    sample_shape = "punch"
-    """string: Shape of the sample."""
-
     def __init__(self, sample_radius: int):
         self.sample_radius = sample_radius
+
+    def get_sample_key(self) -> str:
+        """
+        Get key that describes sample method.
+
+        Returns
+        -------
+        :
+            Sample key which includes sampling method, sample radius, and center coordinate.
+        """
+        return f"punch-R{self.sample_radius}-(0,0,0)"
 
     def select_sample_locations(self) -> List[tuple]:
         """

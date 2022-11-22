@@ -7,6 +7,8 @@ from unittest import mock
 import pandas as pd
 import numpy as np
 
+from abmbiopsy.continuous_feature import ContinuousFeature
+from abmbiopsy.discrete_feature import DiscreteFeature
 from abmbiopsy.simulation import Simulation
 from abmbiopsy.feature import Feature
 
@@ -173,8 +175,8 @@ class TestSimulation(unittest.TestCase):
             "w": cell_location[2],
             "z": cell_location[3],
             "p": [0],
-            "population": [4],
-            "state": [6],
+            "population": ["4"],
+            "state": ["6"],
             "volume": [2250],
             "cycle": [float("nan")],
             "max_height": [max_height],
@@ -259,8 +261,8 @@ class TestSimulation(unittest.TestCase):
             "w": [cell_location[2] for cell_location in cell_locations],
             "z": [cell_location[3] for cell_location in cell_locations],
             "p": [1, 2],
-            "population": [0, 3],
-            "state": [0, 1],
+            "population": ["0", "3"],
+            "state": ["0", "1"],
             "volume": [3200, 3000],
             "cycle": [np.round(np.mean([1440, 1350])), np.round(np.mean([1300, 1460]))],
             "max_height": max_heights,
@@ -348,8 +350,8 @@ class TestSimulation(unittest.TestCase):
             "w": [-1, -1],
             "z": [2, 2],
             "p": [4, 0],
-            "population": [1, 0],
-            "state": [3, 1],
+            "population": ["1", "0"],
+            "state": ["3", "1"],
             "volume": [3001, 2500],
             "cycle": [np.round(np.mean([1320, 1440])), np.round(np.mean([1440]))],
             "max_height": max_heights,
@@ -380,11 +382,21 @@ class TestSimulation(unittest.TestCase):
         with self.assertRaises(ValueError):
             Simulation(f"/path/to/file/{key}_{seed:02}.json").parse_timepoint(timepoint=0.0)
 
-    def test_get_feature_list_returns_list(self):
-        output = Simulation.get_feature_list()
-        self.assertIsInstance(output, list)
+    def test_get_feature_object_given_nonexistent_feature_raises_value_error(self):
+        with self.assertRaises(ValueError):
+            Simulation.get_feature_object("nonexistent_feature")
 
-    def test_get_feature_list_returns_list_of_feature_objects(self):
-        output = Simulation.get_feature_list()
-        for i in output:
-            self.assertIsInstance(i, Feature)
+    def test_get_feature_object_given_invalid_feature_raises_value_error(self):
+        with self.assertRaises(ValueError):
+            Simulation.get_feature_object("key")
+
+    def test_get_feature_object_given_discrete_feature_returns_feature(self):
+        expected_feature = ContinuousFeature("volume", "REAL", False)
+        found_feature = Simulation.get_feature_object("volume")
+        self.assertEqual(expected_feature.name, found_feature.name)
+
+    def test_get_feature_object_given_discrete_feature_returns_feature(self):
+        expected_feature = DiscreteFeature("population", "TEXT", False, ["0"])
+        found_feature = Simulation.get_feature_object("population")
+        self.assertEqual(expected_feature.name, found_feature.name)
+        self.assertEqual(expected_feature.categories, found_feature.categories)

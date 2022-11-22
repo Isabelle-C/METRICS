@@ -1,34 +1,135 @@
 import unittest
 from unittest import mock
 
+import pandas as pd
+
 from abmbiopsy.continuous_feature import ContinuousFeature
 from abmbiopsy.discrete_feature import DiscreteFeature
 from abmbiopsy.feature import Feature
+from abmbiopsy.sample_needle import SampleNeedle
+from abmbiopsy.sample_punch import SamplePunch
+from abmbiopsy.simulation import Simulation
 from abmbiopsy.stats import Stats
 
 
 class TestStats(unittest.TestCase):
-    @mock.patch("abmbiopsy.stats.Simulation")
-    def test_get_feature_object_given_nonexistent_feature_raises_value_error(self, simulation_mock):
-        simulation_mock.get_feature_list.return_value = [Feature("feature_1", "NUMERIC", False)]
+    @mock.patch("abmbiopsy.stats.SamplePunch")
+    @mock.patch("abmbiopsy.stats.ContinuousFeature")
+    def test_calculate_feature_returns_continuous_feature_data(
+        self, continuous_feature_mock, punch_sample_mock
+    ):
+        timepoint = 1.0
+        key = "SIMULATION_FILE"
+        feature_name = "cycle"
 
-        with self.assertRaises(ValueError):
-            Stats.get_feature_object("feature_3")
+        data_dict = {
+            "key": [key] * 9,
+            "seed": [0, 0, 0, 0, 0, 0, 1, 1, 1],
+            "time": [1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0],
+            feature_name: [3001, 2500, 2600, 3002, 2400, 2900, 3050, 2550, 2650],
+        }
+        data = pd.DataFrame(data_dict)
 
-    @mock.patch("abmbiopsy.stats.Simulation")
-    def test_get_feature_object_given_invalid_feature_raises_value_error(self, simulation_mock):
-        simulation_mock.get_feature_list.return_value = [
-            ContinuousFeature("feature_1", "NUMERIC", False),
-            Feature("feature_2", "NUMERIC", False),
-        ]
-        with self.assertRaises(ValueError):
-            Stats.get_feature_object("feature_2")
+        sample_data_dict = {
+            "key": [key] * 4,
+            "seed": [0, 0, 1, 1],
+            "time": [timepoint] * 4,
+            feature_name: [3001, 2500, 3050, 2550],
+        }
+        sample_data = pd.DataFrame(sample_data_dict)
 
-    @mock.patch("abmbiopsy.stats.Simulation")
-    def test_get_feature_object_returns_feature(self, simulation_mock):
-        expected_feature = ContinuousFeature("feature_1", "NUMERIC", False)
+        punch_sample_mock.sample_data.return_value = sample_data
+        punch_sample_mock.get_sample_key.return_value = "key"
 
-        simulation_mock.get_feature_list.return_value = [expected_feature]
+        continuous_feature_mock.compare_feature.return_value = 1.0
+        continuous_feature_mock.name = feature_name
 
-        found_feature = Stats.get_feature_object("feature_1")
-        self.assertEqual(expected_feature, found_feature)
+        stats = Stats(key, punch_sample_mock, timepoint, continuous_feature_mock)
+
+        returned_df = stats.calculate_feature(data)
+
+        expected_dict = {
+            "key": [key] * 2,
+            "seed": [0, 1],
+            "tumor_time": [timepoint] * 2,
+            "sample_time": [timepoint] * 2,
+            "sample_key": ["key"] * 2,
+            "feature": [feature_name] * 2,
+            "category": [None] * 2,
+            "pvalue": [1.0] * 2,
+        }
+        expected_df = pd.DataFrame(expected_dict)
+
+        self.assertTrue(expected_df.equals(returned_df))
+        compare_feature_calls = continuous_feature_mock.compare_feature.call_args_list
+
+        for seed, call in enumerate(compare_feature_calls):
+
+            (sample_arg, tumor_arg), _ = call
+
+            self.assertTrue(sample_data[(sample_data["seed"] == seed)].equals(sample_arg))
+
+            self.assertTrue(
+                data[(data["time"] == timepoint) & (data["seed"] == seed)].equals(tumor_arg)
+            )
+
+    @mock.patch("abmbiopsy.stats.SampleNeedle")
+    @mock.patch("abmbiopsy.stats.DiscreteFeature")
+    def test_calculate_feature_returns_discrete_feature_data(
+        self, discrete_feature_mock, needle_sample_mock
+    ):
+        seed = 0
+        timepoint = 1.0
+        key = "SIMULATION_FILE"
+        feature_name = "population"
+
+        data_dict = {
+            "key": [key] * 12,
+            "seed": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
+            "time": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0],
+            feature_name: ["0", "0", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0"],
+        }
+        data = pd.DataFrame(data_dict)
+
+        sample_data_dict = {
+            "key": [key] * 6,
+            "seed": [0, 0, 0, 0, 1, 1],
+            "time": [timepoint] * 6,
+            feature_name: ["0", "0", "1", "1", "0", "0"],
+        }
+        sample_data = pd.DataFrame(sample_data_dict)
+
+        needle_sample_mock.sample_data.return_value = sample_data
+        needle_sample_mock.get_sample_key.return_value = "key"
+
+        discrete_feature_mock.compare_feature.return_value = {"0": 1.0, "1": 2.0}
+        discrete_feature_mock.name = feature_name
+
+        stats = Stats(key, needle_sample_mock, timepoint, discrete_feature_mock)
+
+        returned_df = stats.calculate_feature(data)
+
+        expected_dict = {
+            "key": [key] * 4,
+            "seed": [0, 0, 1, 1],
+            "tumor_time": [timepoint] * 4,
+            "sample_time": [timepoint] * 4,
+            "sample_key": ["key"] * 4,
+            "feature": [feature_name] * 4,
+            "category": ["0", "1", "0", "1"],
+            "pvalue": [1.0, 2.0, 1.0, 2.0],
+        }
+        expected_df = pd.DataFrame(expected_dict)
+
+        self.assertTrue(expected_df.equals(returned_df))
+        compare_feature_calls = discrete_feature_mock.compare_feature.call_args_list
+
+        for seed, call in enumerate(compare_feature_calls):
+
+            (sample_arg, tumor_arg), _ = call
+
+            self.assertTrue(sample_data[(sample_data["seed"] == seed)].equals(sample_arg))
+
+            self.assertTrue(
+                data[(data["time"] == timepoint) & (data["seed"] == seed)].equals(tumor_arg)
+            )

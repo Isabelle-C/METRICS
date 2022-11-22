@@ -4,6 +4,15 @@ from abmbiopsy.sample_punch import SamplePunch
 
 
 class TestSamplePunch(unittest.TestCase):
+    def test_get_sample_key(self):
+        sample_radius = 2
+        sample_punch = SamplePunch(sample_radius)
+
+        found = sample_punch.get_sample_key()
+        expected = "punch-R2-(0,0,0)"
+
+        self.assertEqual(found, expected)
+
     def test_select_sample_locations(self):
         tests = {
             1: [(0, 0, 0)],

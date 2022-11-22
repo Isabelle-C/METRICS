@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from os import path
 import ntpath
 import json
@@ -152,8 +152,8 @@ class Simulation:
                     w,
                     z,
                     position,
-                    population,
-                    state,
+                    str(population),
+                    str(state),
                     volume,
                     cycle,
                     max_height,
@@ -221,11 +221,36 @@ class Simulation:
             Feature("w", "INTEGER", False),
             Feature("z", "INTEGER", False),
             Feature("p", "INTEGER", False),
-            DiscreteFeature("population", "INTEGER", False, ["A"]),
-            DiscreteFeature("state", "INTEGER", False, ["A"]),
+            DiscreteFeature("population", "TEXT", False, ["0"]),
+            DiscreteFeature("state", "TEXT", False, ["0"]),
             ContinuousFeature("volume", "REAL", False),
             ContinuousFeature("cycle", "REAL", True),
             ContinuousFeature("max_height", "REAL", False),
             ContinuousFeature("meta_pref", "REAL", False),
             ContinuousFeature("migra_threshold", "REAL", False),
         ]
+
+    @staticmethod
+    def get_feature_object(feature_name: str) -> Union[ContinuousFeature, DiscreteFeature]:
+        """
+        Return feature object valid for statistics calculation.
+
+        Parameters
+        ----------
+        feature_name :
+            Name of feature.
+
+        Returns
+        -------
+        :
+            Feature object.
+        """
+        feature_list = Simulation.get_feature_list()
+
+        for feature in feature_list:
+            if feature.name == feature_name:
+                if isinstance(feature, (ContinuousFeature, DiscreteFeature)):
+                    return feature
+                else:
+                    raise ValueError("Feature is not valid for statistics calculation.")
+        raise ValueError("Feature does not exist.")

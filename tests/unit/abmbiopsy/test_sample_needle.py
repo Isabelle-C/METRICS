@@ -4,6 +4,16 @@ from src.abmbiopsy.sample_needle import SampleNeedle
 
 
 class TestSampleNeedle(unittest.TestCase):
+    def test_get_sample_key(self):
+        simulation_radius = 3
+        sample_width = 2
+        sample_needle = SampleNeedle(simulation_radius, sample_width)
+
+        found = sample_needle.get_sample_key()
+        expected = f"needle-R3-W2"
+
+        self.assertEqual(found, expected)
+
     def test_select_sample_locations_given_odd_width_returns_locations(self):
         tests = {
             (4, 1): [
