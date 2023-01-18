@@ -12,7 +12,7 @@ class SamplePunch(Sample):
 
     Attributes
     ----------
-    sample_radius : int
+    sample_radius :
         Radius at which sample is taken.
     """
 

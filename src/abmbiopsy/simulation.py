@@ -17,19 +17,19 @@ class Simulation:
 
     Attributes
     ----------
-    file : str
+    file :
         Path and file name for the simulation file.
-    path : str
+    path :
         Directory to the folder of simulation file.
-    key : str
+    key :
         File name without extension or seed.
-    seed : int
+    seed :
         Seed of the simulation.
-    extension : str
+    extension :
         Extension of the simulation file.
-    timepoints : List[float]
+    timepoints :
         Time point(s) (in days) in the simulation file.
-    max_radius : int
+    max_radius :
         Maximum radius of the simulation.
     """
 

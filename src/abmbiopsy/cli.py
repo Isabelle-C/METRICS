@@ -7,7 +7,7 @@ from abmbiopsy.workflows import run_parse_simulations, run_calculate_stats
 @click.group()
 def cli() -> None:
     """
-    TODO: add docstring
+    Begins command line tool.
     """
 
 
@@ -17,6 +17,8 @@ def cli() -> None:
 @click.option("-t", "--timepoint", default=1.0)
 def parse_simulations(database: str, simulation: str, timepoint: float) -> None:
     """
+    Parse simulation data and add data into a database file.
+
     Parameters
     ----------
     database :
@@ -40,6 +42,8 @@ def calculate_stats(
     database: str, simulation: str, feature: str, sample: str, timepoint: float, radius: int
 ) -> None:
     """
+    Calculate statistical data and write results into a database file.
+
     Parameters
     ----------
     database :

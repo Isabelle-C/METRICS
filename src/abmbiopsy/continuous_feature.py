@@ -25,9 +25,7 @@ class ContinuousFeature(Feature):
     def __str__(self) -> str:
         return "CONTINUOUS " + super().__str__()
 
-    def compare_feature(
-        self, sample_dataframe: pd.DataFrame, tumors_dataframe: pd.DataFrame
-    ) -> float:
+    def compare_feature(self, sample_data: pd.DataFrame, simulation_data: pd.DataFrame) -> float:
         """
         Uses statistical tests to compare continuous features.
 
@@ -37,9 +35,9 @@ class ContinuousFeature(Feature):
 
         Parameters
         ----------
-        sample_dataframe :
+        sample_data :
             Loaded sample data.
-        tumors_dataframe :
+        simulation_data :
             Loaded tumor data.
 
         Returns
@@ -47,11 +45,11 @@ class ContinuousFeature(Feature):
         :
             Result of statistical test.
         """
-        if self.name not in tumors_dataframe.columns or self.name not in sample_dataframe.columns:
+        if self.name not in simulation_data.columns or self.name not in sample_data.columns:
             return float("nan")
 
-        tumor_cdf = ECDF(tumors_dataframe[self.name])
-        sample_feature_data = list(sample_dataframe[self.name])
+        tumor_cdf = ECDF(simulation_data[self.name])
+        sample_feature_data = list(sample_data[self.name])
         p_value = kstest(sample_feature_data, tumor_cdf)
 
         return p_value[1]

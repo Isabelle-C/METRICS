@@ -14,13 +14,13 @@ class Stats:
 
     Attributes
     ----------
-    key : str
+    key :
         Simulation key.
-    sample : Union[SampleNeedle,SamplePunch]
+    sample :
         Sample object.
-    timepoint : float
+    timepoint :
         Time point to execute statistical test.
-    feature : Union[ContinuousFeature, DiscreteFeature]
+    feature :
         Feature object.
     """
 
@@ -50,6 +50,8 @@ class Stats:
 
     def calculate_feature(self, data: pd.DataFrame) -> pd.DataFrame:
         """
+        Calculate statistical comparison of a feature between a sample and the simulation population.
+
         Parameters
         ----------
         data :

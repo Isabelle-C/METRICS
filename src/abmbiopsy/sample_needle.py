@@ -12,9 +12,9 @@ class SampleNeedle(Sample):
 
     Attributes
     ----------
-    simulation_radius : int
+    simulation_radius :
         Radius of the simulation.
-    sample_width : int
+    sample_width :
         Width of the sample.
     """
 

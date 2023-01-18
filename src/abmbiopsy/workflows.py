@@ -12,6 +12,10 @@ STATS_TABLE = "stats"
 
 def run_parse_simulations(database_file: str, simulation_file: str, timepoint: float) -> None:
     """
+    Parse the simulation and write data into databse file.
+
+    Parameters
+    ----------
     database_file :
         File path to the database file.
     simulation_file :
@@ -37,6 +41,8 @@ def run_calculate_stats(
     sample_radius: int,
 ) -> None:
     """
+    Run the statistical test on data with the specified feature and sampling method.
+
     Parameters
     ----------
     database_file :
