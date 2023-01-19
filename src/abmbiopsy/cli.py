@@ -38,8 +38,15 @@ def parse_simulations(database: str, simulation: str, timepoint: float) -> None:
 @click.option("-s", "--sample", default="punch")
 @click.option("-t", "--timepoint", default=1.0)
 @click.option("-r", "--radius", default=1)
+@click.option("-d", "--direction", default=1)
 def calculate_stats(
-    database: str, simulation: str, feature: str, sample: str, timepoint: float, radius: int
+    database: str,
+    simulation: str,
+    feature: str,
+    sample: str,
+    timepoint: float,
+    radius: int,
+    direction: int,
 ) -> None:
     """
     Calculate statistical data and write results into a database file.
@@ -58,8 +65,10 @@ def calculate_stats(
         The radius of the punch sample and the width of the needle sample.
     timepoint :
         The timepoint to perform statistical test.
+    direction :
+        The direction of needle sampling.
     """
-    run_calculate_stats(database, simulation, feature, sample, timepoint, radius)
+    run_calculate_stats(database, simulation, feature, sample, timepoint, radius, direction)
 
 
 if __name__ == "__main__":

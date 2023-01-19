@@ -39,6 +39,7 @@ def run_calculate_stats(
     sample_shape: str,
     timepoint: float,
     sample_radius: int,
+    needle_direction: int,
 ) -> None:
     """
     Run the statistical test on data with the specified feature and sampling method.
@@ -57,6 +58,8 @@ def run_calculate_stats(
         The timepoint to perform statistical test.
     sample_radius :
         The radius of the punch samples or the width of the needle samples.
+    needle_direction :
+        The direction of needle sampling.
     """
     database = Database(database_file)
     simulation = Simulation(simulation_file)
@@ -64,7 +67,7 @@ def run_calculate_stats(
 
     sample: Union[SampleNeedle, SamplePunch]
     if sample_shape in ("needle", "Needle"):
-        sample = SampleNeedle(simulation.max_radius, sample_radius)
+        sample = SampleNeedle(simulation.max_radius, sample_radius, needle_direction)
     elif sample_shape in ("punch", "Punch"):
         sample = SamplePunch(sample_radius)
     else:
