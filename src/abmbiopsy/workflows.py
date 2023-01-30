@@ -40,6 +40,7 @@ def run_calculate_stats(
     timepoint: float,
     sample_radius: int,
     needle_direction: int,
+    sample_center: tuple,
 ) -> None:
     """
     Run the statistical test on data with the specified feature and sampling method.
@@ -60,6 +61,8 @@ def run_calculate_stats(
         The radius of the punch samples or the width of the needle samples.
     needle_direction :
         The direction of needle sampling.
+    sample_center :
+        The center of the punch sample.
     """
     database = Database(database_file)
     simulation = Simulation(simulation_file)
@@ -69,7 +72,7 @@ def run_calculate_stats(
     if sample_shape in ("needle", "Needle"):
         sample = SampleNeedle(simulation.max_radius, sample_radius, needle_direction)
     elif sample_shape in ("punch", "Punch"):
-        sample = SamplePunch(sample_radius)
+        sample = SamplePunch(simulation.max_radius, sample_radius, sample_center)
     else:
         raise AttributeError("The sample type provided is not valid.")
 
