@@ -1,6 +1,6 @@
 import unittest
 
-from src.abmbiopsy.sample_needle import SampleNeedle
+from metrics.sample.sample_needle import SampleNeedle
 
 
 class TestSampleNeedle(unittest.TestCase):

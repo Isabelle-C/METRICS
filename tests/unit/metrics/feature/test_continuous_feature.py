@@ -4,7 +4,7 @@ import math
 import pandas as pd
 from scipy.stats import kstwo
 
-from abmbiopsy.continuous_feature import ContinuousFeature
+from metrics.feature.continuous_feature import ContinuousFeature
 
 
 class TestContinuousFeature(unittest.TestCase):

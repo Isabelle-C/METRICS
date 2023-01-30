@@ -1,6 +1,6 @@
 import unittest
 
-from abmbiopsy.coordinate import Coordinate
+from metrics.analysis.coordinate import Coordinate
 
 
 class TestCoordinate(unittest.TestCase):

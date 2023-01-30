@@ -1,6 +1,6 @@
 import unittest
 
-from abmbiopsy.feature import Feature
+from metrics.feature.feature import Feature
 
 
 class TestFeature(unittest.TestCase):

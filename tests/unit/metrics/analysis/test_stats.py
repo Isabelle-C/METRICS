@@ -3,18 +3,18 @@ from unittest import mock
 
 import pandas as pd
 
-from abmbiopsy.continuous_feature import ContinuousFeature
-from abmbiopsy.discrete_feature import DiscreteFeature
-from abmbiopsy.feature import Feature
-from abmbiopsy.sample_needle import SampleNeedle
-from abmbiopsy.sample_punch import SamplePunch
-from abmbiopsy.simulation import Simulation
-from abmbiopsy.stats import Stats
+from metrics.feature.continuous_feature import ContinuousFeature
+from metrics.feature.discrete_feature import DiscreteFeature
+from metrics.feature.feature import Feature
+from metrics.sample.sample_needle import SampleNeedle
+from metrics.sample.sample_punch import SamplePunch
+from metrics.analysis.simulation import Simulation
+from metrics.analysis.stats import Stats
 
 
 class TestStats(unittest.TestCase):
-    @mock.patch("abmbiopsy.stats.SamplePunch")
-    @mock.patch("abmbiopsy.stats.ContinuousFeature")
+    @mock.patch("metrics.analysis.stats.SamplePunch")
+    @mock.patch("metrics.analysis.stats.ContinuousFeature")
     def test_calculate_feature_returns_continuous_feature_data(
         self, continuous_feature_mock, punch_sample_mock
     ):
@@ -73,8 +73,8 @@ class TestStats(unittest.TestCase):
                 data[(data["time"] == timepoint) & (data["seed"] == seed)].equals(tumor_arg)
             )
 
-    @mock.patch("abmbiopsy.stats.SampleNeedle")
-    @mock.patch("abmbiopsy.stats.DiscreteFeature")
+    @mock.patch("metrics.analysis.stats.SampleNeedle")
+    @mock.patch("metrics.analysis.stats.DiscreteFeature")
     def test_calculate_feature_returns_discrete_feature_data(
         self, discrete_feature_mock, needle_sample_mock
     ):

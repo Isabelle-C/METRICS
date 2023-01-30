@@ -7,15 +7,15 @@ from unittest import mock
 import pandas as pd
 import numpy as np
 
-from abmbiopsy.continuous_feature import ContinuousFeature
-from abmbiopsy.discrete_feature import DiscreteFeature
-from abmbiopsy.simulation import Simulation
-from abmbiopsy.feature import Feature
+from metrics.feature.continuous_feature import ContinuousFeature
+from metrics.feature.discrete_feature import DiscreteFeature
+from metrics.analysis.simulation import Simulation
+from metrics.feature.feature import Feature
 
 
 class TestSimulation(unittest.TestCase):
     @mock.patch("builtins.open", new_callable=mock_open)
-    @mock.patch("abmbiopsy.simulation.json")
+    @mock.patch("metrics.analysis.simulation.json")
     def test_init_sets_attributes_from_file_name(self, json_mock, open_mock):
         key = "TEST_FAKE_JSON"
         seed = 14
@@ -34,7 +34,7 @@ class TestSimulation(unittest.TestCase):
         self.assertEqual(key, simulation.key)
 
     @mock.patch("builtins.open", new_callable=mock_open)
-    @mock.patch("abmbiopsy.simulation.json")
+    @mock.patch("metrics.analysis.simulation.json")
     def test_init_sets_attributes_from_file_name_with_suffix(self, json_mock, open_mock):
         key = "TEST_FAKE_JSON"
         seed = 14
@@ -54,7 +54,7 @@ class TestSimulation(unittest.TestCase):
         self.assertEqual(key, simulation.key)
 
     @mock.patch("builtins.open", new_callable=mock_open)
-    @mock.patch("abmbiopsy.simulation.json")
+    @mock.patch("metrics.analysis.simulation.json")
     def test_init_sets_attributes_from_data(self, json_mock, open_mock):
         seed = 14
         timepoints = [0.0, 0.5, 1.0]
@@ -74,7 +74,7 @@ class TestSimulation(unittest.TestCase):
         self.assertEqual(max_radius, simulation.max_radius)
 
     @mock.patch("builtins.open", new_callable=mock_open)
-    @mock.patch("abmbiopsy.simulation.json")
+    @mock.patch("metrics.analysis.simulation.json")
     def test_load_simulation_loads_existing_file(self, json_mock, open_mock):
         simulation_file = "/path/to/file/SIMULATION_FILE_00.json"
         simulation_contents = {"seed": 0, "timepoints": [], "config": {"size": {"radius": 34}}}
@@ -87,7 +87,7 @@ class TestSimulation(unittest.TestCase):
         self.assertDictEqual(simulation_contents, loaded_simulation)
 
     @mock.patch("builtins.open", new_callable=mock_open)
-    @mock.patch("abmbiopsy.simulation.json")
+    @mock.patch("metrics.analysis.simulation.json")
     def test_load_simulation_loads_existing_file_with_suffix(self, json_mock, open_mock):
         simulation_file = "/path/to/file/SIMULATION_FILE_00.json"
         param_file = "/path/to/file/SIMULATION_FILE_00.PARAM.json"
@@ -365,7 +365,7 @@ class TestSimulation(unittest.TestCase):
         self.assertTrue(expected_df.equals(returned_df))
 
     @mock.patch("builtins.open", new_callable=mock_open)
-    @mock.patch("abmbiopsy.simulation.json")
+    @mock.patch("metrics.analysis.simulation.json")
     def test_parse_timepoint_given_nonexistent_timepoint_raises_value_error(
         self, json_mock, open_mock
     ):

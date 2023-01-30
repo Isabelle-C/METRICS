@@ -3,7 +3,7 @@ import math
 
 import pandas as pd
 
-from abmbiopsy.discrete_feature import DiscreteFeature
+from metrics.feature.discrete_feature import DiscreteFeature
 
 
 class TestDiscreteFeature(unittest.TestCase):

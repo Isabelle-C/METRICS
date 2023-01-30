@@ -1,11 +1,11 @@
 from typing import List, Union
 import pandas as pd
 
-from abmbiopsy.continuous_feature import ContinuousFeature
-from abmbiopsy.discrete_feature import DiscreteFeature
-from abmbiopsy.feature import Feature
-from abmbiopsy.sample_needle import SampleNeedle
-from abmbiopsy.sample_punch import SamplePunch
+from metrics.feature.continuous_feature import ContinuousFeature
+from metrics.feature.discrete_feature import DiscreteFeature
+from metrics.feature.feature import Feature
+from metrics.sample.sample_needle import SampleNeedle
+from metrics.sample.sample_punch import SamplePunch
 
 
 class Stats:

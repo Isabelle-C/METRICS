@@ -3,8 +3,8 @@ import unittest
 import pandas as pd
 import numpy as np
 
-from abmbiopsy.sample import Sample
-from abmbiopsy.simulation import Simulation
+from metrics.sample.sample import Sample
+from metrics.analysis.simulation import Simulation
 
 
 class TestSample(unittest.TestCase):

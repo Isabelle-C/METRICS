@@ -4,8 +4,8 @@ from unittest import mock
 import pandas as pd
 import sqlite3
 
-from abmbiopsy.database import Database
-from abmbiopsy.feature import Feature
+from metrics.analysis.database import Database
+from metrics.feature.feature import Feature
 
 
 class TestDatabase(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestDatabase(unittest.TestCase):
             Database("x")
             Database("")
 
-    @mock.patch("abmbiopsy.database.sqlite3")
+    @mock.patch("metrics.analysis.database.sqlite3")
     def test_get_connection_returns_connection(self, sqlite3_mock):
         connection_object = mock.Mock(spec=sqlite3.Connection)
         sqlite3_mock.connect.return_value = connection_object
@@ -40,7 +40,7 @@ class TestDatabase(unittest.TestCase):
         sqlite3_mock.connect.assert_called_with(database_name, uri=True)
         self.assertIsInstance(connection, sqlite3.Connection)
 
-    @mock.patch("abmbiopsy.database.sqlite3")
+    @mock.patch("metrics.analysis.database.sqlite3")
     def test_create_table_creates_table(self, sqlite3_mock):
         connection_object = mock.Mock(spec=sqlite3.Connection)
         sqlite3_mock.connect.return_value = connection_object
@@ -63,7 +63,7 @@ class TestDatabase(unittest.TestCase):
         connection_object.commit.assert_called()
         connection_object.close.assert_called()
 
-    @mock.patch("abmbiopsy.database.sqlite3")
+    @mock.patch("metrics.analysis.database.sqlite3")
     def test_add_dataframe_adds_data_to_table(self, sqlite3_mock):
         connection_object = mock.Mock(spec=sqlite3.Connection)
         sqlite3_mock.connect.return_value = connection_object
@@ -82,8 +82,8 @@ class TestDatabase(unittest.TestCase):
         connection_object.commit.assert_called()
         connection_object.close.assert_called()
 
-    @mock.patch("abmbiopsy.database.pd")
-    @mock.patch("abmbiopsy.database.sqlite3")
+    @mock.patch("metrics.analysis.database.pd")
+    @mock.patch("metrics.analysis.database.sqlite3")
     def test_load_dataframe_returns_data(self, sqlite3_mock, pd_mock):
         connection_object = mock.Mock(spec=sqlite3.Connection)
         sqlite3_mock.connect.return_value = connection_object

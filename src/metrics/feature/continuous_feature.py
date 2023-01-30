@@ -2,7 +2,7 @@ import pandas as pd
 from statsmodels.distributions.empirical_distribution import ECDF
 from scipy.stats import kstest
 
-from abmbiopsy.feature import Feature
+from metrics.feature.feature import Feature
 
 
 class ContinuousFeature(Feature):

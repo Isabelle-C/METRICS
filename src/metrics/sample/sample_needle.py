@@ -1,6 +1,6 @@
 from typing import List, Union
 
-from abmbiopsy.sample import Sample
+from metrics.sample.sample import Sample
 
 
 class SampleNeedle(Sample):

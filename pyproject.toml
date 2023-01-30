@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "abmbiopsy"
+name = "metrics"
 version = "0.1.0"
 description = ""
 authors = [
 	"Isabelle Chen <isabellechen2023@u.northwestern.edu>",
+	"Jacob Evarts <jevarts@uw.edu>",
 	"Alexis N. Prybutok <aprybutok@u.northwestern.edu",
 	"Jessica S. Yu <jesyu@uw.edu>",
 ]
@@ -27,9 +28,6 @@ black = "^22.3.0"
 mypy = "^0.961"
 sphinx-rtd-theme = "^1.0.0"
 Sphinx = "^4.1.1"
-
-[tool.poetry.scripts]
-abmbiopsy = "abmbiopsy.cli:cli"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

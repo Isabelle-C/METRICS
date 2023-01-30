@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import click
-from abmbiopsy.workflows import run_parse_simulations, run_calculate_stats
+from metrics.workflows import run_parse_simulations, run_calculate_stats
 
 
 @click.group()

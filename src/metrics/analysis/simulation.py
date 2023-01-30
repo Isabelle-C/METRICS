@@ -6,9 +6,9 @@ import json
 import pandas as pd
 import numpy as np
 
-from abmbiopsy.continuous_feature import ContinuousFeature
-from abmbiopsy.discrete_feature import DiscreteFeature
-from abmbiopsy.feature import Feature
+from metrics.feature.continuous_feature import ContinuousFeature
+from metrics.feature.discrete_feature import DiscreteFeature
+from metrics.feature.feature import Feature
 
 
 class Simulation:
@@ -198,8 +198,8 @@ class Simulation:
 
         if new_u >= new_v:
             return (new_u**2 + new_u + new_v) * 0.5
-        else:
-            return (new_v**2 + new_u) * 0.5
+
+        return (new_v**2 + new_u) * 0.5
 
     @staticmethod
     def get_feature_list() -> List[Feature]:
@@ -251,6 +251,6 @@ class Simulation:
             if feature.name == feature_name:
                 if isinstance(feature, (ContinuousFeature, DiscreteFeature)):
                     return feature
-                else:
-                    raise ValueError("Feature is not valid for statistics calculation.")
+
+                raise ValueError("Feature is not valid for statistics calculation.")
         raise ValueError("Feature does not exist.")

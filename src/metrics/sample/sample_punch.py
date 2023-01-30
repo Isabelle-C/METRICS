@@ -1,8 +1,8 @@
 from typing import List
 import warnings
 
-from abmbiopsy.coordinate import Coordinate
-from abmbiopsy.sample import Sample
+from metrics.analysis.coordinate import Coordinate
+from metrics.sample.sample import Sample
 
 
 class SamplePunch(Sample):

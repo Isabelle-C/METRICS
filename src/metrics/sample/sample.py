@@ -2,7 +2,7 @@ from typing import List
 
 import pandas as pd
 
-from abmbiopsy.simulation import Simulation
+from metrics.analysis.simulation import Simulation
 
 
 class Sample:

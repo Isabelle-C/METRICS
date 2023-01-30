@@ -1,10 +1,10 @@
 from typing import Union
 
-from abmbiopsy.database import Database
-from abmbiopsy.simulation import Simulation
-from abmbiopsy.sample_needle import SampleNeedle
-from abmbiopsy.sample_punch import SamplePunch
-from abmbiopsy.stats import Stats
+from metrics.analysis.database import Database
+from metrics.analysis.simulation import Simulation
+from metrics.sample.sample_needle import SampleNeedle
+from metrics.sample.sample_punch import SamplePunch
+from metrics.analysis.stats import Stats
 
 SIMULATION_TABLE = "simulation"
 STATS_TABLE = "stats"

@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 
-from abmbiopsy.sample_punch import SamplePunch
+from metrics.sample.sample_punch import SamplePunch
 
 
 class TestSamplePunch(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestSamplePunch(unittest.TestCase):
         with self.assertRaises(ValueError):
             SamplePunch(5, 5, (0, 1, -1))
 
-    @mock.patch("abmbiopsy.sample_punch.warnings")
+    @mock.patch("metrics.sample.sample_punch.warnings")
     def test_select_sample_locations_raise_warning(self, mock_warn):
         SamplePunch(5, 5, (0, 0, 0))
         self.assertTrue(mock_warn.warn.called)

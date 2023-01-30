@@ -2,8 +2,7 @@ from typing import Dict, List
 import pandas as pd
 from scipy.stats import hypergeom
 
-
-from abmbiopsy.feature import Feature
+from metrics.feature.feature import Feature
 
 
 class DiscreteFeature(Feature):

@@ -3,8 +3,8 @@ from typing import Union
 import sqlite3
 import pandas as pd
 
-from abmbiopsy.simulation import Simulation
-from abmbiopsy.stats import Stats
+from metrics.analysis.simulation import Simulation
+from metrics.analysis.stats import Stats
 
 
 class Database:
