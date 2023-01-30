@@ -4,6 +4,10 @@ from src.abmbiopsy.sample_needle import SampleNeedle
 
 
 class TestSampleNeedle(unittest.TestCase):
+    def test_given_invalid_direction_raise_value_error(self):
+        with self.assertRaises(ValueError):
+            SampleNeedle(1, 3, 7)
+
     def test_get_sample_key(self):
         simulation_radius = 3
         sample_width = 2

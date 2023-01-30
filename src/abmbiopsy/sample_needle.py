@@ -23,6 +23,8 @@ class SampleNeedle(Sample):
     def __init__(self, simulation_radius: int, sample_width: int, direction: int):
         self.simulation_radius = simulation_radius
         self.sample_width = sample_width
+        if direction not in [1, 2, 3, 4, 5, 6]:
+            raise ValueError("The direction is invalid.")
         self.direction = direction
 
     def get_sample_key(self) -> str:
