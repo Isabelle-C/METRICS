@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import click
-from metrics.workflows import run_parse_simulations, run_calculate_stats
+
+from metrics.workflows import run_parse_simulations, run_calculate_analysis
 
 
 @click.group()
@@ -39,7 +40,6 @@ def parse_simulations(database: str, simulation: str, timepoint: float) -> None:
 @click.option("-t", "--timepoint", default=1.0)
 @click.option("-r", "--radius", default=1)
 @click.option("-d", "--direction", default=1)
-@click.option("-c", "--center", default=(0, 0, 0))
 def calculate_stats(
     database: str,
     simulation: str,
@@ -48,7 +48,6 @@ def calculate_stats(
     timepoint: float,
     radius: int,
     direction: int,
-    center: tuple,
 ) -> None:
     """
     Calculate statistical data and write results into a database file.
@@ -70,7 +69,9 @@ def calculate_stats(
     direction :
         The direction of needle sampling.
     """
-    run_calculate_stats(database, simulation, feature, sample, timepoint, radius, direction, center)
+    run_calculate_analysis(
+        database, simulation, feature, sample, timepoint, radius, direction, sample_center=(0, 0, 0)
+    )
 
 
 if __name__ == "__main__":

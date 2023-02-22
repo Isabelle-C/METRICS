@@ -4,10 +4,10 @@ from metrics.analysis.database import Database
 from metrics.analysis.simulation import Simulation
 from metrics.sample.sample_needle import SampleNeedle
 from metrics.sample.sample_punch import SamplePunch
-from metrics.analysis.stats import Stats
+from metrics.analysis.analysis import Analysis
 
 SIMULATION_TABLE = "simulation"
-STATS_TABLE = "stats"
+ANALYSIS_TABLE = "stats"
 
 
 def run_parse_simulations(database_file: str, simulation_file: str, timepoint: float) -> None:
@@ -32,7 +32,7 @@ def run_parse_simulations(database_file: str, simulation_file: str, timepoint: f
     database.add_dataframe(SIMULATION_TABLE, simulation_df)
 
 
-def run_calculate_stats(
+def run_calculate_analysis(
     database_file: str,
     simulation_file: str,
     feature_name: str,
@@ -76,10 +76,10 @@ def run_calculate_stats(
     else:
         raise AttributeError("The sample type provided is not valid.")
 
-    stats = Stats(simulation.key, sample, timepoint, feature)
+    analysis = Analysis(simulation.key, sample, timepoint, feature)
     print(database)
-    print(stats)
+    print(analysis)
 
     data = database.load_dataframe(SIMULATION_TABLE, simulation.key)
-    stats_df = stats.calculate_feature(data)
-    database.add_dataframe(STATS_TABLE, stats_df)
+    analysis_df = analysis.calculate_feature(data, stats=True, info=True)
+    database.add_dataframe(ANALYSIS_TABLE, analysis_df)

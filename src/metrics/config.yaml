@@ -1,0 +1,28 @@
+experiment:
+  database: data/databases/testDB.db
+  simulation: data/simulations/POPULATION_HETEROGENEITY_C_A_00
+  timepoints: [0]
+  timepoint_resolution: none
+  seeds: [0]
+  seed_resolution: none
+
+parse: True
+analyze: False
+analysis:
+  features:
+    - population
+    - state
+    - volume
+    - cycle
+    - max_height
+    - meta_pref
+    - migra_threshold
+  samples:
+    punch_1:
+      sample_shape: punch
+      sample_radius: 1
+      sample_center: (0,0,0)
+    needle_1:
+      sample_shape: needle
+      sample_radius: 1
+      needle_direction: 3

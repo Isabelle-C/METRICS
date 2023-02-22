@@ -4,7 +4,7 @@ import sqlite3
 import pandas as pd
 
 from metrics.analysis.simulation import Simulation
-from metrics.analysis.stats import Stats
+from metrics.analysis.analysis import Analysis
 
 
 class Database:
@@ -48,7 +48,7 @@ class Database:
         connection = sqlite3.connect(self.file, uri=True)
         return connection
 
-    def create_table(self, table_name: str, table_spec: Union[Simulation, Stats]) -> None:
+    def create_table(self, table_name: str, table_spec: Union[Simulation, Analysis]) -> None:
         """
         Creates table in connected database.
 
@@ -57,7 +57,7 @@ class Database:
         table_name :
             The name of the table.
         table_spec :
-            Object specifying the table columns (Simulation or Stats object).
+            Object specifying the table columns (Simulation or Analysis object).
         """
         connection = self.get_connection()
         cursor = connection.cursor()
@@ -112,7 +112,7 @@ class Database:
         return data
 
     @staticmethod
-    def make_create_table_query(table_name: str, table_spec: Union[Simulation, Stats]) -> str:
+    def make_create_table_query(table_name: str, table_spec: Union[Simulation, Analysis]) -> str:
         """
         Return query string that creates the SQLite table.
 
@@ -121,14 +121,17 @@ class Database:
         table_name :
             The name of the table.
         table_spec :
-            Object specifying the table columns (Simulation or Stats object).
+            Object specifying the table columns (Simulation or Analysis object).
 
         Returns
         -------
         :
             Query string for creating table.
         """
-        feature_list = table_spec.get_feature_list()
+        if isinstance(table_spec, Analysis):
+            feature_list = table_spec.get_feature_list(stats=True, info=False)
+        else:
+            feature_list = table_spec.get_feature_list()
 
         table_columns = []
         for feature in feature_list:

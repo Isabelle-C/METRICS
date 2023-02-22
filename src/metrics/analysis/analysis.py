@@ -8,19 +8,19 @@ from metrics.sample.sample_needle import SampleNeedle
 from metrics.sample.sample_punch import SamplePunch
 
 
-class Stats:
+class Analysis:
     """
     Workflow for statistical testing on features of simulated tumor sample data.
 
     Attributes
     ----------
-    key :
+    key : str
         Simulation key.
-    sample :
+    sample : Sample
         Sample object.
-    timepoint :
+    timepoint : float
         Time point to execute statistical test.
-    feature :
+    feature : Union[ContinuousFeature, DiscreteFeature]
         Feature object.
     """
 
@@ -46,28 +46,31 @@ class Stats:
 
         attribute_strings = [f"{key:10} = {value}" for key, value in attributes]
         string = "\n\t".join(attribute_strings)
-        return "STATS\n\t" + string
+        return "ANALYSIS\n\t" + string
 
-    def calculate_feature(self, data: pd.DataFrame) -> pd.DataFrame:
+    def calculate_feature(self, data: pd.DataFrame, stats: bool, info: bool) -> pd.DataFrame:
         """
-        Calculate statistical comparison of a feature between a sample and the simulation population.
+        Calculate statistical comparison of a feature between a sample and the simulation
+        population.
 
         Parameters
         ----------
         data :
             Simulation data.
+        stats :
+            True if calculating statistical tests, False otherwise.
+        info :
+            True if calculating KL divergence, False otherwise.
         """
         simulation_data = data[(data["time"] == self.timepoint) & (data["key"] == self.key)]
 
         sample_locations = self.sample.select_sample_locations()
         sample_data = self.sample.sample_data(sample_locations, simulation_data)
 
-        stats_data = []
+        analysis_data = []
 
         for seed, simulation_seed_data in simulation_data.groupby("seed"):
             sample_seed_data = sample_data[sample_data["seed"] == seed]
-
-            feature_data = self.feature.compare_feature(sample_seed_data, simulation_seed_data)
 
             data_list = [
                 self.key,
@@ -78,27 +81,32 @@ class Stats:
                 self.feature.name,
             ]
 
-            if isinstance(feature_data, dict):
-                for dict_key, dict_stat in feature_data.items():
-                    stats_data.append(data_list + [dict_key, dict_stat])
-            else:
-                data_list = data_list + [None, feature_data]
-                stats_data.append(data_list)
+            output_data = self.feature.write_feature_data(
+                data_list, stats, info, sample_seed_data, simulation_seed_data
+            )
+            analysis_data.extend(output_data)
 
-        columns = [stats_feature.name for stats_feature in self.get_feature_list()]
-        return pd.DataFrame(stats_data, columns=columns)
+        columns = [analysis_feature.name for analysis_feature in self.get_feature_list(stats, info)]
+        return pd.DataFrame(analysis_data, columns=columns)
 
     @staticmethod
-    def get_feature_list() -> List[Feature]:
+    def get_feature_list(stats: bool, info: bool) -> List[Feature]:
         """
         Return a list of valid Feature objects.
+
+        Parameters
+        ----------
+        stats :
+            True if calculating statistical tests, False otherwise.
+        info :
+            True if calculating KL divergence, False otherwise.
 
         Returns
         -------
         :
            List of Feature objects.
         """
-        return [
+        base_columns = [
             Feature("key", "TEXT", False),
             Feature("seed", "INTEGER", False),
             Feature("tumor_time", "REAL", False),
@@ -106,5 +114,17 @@ class Stats:
             Feature("sample_key", "TEXT", False),
             Feature("feature", "TEXT", False),
             Feature("category", "TEXT", False),
-            Feature("pvalue", "REAL", False),
         ]
+        feature_columns = base_columns
+
+        if stats and not info:
+            feature_columns += [Feature("pvalue", "REAL", False)]
+        if info and not stats:
+            feature_columns += [Feature("divergence", "REAL", False)]
+        if stats and info:
+            feature_columns += [
+                Feature("pvalue", "REAL", False),
+                Feature("divergence", "REAL", False),
+            ]
+
+        return feature_columns
