@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 from metrics.analysis.database import Database
 from metrics.analysis.simulation import Simulation
@@ -18,19 +18,26 @@ def run_parse_simulations(database_file: str, simulation_file: str, timepoint: f
     ----------
     database_file :
         File path to the database file.
-    simulation_file :
-        File path to the simulation file.
-    timepoint :
-        The timepoint to parse the simulation data.
+    simulation_path :
+        File path to a folder of simulation files.
+    seed :
+        The seed of simulation file.
+    timepoints :
+        The timepoints to parse the simulation data.
     """
+    simulation_file = f"{simulation_path}_{seed}.json"
+
     database = Database(database_file)
     simulation = Simulation(simulation_file)
+    database.create_table(SIMULATION_TABLE, simulation)
+
     print(database)
     print(simulation)
 
-    simulation_df = simulation.parse_timepoint(timepoint)
-    database.add_dataframe(SIMULATION_TABLE, simulation_df)
-
+    for timepoint in timepoints:
+        simulation_df = simulation.parse_timepoint(timepoint)
+        database.add_dataframe(SIMULATION_TABLE, simulation_df)
+        
 
 def run_calculate_analysis(
     database_file: str,
@@ -41,22 +48,25 @@ def run_calculate_analysis(
     sample_radius: int,
     needle_direction: int,
     sample_center: tuple,
+
 ) -> None:
     """
     Run the statistical test on data with the specified feature and sampling method.
 
     Parameters
     ----------
-    database_file :
-        File path to the database file.
-    simulation_file :
-        File path to the simulation file.
-    feature_name :
-        The name of the feature.
+    database_path :
+        File path to the database file for reading simulation and for writing stats.
+    simulation_path :
+        File path to a folder of simulation files.
+    seed :
+        The seed of simulation file.
+    features :
+        The name of the features.
+    timepoints :
+        The timepoints to perform statistical test.
     sample_shape : {"needle", "Needle", "punch", "Punch"}
         The shape of the sample.
-    timepoint :
-        The timepoint to perform statistical test.
     sample_radius :
         The radius of the punch samples or the width of the needle samples.
     needle_direction :
@@ -64,22 +74,33 @@ def run_calculate_analysis(
     sample_center :
         The center of the punch sample.
     """
-    database = Database(database_file)
+    simulation_file = f"{simulation_path}_{seed}.json"
+
+    database = Database(database_path)
     simulation = Simulation(simulation_file)
-    feature = Simulation.get_feature_object(feature_name)
 
     sample: Union[SampleNeedle, SamplePunch]
     if sample_shape in ("needle", "Needle"):
         sample = SampleNeedle(simulation.max_radius, sample_radius, needle_direction)
     elif sample_shape in ("punch", "Punch"):
-        sample = SamplePunch(simulation.max_radius, sample_radius, sample_center)
+        sample = SamplePunch(simulation.max_radius, sample_radius, tuple(sample_center))
     else:
         raise AttributeError("The sample type provided is not valid.")
 
-    analysis = Analysis(simulation.key, sample, timepoint, feature)
-    print(database)
-    print(analysis)
-
     data = database.load_dataframe(SIMULATION_TABLE, simulation.key)
-    analysis_df = analysis.calculate_feature(data, stats=True, info=True)
-    database.add_dataframe(ANALYSIS_TABLE, analysis_df)
+
+    for timepoint in timepoints:
+        analysis = Analysis(
+            simulation.key,
+            sample,
+            timepoint,
+            [Simulation.get_feature_object(feature) for feature in features],
+        )
+        analysis_df = analysis.calculate_features(data, stats=True, info=True)
+        database.create_table(STATS_TABLE, stats)
+        database.add_dataframe(STATS_TABLE, stats_df)
+
+        print(stats)
+
+    print(database)
+

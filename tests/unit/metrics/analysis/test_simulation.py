@@ -82,7 +82,9 @@ class TestSimulation(unittest.TestCase):
         json_mock.load.return_value = simulation_contents
         loaded_simulation = Simulation(simulation_file).load_simulation()
 
-        open_mock.assert_called_with(simulation_file, "r", encoding="utf-8")
+        open_mock.assert_called_with(
+            "/path/to/file/SIMULATION_FILE/SIMULATION_FILE_00.json", "r", encoding="utf-8"
+        )
         json_mock.load.assert_called_with(open_mock())
         self.assertDictEqual(simulation_contents, loaded_simulation)
 
@@ -96,7 +98,11 @@ class TestSimulation(unittest.TestCase):
         json_mock.load.return_value = simulation_contents
         loaded_simulation = Simulation(simulation_file).load_simulation(suffix=".PARAM")
 
-        open_mock.assert_called_with(param_file, "r", encoding="utf-8")
+        open_mock.assert_called_with(
+            "/path/to/file/SIMULATION_FILE.PARAM/SIMULATION_FILE_00.PARAM.json",
+            "r",
+            encoding="utf-8",
+        )
         json_mock.load.assert_called_with(open_mock())
         self.assertDictEqual(simulation_contents, loaded_simulation)
 
@@ -158,8 +164,12 @@ class TestSimulation(unittest.TestCase):
         }
 
         mock_contents = {
-            simulation_file: json.dumps(simulation_contents),
-            simulation_param_file: json.dumps(simulation_param_contents),
+            "/path/to/file/SIMULATION_FILE/SIMULATION_FILE_00.json": json.dumps(
+                simulation_contents
+            ),
+            "/path/to/file/SIMULATION_FILE.PARAM/SIMULATION_FILE_00.PARAM.json": json.dumps(
+                simulation_param_contents
+            ),
         }
         open_mock.side_effect = lambda fname, *args, **kwargs: mock_open(
             read_data=mock_contents[fname]
@@ -241,8 +251,12 @@ class TestSimulation(unittest.TestCase):
         }
 
         mock_contents = {
-            simulation_file: json.dumps(simulation_contents),
-            simulation_param_file: json.dumps(simulation_param_contents),
+            "/path/to/file/SIMULATION_FILE/SIMULATION_FILE_00.json": json.dumps(
+                simulation_contents
+            ),
+            "/path/to/file/SIMULATION_FILE.PARAM/SIMULATION_FILE_00.PARAM.json": json.dumps(
+                simulation_param_contents
+            ),
         }
         open_mock.side_effect = lambda fname, *args, **kwargs: mock_open(
             read_data=mock_contents[fname]
@@ -333,9 +347,14 @@ class TestSimulation(unittest.TestCase):
         }
 
         mock_contents = {
-            simulation_file: json.dumps(simulation_contents),
-            simulation_param_file: json.dumps(simulation_param_contents),
+            "/path/to/file/SIMULATION_FILE/SIMULATION_FILE_00.json": json.dumps(
+                simulation_contents
+            ),
+            "/path/to/file/SIMULATION_FILE.PARAM/SIMULATION_FILE_00.PARAM.json": json.dumps(
+                simulation_param_contents
+            ),
         }
+
         open_mock.side_effect = lambda fname, *args, **kwargs: mock_open(
             read_data=mock_contents[fname]
         ).return_value
@@ -396,7 +415,7 @@ class TestSimulation(unittest.TestCase):
         self.assertEqual(expected_feature.name, found_feature.name)
 
     def test_get_feature_object_given_discrete_feature_returns_feature(self):
-        expected_feature = DiscreteFeature("population", "TEXT", False, ["0"])
+        expected_feature = DiscreteFeature("population", "TEXT", False)
         found_feature = Simulation.get_feature_object("population")
         self.assertEqual(expected_feature.name, found_feature.name)
         self.assertEqual(expected_feature.categories, found_feature.categories)

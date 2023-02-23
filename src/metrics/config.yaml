@@ -7,7 +7,7 @@ experiment:
   seed_resolution: none
 
 parse: True
-analyze: False
+analyze: True
 analysis:
   features:
     - population

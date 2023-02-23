@@ -45,6 +45,7 @@ class Database:
         :
             Connection to the database file.
         """
+        print(self.file)
         connection = sqlite3.connect(self.file, uri=True)
         return connection
 

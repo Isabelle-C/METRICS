@@ -1,7 +1,6 @@
 from typing import Dict, List, Any
 import pandas as pd
 from scipy.stats import hypergeom, entropy
-from scipy.special import rel_entr
 
 from metrics.feature.feature import Feature
 
@@ -25,8 +24,9 @@ class DiscreteFeature(Feature):
     feature_type = "discrete"
     """string: Type of the feature."""
 
-    def __init__(self, name: str, affinity: str, is_null: bool):
+    def __init__(self, name: str, affinity: str, is_null: bool, categories: List[int]):
         super().__init__(name, affinity, is_null)
+        self.categories = categories
 
     def __str__(self) -> str:
         return "DISCRETE " + super().__str__()

@@ -73,7 +73,9 @@ class Simulation:
         :
             Loaded simulation file.
         """
-        file_name = f"{self.path}/{self.key}_{self.seed:02}{suffix}{self.extension}"
+        file_name = (
+            f"{self.path}/{self.key}{suffix}/{self.key}_{self.seed:02}{suffix}{self.extension}"
+        )
         with open(file_name, "r", encoding="utf-8") as json_file:
             loaded_simulation = json.load(json_file)
         return loaded_simulation
