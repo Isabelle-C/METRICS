@@ -3,7 +3,7 @@ import math
 
 import numpy as np
 import pandas as pd
-from scipy.stats import kstwo
+from scipy.stats import entropy, kstest, kstwo, gaussian_kde
 
 from metrics.feature.continuous_feature import ContinuousFeature
 
@@ -56,22 +56,18 @@ class TestContinuousFeature(unittest.TestCase):
         is_null = True
         continuous_feature = ContinuousFeature(feature_name, affinity, is_null)
 
-        sample_data = [1, 3, 4, 4, 4, 5, 7]
+        sample_data = [1, 2, 4, 4, 4, 6, 7]
         tumor_data = [1, 2, 2, 4, 6, 6, 7]
+
+        sample_prob, reference_prob = continuous_feature.get_pdfs(
+            sample_data,
+            tumor_data,
+        )
+
+        expected_divergence = entropy(sample_prob, reference_prob)
 
         sample_dataframe = pd.DataFrame({feature_name: sample_data})
         tumor_dataframe = pd.DataFrame({feature_name: tumor_data})
-
-        normalized_sample_data = sample_data / np.sum(sample_data)
-        normalized_tumor_data = tumor_data / np.sum(tumor_data)
-
-        expected_divergence = sum(
-            [
-                normalized_sample_data[i]
-                * np.log(normalized_sample_data[i] / normalized_tumor_data[i])
-                for i in range(len(normalized_sample_data))
-            ]
-        )
         returned_divergence = continuous_feature.compare_feature_info(
             sample_dataframe, tumor_dataframe
         )
@@ -84,24 +80,15 @@ class TestContinuousFeature(unittest.TestCase):
         is_null = True
         continuous_feature = ContinuousFeature(feature_name, affinity, is_null)
 
-        sample_data = [0.2, 0.2, 0.2]
+        sample_data = [0.3, 0.1, 0.1]
         tumor_data = [0.3, 0.3, 0.1, 0.1]
+
+        sample_prob, reference_prob = continuous_feature.get_pdfs(sample_data, tumor_data)
+
+        expected_divergence = entropy(sample_prob, reference_prob)
 
         sample_dataframe = pd.DataFrame({feature_name: sample_data})
         tumor_dataframe = pd.DataFrame({feature_name: tumor_data})
-
-        normalized_sample_data = sample_data / np.sum(sample_data)
-        normalized_tumor_data = tumor_data / np.sum(tumor_data)
-
-        normalized_sample_data = normalized_sample_data + [0]
-
-        expected_divergence = sum(
-            [
-                normalized_sample_data[i]
-                * np.log(normalized_sample_data[i] / normalized_tumor_data[i])
-                for i in range(len(normalized_sample_data))
-            ]
-        )
         returned_divergence = continuous_feature.compare_feature_info(
             sample_dataframe, tumor_dataframe
         )

@@ -56,9 +56,9 @@ class TestDatabase(unittest.TestCase):
         object = mock.Mock()
         object.get_feature_list.return_value = [feature]
 
-        query = f"CREATE TABLE IF NOT EXIST {table_name} ({feature_string});"
+        query = f"CREATE TABLE IF NOT EXISTS {table_name} ({feature_string});"
 
-        Database("test.db").create_table(table_name, object)
+        Database("test.db").create_table(table_name, object, stats=True, info=False)
         cursor_object.execute.assert_called_with(query)
         connection_object.commit.assert_called()
         connection_object.close.assert_called()
@@ -117,8 +117,8 @@ class TestDatabase(unittest.TestCase):
             feature2,
         ]
 
-        expected = f"CREATE TABLE IF NOT EXIST {table_name} ({feature_string},{feature_string2});"
-        found = Database.make_create_table_query(table_name, fake_object)
+        expected = f"CREATE TABLE IF NOT EXISTS {table_name} ({feature_string},{feature_string2});"
+        found = Database.make_create_table_query(table_name, fake_object, stats=True, info=False)
         self.assertEqual(expected, found)
 
     def test_make_select_from_query_returns_query(self):

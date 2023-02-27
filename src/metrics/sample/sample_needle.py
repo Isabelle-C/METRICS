@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Union, Optional
 
 from metrics.sample.sample import Sample
 
@@ -20,7 +20,7 @@ class SampleNeedle(Sample):
         Direction of the sample.
     """
 
-    def __init__(self, simulation_radius: int, sample_width: int, direction: int):
+    def __init__(self, simulation_radius: int, sample_width: int, direction: Optional[int]):
         self.simulation_radius = simulation_radius
         self.sample_width = sample_width
         if direction not in [1, 2, 3, 4, 5, 6]:

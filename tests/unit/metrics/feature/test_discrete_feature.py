@@ -59,7 +59,7 @@ class TestDiscreteFeature(unittest.TestCase):
 
         returned_nan = discrete_feature.compare_feature_stat(sample_dataframe, tumor_dataframe)
 
-        self.assertTrue(math.isnan(returned_nan["0"]))
+        self.assertTrue(math.isnan(returned_nan))
 
     def test_compare_feature_stat_feature_not_in_tumor_returns_nan(self):
         feature_name = "feature_name"
@@ -72,7 +72,7 @@ class TestDiscreteFeature(unittest.TestCase):
 
         returned_nan = discrete_feature.compare_feature_stat(sample_dataframe, tumor_dataframe)
 
-        self.assertTrue(math.isnan(returned_nan["0"]))
+        self.assertTrue(math.isnan(returned_nan))
 
     def test_compare_feature_info_feature_not_in_tumor_returns_nan(self):
         feature_name = "feature_name"
@@ -85,7 +85,7 @@ class TestDiscreteFeature(unittest.TestCase):
 
         returned_nan = discrete_feature.compare_feature_info(sample_dataframe, tumor_dataframe)
 
-        self.assertTrue(math.isnan(returned_nan["0"]))
+        self.assertTrue(math.isnan(returned_nan))
 
     def test_compare_feature_info_single_category_given_data_returns_kl_divergence(self):
         feature_name = "feature_name"
@@ -96,10 +96,10 @@ class TestDiscreteFeature(unittest.TestCase):
         sample_data = [0, 0, 0, 1, 1, 1]
         tumor_data = [0, 0, 0, 0, 1, 1, 1, 1, 1, 1]
 
-        x = 3 / 6
-        y = 4 / 10
+        x = [sample_data.count(0) / len(sample_data), sample_data.count(1) / len(sample_data)]
+        y = [tumor_data.count(0) / len(tumor_data), tumor_data.count(1) / len(tumor_data)]
 
-        expected_probability = {0: x * math.log(x / y)}
+        expected_probability = sum([x[i] * math.log(x[i] / y[i]) for i in range(len(x))])
 
         sample_dataframe = pd.DataFrame({feature_name: sample_data})
         tumor_dataframe = pd.DataFrame({feature_name: tumor_data})
@@ -108,7 +108,7 @@ class TestDiscreteFeature(unittest.TestCase):
             sample_dataframe, tumor_dataframe
         )
 
-        self.assertAlmostEqual(expected_probability[0], returned_probability[0], places=5)
+        self.assertAlmostEqual(expected_probability, returned_probability, places=5)
 
     def test_write_feature_data_stats(self):
         feature_name = "population"
@@ -183,10 +183,7 @@ class TestDiscreteFeature(unittest.TestCase):
         )
 
         expected_value = discrete_feature.compare_feature_info(sample_data, simulation_data)
-        expected_list = [
-            ["col1", "col2", "col3", "0", expected_value["0"]],
-            ["col1", "col2", "col3", "1", expected_value["1"]],
-        ]
+        expected_list = [["col1", "col2", "col3", None, expected_value]]
 
         self.assertEqual(output_list, expected_list)
 
@@ -225,8 +222,8 @@ class TestDiscreteFeature(unittest.TestCase):
         expected_value_info = discrete_feature.compare_feature_info(sample_data, simulation_data)
         expected_value_stats = discrete_feature.compare_feature_stat(sample_data, simulation_data)
         expected_list = [
-            ["col1", "col2", "col3", "0", expected_value_stats["0"], expected_value_info["0"]],
-            ["col1", "col2", "col3", "1", expected_value_stats["1"], expected_value_info["1"]],
+            ["col1", "col2", "col3", "0", expected_value_stats["0"], expected_value_info],
+            ["col1", "col2", "col3", "1", expected_value_stats["1"], expected_value_info],
         ]
 
         self.assertEqual(output_list, expected_list)

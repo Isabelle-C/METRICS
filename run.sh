@@ -1,4 +1,5 @@
 #!/bin/sh
+
 sqlite3 data/databases/testDB.db <<EOF
 DELETE FROM simulations;
 DELETE FROM stats;

@@ -20,7 +20,7 @@ class Analysis:
         Sample object.
     timepoint : float
         Time point to execute statistical test.
-    feature : Union[ContinuousFeature, DiscreteFeature]
+    features : List[Union[ContinuousFeature, DiscreteFeature][
         Feature object.
     """
 
@@ -29,26 +29,53 @@ class Analysis:
         simulation_key: str,
         sample: Union[SampleNeedle, SamplePunch],
         timepoint: float,
-        feature: Union[ContinuousFeature, DiscreteFeature],
+        features: List[Union[ContinuousFeature, DiscreteFeature]],
     ):
         self.key = simulation_key
         self.sample = sample
         self.timepoint = timepoint
-        self.feature = feature
+        self.features = features
 
     def __str__(self) -> str:
         attributes = [
             ("key", self.key),
             ("sample", self.sample),
             ("timepoint", self.timepoint),
-            ("feature", self.feature),
+            ("features", self.features),
         ]
 
         attribute_strings = [f"{key:10} = {value}" for key, value in attributes]
         string = "\n\t".join(attribute_strings)
         return "ANALYSIS\n\t" + string
 
-    def calculate_feature(self, data: pd.DataFrame, stats: bool, info: bool) -> pd.DataFrame:
+    def calculate_features(self, data: pd.DataFrame, stats: bool, info: bool) -> pd.DataFrame:
+        """
+        Calculate statistical comparison of features between a sample and the simulation population.
+
+        Parameters
+        ----------
+        data :
+            Simulation data.
+
+        Returns
+        -------
+        :
+            Stats data calculated with the given features.
+        """
+        stats_df = pd.concat(
+            [self.calculate_feature(data, feature, stats, info) for feature in self.features],
+            axis=0,
+        )
+
+        return stats_df.fillna(value="NULL")
+
+    def calculate_feature(
+        self,
+        data: pd.DataFrame,
+        feature: Union[ContinuousFeature, DiscreteFeature],
+        stats: bool,
+        info: bool,
+    ) -> pd.DataFrame:
         """
         Calculate statistical comparison of a feature between a sample and the simulation
         population.
@@ -57,6 +84,8 @@ class Analysis:
         ----------
         data :
             Simulation data.
+        feature :
+            Feature object.
         stats :
             True if calculating statistical tests, False otherwise.
         info :
@@ -78,10 +107,10 @@ class Analysis:
                 self.timepoint,
                 self.timepoint,
                 self.sample.get_sample_key(),
-                self.feature.name,
+                feature.name,
             ]
 
-            output_data = self.feature.write_feature_data(
+            output_data = feature.write_feature_data(
                 data_list, stats, info, sample_seed_data, simulation_seed_data
             )
             analysis_data.extend(output_data)

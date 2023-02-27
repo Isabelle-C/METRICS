@@ -28,7 +28,7 @@ class SamplePunch(Sample):
         ]
         if max(distance_from_center) > simulation_radius:
             raise ValueError("The punch center exceed the simulation edge")
-        elif max(distance_from_center) == simulation_radius:
+        if max(distance_from_center) == simulation_radius:
             warnings.warn("The punch right on the edge of simulation.")
 
         self.simulation_radius = simulation_radius

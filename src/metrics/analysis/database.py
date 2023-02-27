@@ -49,7 +49,9 @@ class Database:
         connection = sqlite3.connect(self.file, uri=True)
         return connection
 
-    def create_table(self, table_name: str, table_spec: Union[Simulation, Analysis]) -> None:
+    def create_table(
+        self, table_name: str, table_spec: Union[Simulation, Analysis], stats: bool, info: bool
+    ) -> None:
         """
         Creates table in connected database.
 
@@ -59,10 +61,15 @@ class Database:
             The name of the table.
         table_spec :
             Object specifying the table columns (Simulation or Analysis object).
+        stats :
+            True if adding stats table, False otherwise.
+        info :
+            True if adding info table, False otherwise.
+
         """
         connection = self.get_connection()
         cursor = connection.cursor()
-        query = Database.make_create_table_query(table_name, table_spec)
+        query = Database.make_create_table_query(table_name, table_spec, stats, info)
 
         cursor.execute(query)
         connection.commit()
@@ -113,7 +120,9 @@ class Database:
         return data
 
     @staticmethod
-    def make_create_table_query(table_name: str, table_spec: Union[Simulation, Analysis]) -> str:
+    def make_create_table_query(
+        table_name: str, table_spec: Union[Simulation, Analysis], stats: bool, info: bool
+    ) -> str:
         """
         Return query string that creates the SQLite table.
 
@@ -123,6 +132,10 @@ class Database:
             The name of the table.
         table_spec :
             Object specifying the table columns (Simulation or Analysis object).
+        stats :
+            True if adding stats table, False otherwise.
+        info :
+            True if adding info table, False otherwise.
 
         Returns
         -------
@@ -130,7 +143,7 @@ class Database:
             Query string for creating table.
         """
         if isinstance(table_spec, Analysis):
-            feature_list = table_spec.get_feature_list(stats=True, info=False)
+            feature_list = table_spec.get_feature_list(stats=stats, info=info)
         else:
             feature_list = table_spec.get_feature_list()
 
@@ -138,7 +151,7 @@ class Database:
         for feature in feature_list:
             table_columns.append(feature.make_query())
 
-        query = f"CREATE TABLE IF NOT EXIST {table_name} ({','.join(table_columns)});"
+        query = f"CREATE TABLE IF NOT EXISTS {table_name} ({','.join(table_columns)});"
         return query
 
     @staticmethod

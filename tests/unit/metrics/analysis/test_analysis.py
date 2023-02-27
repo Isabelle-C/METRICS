@@ -48,7 +48,9 @@ class TestAnalysis(unittest.TestCase):
 
         analysis = Analysis(key, punch_sample_mock, timepoint, continuous_feature_mock)
 
-        returned_df = analysis.calculate_feature(data, stats=True, info=False)
+        returned_df = analysis.calculate_feature(
+            data, continuous_feature_mock, stats=True, info=False
+        )
 
         expected_dict = {
             "key": [key] * 2,
@@ -115,7 +117,9 @@ class TestAnalysis(unittest.TestCase):
 
         analysis = Analysis(key, punch_sample_mock, timepoint, continuous_feature_mock)
 
-        returned_df = analysis.calculate_feature(data, stats=False, info=True)
+        returned_df = analysis.calculate_feature(
+            data, continuous_feature_mock, stats=False, info=True
+        )
 
         expected_dict = {
             "key": [key] * 2,
@@ -182,7 +186,9 @@ class TestAnalysis(unittest.TestCase):
 
         analysis = Analysis(key, punch_sample_mock, timepoint, continuous_feature_mock)
 
-        returned_df = analysis.calculate_feature(data, stats=True, info=True)
+        returned_df = analysis.calculate_feature(
+            data, continuous_feature_mock, stats=True, info=True
+        )
 
         expected_dict = {
             "key": [key] * 2,
@@ -256,7 +262,9 @@ class TestAnalysis(unittest.TestCase):
 
         analysis = Analysis(key, needle_sample_mock, timepoint, discrete_feature_mock)
 
-        returned_df = analysis.calculate_feature(data, stats=True, info=False)
+        returned_df = analysis.calculate_feature(
+            data, discrete_feature_mock, stats=True, info=False
+        )
 
         expected_dict = {
             "key": [key] * 4,
@@ -324,7 +332,9 @@ class TestAnalysis(unittest.TestCase):
 
         analysis = Analysis(key, needle_sample_mock, timepoint, discrete_feature_mock)
 
-        returned_df = analysis.calculate_feature(data, stats=False, info=True)
+        returned_df = analysis.calculate_feature(
+            data, discrete_feature_mock, stats=False, info=True
+        )
 
         expected_dict = {
             "key": [key] * 2,
@@ -382,7 +392,7 @@ class TestAnalysis(unittest.TestCase):
 
         analysis = Analysis(key, needle_sample_mock, timepoint, discrete_feature_mock)
 
-        returned_df = analysis.calculate_feature(data, stats=True, info=True)
+        returned_df = analysis.calculate_feature(data, discrete_feature_mock, stats=True, info=True)
 
         expected_dict = {
             "key": [key] * 2,

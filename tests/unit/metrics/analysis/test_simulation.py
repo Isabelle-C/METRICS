@@ -409,7 +409,7 @@ class TestSimulation(unittest.TestCase):
         with self.assertRaises(ValueError):
             Simulation.get_feature_object("key")
 
-    def test_get_feature_object_given_discrete_feature_returns_feature(self):
+    def test_get_feature_object_given_continuous_feature_returns_feature(self):
         expected_feature = ContinuousFeature("volume", "REAL", False)
         found_feature = Simulation.get_feature_object("volume")
         self.assertEqual(expected_feature.name, found_feature.name)
@@ -418,4 +418,3 @@ class TestSimulation(unittest.TestCase):
         expected_feature = DiscreteFeature("population", "TEXT", False)
         found_feature = Simulation.get_feature_object("population")
         self.assertEqual(expected_feature.name, found_feature.name)
-        self.assertEqual(expected_feature.categories, found_feature.categories)

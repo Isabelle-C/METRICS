@@ -1,15 +1,25 @@
 #!/usr/bin/env python3
+import os
+from pathlib import Path
 
 import yaml
-from metrics.workflows import run_parse_simulations, run_calculate_stats
+from metrics.workflows import run_parse_simulations, run_calculate_analysis
 
 
 def main() -> None:
     """
     TODO
     """
-    with open("/Users/isabellechen/METRICS/src/metrics/config.yaml", "r", encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    parent_folder = Path.cwd().parent
+    filename = "config.yaml"
+
+    for subdir, dirs, files in os.walk(parent_folder):
+        for file in files:
+            if file == filename:
+                file_path = os.path.join(subdir, file)
+                with open(file_path, "r", encoding="utf-8") as f:
+                    config = yaml.safe_load(f)
+                break
 
     database_path = config["experiment"]["database"]
     simulation = config["experiment"]["simulation"]
@@ -49,7 +59,7 @@ def main() -> None:
 
         for seed in seeds:
             for sample in samples:
-                run_calculate_stats(
+                run_calculate_analysis(
                     database_path, simulation, seed, features, timepoints, **samples[sample]
                 )
 

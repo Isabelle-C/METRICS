@@ -15,7 +15,6 @@ class Coordinate:
     """
 
     def __init__(self, coordinate: tuple):
-
         if sum(coordinate) != 0:
             raise ValueError("Coordinate is invalid.")
         self.u = coordinate[0]

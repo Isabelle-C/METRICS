@@ -1,9 +1,10 @@
-from typing import List, Any
+from typing import List, Any, Tuple, Union
+
 import numpy as np
 import pandas as pd
 from statsmodels.distributions.empirical_distribution import ECDF
 from scipy.stats import entropy, kstest, gaussian_kde
-import warnings
+
 
 from metrics.feature.feature import Feature
 
@@ -51,9 +52,11 @@ class ContinuousFeature(Feature):
             Result of statistical test.
         """
         if self.is_valid_feature_name(simulation_data, sample_data):
-            tumor_cdf = ECDF(simulation_data[self.name])
-            sample_feature_data = list(sample_data[self.name])
-            p_value = kstest(sample_feature_data, tumor_cdf)
+            sample = list(sample_data[self.name])
+            reference = list(simulation_data[self.name])
+
+            reference_cdf = ECDF(reference)
+            p_value = kstest(sample, reference_cdf)
             return p_value[1]
 
         return float("nan")
@@ -76,40 +79,13 @@ class ContinuousFeature(Feature):
             Result of KL divergence that are keyed by the category.
         """
         if self.is_valid_feature_name(simulation_data, sample_data):
-            simulation_values = simulation_data[self.name].tolist()
-            sample_values = sample_data[self.name].tolist()
-            try:
-                # Estimate the probability density function (PDF) of the sample and simulation data
-                simulation_kde = gaussian_kde(simulation_values)
-                sample_kde = gaussian_kde(sample_values)
-            except (ValueError, np.linalg.LinAlgError):
-                # If the sample or simulation contain only a single unique value, the KDE will fail
-                return float("nan")
+            sample = list(sample_data[self.name])
+            reference = list(simulation_data[self.name])
 
-            # Discretize continuous distributions into discrete approximations
-            num_bins = 100
-            x = np.linspace(
-                min(simulation_values + sample_values),
-                max(simulation_values + sample_values),
-                num_bins,
-            )
-            reference_prob = simulation_kde.pdf(x)
-            sample_prob = sample_kde.pdf(x)
-            print(reference_prob)
-            print()
-            print(sample_prob)
+            sample_prob, reference_prob = self.get_pdfs(sample, reference)
+
             return entropy(sample_prob, reference_prob)
 
-            # normalize to valid probability distributions
-            x = sample_data[self.name] / np.sum(sample_data[self.name])
-            y = simulation_data[self.name] / np.sum(simulation_data[self.name])
-            # padding sample distribution (i.e. the shorter distribution with 0s)
-            length_difference = len(y) - len(x)
-            if length_difference > 0:
-                x = np.pad(x, (0, length_difference), "constant")
-            if length_difference < 0:
-                warnings.warn("The size of the sample data is bigger than the simulation data.")
-            return entropy(x, y)
         return float("nan")
 
     def write_feature_data(
@@ -145,11 +121,11 @@ class ContinuousFeature(Feature):
             stats_data = self.compare_feature_stat(sample_data, simulation_data)
             return [data_list + [None, stats_data]]
 
-        elif info and info != stats:
+        if info and info != stats:
             info_data = self.compare_feature_info(sample_data, simulation_data)
             return [data_list + [None, info_data]]
 
-        elif info == stats == True:
+        if info == stats == True:
             stats_data = self.compare_feature_stat(sample_data, simulation_data)
             info_data = self.compare_feature_info(sample_data, simulation_data)
             return [data_list + [None, stats_data, info_data]]
@@ -159,6 +135,58 @@ class ContinuousFeature(Feature):
     def is_valid_feature_name(
         self, simulation_data: pd.DataFrame, sample_data: pd.DataFrame
     ) -> bool:
+        """
+        Parameters
+        ----------
+        simulation_data :
+            Loaded tumor data.
+        sample_data :
+            Loaded sample data.
+
+        Returns
+        -------
+        :
+            True if feature name valid and if dataframe contains data, False otherwise.
+        """
+
         if self.name not in simulation_data.columns or self.name not in sample_data.columns:
             return False
+        if simulation_data[self.name].isna().all() or sample_data[self.name].isna().all():
+            return False
         return True
+
+    def get_pdfs(
+        self, sample_data: list[float], reference_data: list[float]
+    ) -> Union[Tuple[np.ndarray, np.ndarray], float]:
+        """
+        Parameters
+        ----------
+        reference_data :
+            Distribution of the feature in the simulation data.
+        sample_data :
+            Distribution of the feature in the sample data.
+
+        Returns
+        -------
+        :
+            Probability density function of the feature.
+        """
+        try:
+            # Estimate the probability density function (PDF) of the sample and simulation data
+            reference_kde = gaussian_kde(reference_data)
+            sample_kde = gaussian_kde(sample_data)
+        except (ValueError, np.linalg.LinAlgError):
+            # If the sample or simulation contain only a single unique value, the KDE will fail
+            return float("nan")
+
+        # Discretize continuous distributions into discrete approximations
+        num_bins = 1000
+        x = np.linspace(
+            min(min(reference_data), max(sample_data)),
+            max(min(reference_data), max(sample_data)),
+            num_bins,
+        )
+        reference_prob = reference_kde.pdf(x)
+        sample_prob = sample_kde.pdf(x)
+
+        return sample_prob, reference_prob
