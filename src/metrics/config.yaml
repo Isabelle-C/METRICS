@@ -1,13 +1,16 @@
 experiment:
   database: data/databases/testDB.db
   simulation: data/simulations/POPULATION_HETEROGENEITY_C_A_00
-  timepoints: [1.0]
+  timepoints: [1.0, 3.0]
   timepoint_resolution: none
+  observation_timepoints: [1.0, 3.0]
+  observation_timepoint_resolution: none
   seeds: [0]
   seed_resolution: none
 
 parse: True
 analyze: True
+
 analysis:
   features:
     - population
@@ -26,3 +29,10 @@ analysis:
       sample_shape: needle
       sample_radius: 1
       needle_direction: 3
+  comparisons:
+    0:
+      reference: punch_1
+      observation: needle_1
+    # 1:
+    #   reference: simulation
+    #   observation: needle_1

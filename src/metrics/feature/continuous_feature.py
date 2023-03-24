@@ -79,8 +79,8 @@ class ContinuousFeature(Feature):
             Result of KL divergence that are keyed by the category.
         """
         if self.is_valid_feature_name(simulation_data, sample_data):
-            sample = list(sample_data[self.name])
-            reference = list(simulation_data[self.name])
+            sample: list = list(sample_data[self.name])
+            reference: list = list(simulation_data[self.name])
 
             sample_prob, reference_prob = self.get_pdfs(sample, reference)
 
@@ -91,8 +91,6 @@ class ContinuousFeature(Feature):
     def write_feature_data(
         self,
         data_list: list,
-        stats: bool,
-        info: bool,
         sample_data: pd.DataFrame,
         simulation_data: pd.DataFrame,
     ) -> List[Any]:
@@ -103,10 +101,6 @@ class ContinuousFeature(Feature):
         ----------
         data_list:
             List of data in analysis table.
-        stats:
-            True if calculating statistical tests, False otherwise.
-        info:
-            True if calculating KL divergence, False otherwise.
         sample_data :
             Loaded sample data.
         simulation_data :
@@ -117,20 +111,9 @@ class ContinuousFeature(Feature):
         :
             List of data needed for analysis dataframe.
         """
-        if stats and stats != info:
-            stats_data = self.compare_feature_stat(sample_data, simulation_data)
-            return [data_list + [None, stats_data]]
-
-        if info and info != stats:
-            info_data = self.compare_feature_info(sample_data, simulation_data)
-            return [data_list + [None, info_data]]
-
-        if info == stats == True:
-            stats_data = self.compare_feature_stat(sample_data, simulation_data)
-            info_data = self.compare_feature_info(sample_data, simulation_data)
-            return [data_list + [None, stats_data, info_data]]
-
-        return []
+        stats_data = self.compare_feature_stat(sample_data, simulation_data)
+        info_data = self.compare_feature_info(sample_data, simulation_data)
+        return [data_list + [None, stats_data, info_data]]
 
     def is_valid_feature_name(
         self, simulation_data: pd.DataFrame, sample_data: pd.DataFrame
@@ -157,7 +140,7 @@ class ContinuousFeature(Feature):
 
     def get_pdfs(
         self, sample_data: list[float], reference_data: list[float]
-    ) -> Union[Tuple[np.ndarray, np.ndarray], float]:
+    ) -> Union[Tuple[np.ndarray, np.ndarray], Tuple[float, float]]:
         """
         Parameters
         ----------
@@ -177,7 +160,7 @@ class ContinuousFeature(Feature):
             sample_kde = gaussian_kde(sample_data)
         except (ValueError, np.linalg.LinAlgError):
             # If the sample or simulation contain only a single unique value, the KDE will fail
-            return float("nan")
+            return float("nan"), float("nan")
 
         # Discretize continuous distributions into discrete approximations
         num_bins = 1000

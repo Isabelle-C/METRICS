@@ -19,8 +19,6 @@ class DiscreteFeature(Feature):
         The SQLite3 type affinity of the feature.
     is_null :
         True if feature data can be null, False otherwise.
-    categories :
-        Categories of the feature.
     """
 
     feature_type = "discrete"
@@ -112,8 +110,6 @@ class DiscreteFeature(Feature):
     def write_feature_data(
         self,
         data_list: list,
-        stats: bool,
-        info: bool,
         sample_data: pd.DataFrame,
         simulation_data: pd.DataFrame,
     ) -> List[Any]:
@@ -124,10 +120,6 @@ class DiscreteFeature(Feature):
         ----------
         data_list:
             List of data in analysis table.
-        stats:
-            True if calculating statistical tests, False otherwise.
-        info:
-            True if calculating KL divergence, False otherwise.
         sample_data :
             Loaded sample data.
         simulation_data :
@@ -139,30 +131,19 @@ class DiscreteFeature(Feature):
             List of data needed for analysis dataframe.
         """
         output_list = []
-        data: Union[Dict[str, Any], float]
 
-        if stats != info:
-            if stats:
-                data = self.compare_feature_stat(sample_data, simulation_data)
-                for dict_key, dict_data in data.items():
-                    output_list.append(data_list + [dict_key, dict_data])
-                return output_list
-            if info:
-                data = self.compare_feature_info(sample_data, simulation_data)
-                output_list.append(data_list + [None, data])
-                return output_list
+        stats_data = self.compare_feature_stat(sample_data, simulation_data)
+        info_data = self.compare_feature_info(sample_data, simulation_data)
 
-        elif info == stats == True:
-            stats_data = self.compare_feature_stat(sample_data, simulation_data)
-            info_data = self.compare_feature_info(sample_data, simulation_data)
-
+        if not isinstance(stats_data, float):
             for key, value in stats_data.items():
                 output_list.append(data_list + [key] + [value, info_data])
             return output_list
 
         return []
 
-    def get_count(self, data: pd.DataFrame, category: str) -> int:
+    @staticmethod
+    def get_count(data: list, category: str) -> int:
         """
         Returns the number of categories of the feature.
 
@@ -170,6 +151,8 @@ class DiscreteFeature(Feature):
         ----------
         data :
             Loaded data.
+        category :
+            Categories of data.
 
         Returns
         -------

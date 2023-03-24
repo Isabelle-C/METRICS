@@ -1,10 +1,9 @@
-from typing import Union, List
+from typing import List
 
-from metrics.analysis.database import Database
-from metrics.analysis.simulation import Simulation
-from metrics.sample.sample_needle import SampleNeedle
-from metrics.sample.sample_punch import SamplePunch
 from metrics.analysis.analysis import Analysis
+from metrics.analysis.database import Database
+from metrics.analysis.experiment import Experiment
+from metrics.analysis.simulation import Simulation
 
 SIMULATION_TABLE = "simulations"
 ANALYSIS_TABLE = "stats"
@@ -31,9 +30,9 @@ def run_parse_simulations(
 
     database = Database(database_file)
     simulation = Simulation(simulation_file)
-    database.create_table(SIMULATION_TABLE, simulation, stats=True, info=True)
+    database.drop_table(SIMULATION_TABLE)
+    database.create_table(SIMULATION_TABLE, simulation)
 
-    print(database)
     print(simulation)
 
     for timepoint in timepoints:
@@ -47,10 +46,9 @@ def run_calculate_analysis(
     seed: str,
     features: list[str],
     timepoints: list[float],
-    sample_shape: str,
-    sample_radius: int,
-    needle_direction: int = 0,
-    punch_center: tuple = (0, 0, 0),
+    observation_timepoints: list[float],
+    samples: dict,
+    comparisons: dict,
 ) -> None:
     """
     Run the statistical test on data with the specified feature and sampling method.
@@ -67,41 +65,42 @@ def run_calculate_analysis(
         The name of the features.
     timepoints :
         The timepoints to perform statistical test.
-    sample_shape : {"needle", "Needle", "punch", "Punch"}
-        The shape of the sample.
-    sample_radius :
-        The radius of the punch samples or the width of the needle samples.
-    needle_direction :
-        The direction of needle sampling.
-    punch_center :
-        The center of the punch sample.
+    observation_timepoints :
+        The timepoints of observations to perform statistical test.
+    samples :
+        Sample parameter definitions.
+    comparisons :
+        The comparisons to perform.
     """
     simulation_file = f"{simulation_path}_{seed}.json"
 
     database = Database(database_path)
     simulation = Simulation(simulation_file)
 
-    sample: Union[SampleNeedle, SamplePunch]
-    if sample_shape in ("needle", "Needle"):
-        sample = SampleNeedle(simulation.max_radius, sample_radius, needle_direction)
-    elif sample_shape in ("punch", "Punch"):
-        sample = SamplePunch(simulation.max_radius, int(sample_radius), tuple(punch_center))
-    else:
-        raise AttributeError("The sample type provided is not valid.")
-
     data = database.load_dataframe(SIMULATION_TABLE, simulation.key)
+    database.drop_table(ANALYSIS_TABLE)
 
-    for timepoint in timepoints:
-        analysis = Analysis(
-            simulation.key,
-            sample,
-            timepoint,
-            [Simulation.get_feature_object(feature) for feature in features],
-        )
-        analysis_df = analysis.calculate_features(data, stats=True, info=True)
-        database.create_table(ANALYSIS_TABLE, analysis, stats=True, info=True)
-        database.add_dataframe(ANALYSIS_TABLE, analysis_df)
+    for comparison in comparisons.values():
+        for key, value in comparison.items():
+            print(f"{key} = {value}")
+        print(f"reference timepoint | observation timepoint")
+        print("--------------------------------------------")
+        for timepoint in timepoints:
+            for observation_timepoint in observation_timepoints:
+                experiment = Experiment(comparison, samples, simulation)
 
-        print(analysis)
+                analysis = Analysis(
+                    simulation.key,
+                    experiment,
+                    timepoint,
+                    observation_timepoint,
+                    [Simulation.get_feature_object(feature) for feature in features],
+                )
+                analysis_df = analysis.calculate_features(data)
 
-    print(database)
+                database.create_table(ANALYSIS_TABLE, analysis)
+                database.add_dataframe(ANALYSIS_TABLE, analysis_df)
+
+                print(f"{timepoint}{' ' *(20-len(str(timepoint)))}| {observation_timepoint}")
+
+        print("\n")

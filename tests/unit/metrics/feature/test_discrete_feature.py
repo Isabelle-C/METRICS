@@ -110,83 +110,6 @@ class TestDiscreteFeature(unittest.TestCase):
 
         self.assertAlmostEqual(expected_probability, returned_probability, places=5)
 
-    def test_write_feature_data_stats(self):
-        feature_name = "population"
-        affinity = "numeric"
-        is_null = True
-        discrete_feature = DiscreteFeature(feature_name, affinity, is_null)
-
-        data_list = ["col1", "col2", "col3"]
-        stats = True
-        info = False
-        timepoint = 1.0
-        key = "SIMULATION_FILE"
-
-        sample_data_dict = {
-            "key": [key] * 4,
-            "seed": [0, 0, 0, 0],
-            "time": [timepoint] * 4,
-            feature_name: ["0", "0", "1", "1"],
-        }
-        sample_data = pd.DataFrame(sample_data_dict)
-
-        simulation_data_dict = {
-            "key": [key] * 9,
-            "seed": [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            "time": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0],
-            feature_name: ["0", "0", "0", "1", "1", "1", "0", "0", "0"],
-        }
-        simulation_data = pd.DataFrame(simulation_data_dict)
-
-        output_list = discrete_feature.write_feature_data(
-            data_list, stats, info, sample_data, simulation_data
-        )
-
-        expected_value = discrete_feature.compare_feature_stat(sample_data, simulation_data)
-        expected_list = [
-            ["col1", "col2", "col3", "0", expected_value["0"]],
-            ["col1", "col2", "col3", "1", expected_value["1"]],
-        ]
-
-        self.assertEqual(output_list, expected_list)
-
-    def test_write_feature_data_info(self):
-        feature_name = "population"
-        affinity = "numeric"
-        is_null = True
-        discrete_feature = DiscreteFeature(feature_name, affinity, is_null)
-
-        data_list = ["col1", "col2", "col3"]
-        stats = False
-        info = True
-        timepoint = 1.0
-        key = "SIMULATION_FILE"
-
-        sample_data_dict = {
-            "key": [key] * 4,
-            "seed": [0, 0, 0, 0],
-            "time": [timepoint] * 4,
-            feature_name: ["0", "0", "1", "1"],
-        }
-        sample_data = pd.DataFrame(sample_data_dict)
-
-        simulation_data_dict = {
-            "key": [key] * 9,
-            "seed": [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            "time": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 2.0],
-            feature_name: ["0", "0", "0", "1", "1", "1", "0", "0", "0"],
-        }
-        simulation_data = pd.DataFrame(simulation_data_dict)
-
-        output_list = discrete_feature.write_feature_data(
-            data_list, stats, info, sample_data, simulation_data
-        )
-
-        expected_value = discrete_feature.compare_feature_info(sample_data, simulation_data)
-        expected_list = [["col1", "col2", "col3", None, expected_value]]
-
-        self.assertEqual(output_list, expected_list)
-
     def test_write_feature_data_info_stat(self):
         feature_name = "population"
         affinity = "numeric"
@@ -194,8 +117,6 @@ class TestDiscreteFeature(unittest.TestCase):
         discrete_feature = DiscreteFeature(feature_name, affinity, is_null)
 
         data_list = ["col1", "col2", "col3"]
-        stats = True
-        info = True
         timepoint = 1.0
         key = "SIMULATION_FILE"
 
@@ -215,9 +136,7 @@ class TestDiscreteFeature(unittest.TestCase):
         }
         simulation_data = pd.DataFrame(simulation_data_dict)
 
-        output_list = discrete_feature.write_feature_data(
-            data_list, stats, info, sample_data, simulation_data
-        )
+        output_list = discrete_feature.write_feature_data(data_list, sample_data, simulation_data)
 
         expected_value_info = discrete_feature.compare_feature_info(sample_data, simulation_data)
         expected_value_stats = discrete_feature.compare_feature_stat(sample_data, simulation_data)

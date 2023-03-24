@@ -58,7 +58,39 @@ class TestDatabase(unittest.TestCase):
 
         query = f"CREATE TABLE IF NOT EXISTS {table_name} ({feature_string});"
 
-        Database("test.db").create_table(table_name, object, stats=True, info=False)
+        Database("test.db").create_table(table_name, object)
+        cursor_object.execute.assert_called_with(query)
+        connection_object.commit.assert_called()
+        connection_object.close.assert_called()
+
+    @mock.patch("metrics.analysis.database.sqlite3")
+    def test_delete_data_from_table(self, sqlite3_mock):
+        connection_object = mock.Mock(spec=sqlite3.Connection)
+        sqlite3_mock.connect.return_value = connection_object
+        cursor_object = mock.Mock(spec=sqlite3.Cursor)
+        connection_object.cursor.return_value = cursor_object
+
+        table_name = "fake_table"
+
+        query = f"DELETE FROM {table_name} WHERE 1=1;"
+
+        Database("test.db").delete_data_from_table(table_name)
+        cursor_object.execute.assert_called_with(query)
+        connection_object.commit.assert_called()
+        connection_object.close.assert_called()
+
+    @mock.patch("metrics.analysis.database.sqlite3")
+    def test_drop_table(self, sqlite3_mock):
+        connection_object = mock.Mock(spec=sqlite3.Connection)
+        sqlite3_mock.connect.return_value = connection_object
+        cursor_object = mock.Mock(spec=sqlite3.Cursor)
+        connection_object.cursor.return_value = cursor_object
+
+        table_name = "fake_table"
+
+        query = f"DROP TABLE IF EXISTS {table_name};"
+
+        Database("test.db").drop_table(table_name)
         cursor_object.execute.assert_called_with(query)
         connection_object.commit.assert_called()
         connection_object.close.assert_called()
@@ -118,7 +150,7 @@ class TestDatabase(unittest.TestCase):
         ]
 
         expected = f"CREATE TABLE IF NOT EXISTS {table_name} ({feature_string},{feature_string2});"
-        found = Database.make_create_table_query(table_name, fake_object, stats=True, info=False)
+        found = Database.make_create_table_query(table_name, fake_object)
         self.assertEqual(expected, found)
 
     def test_make_select_from_query_returns_query(self):

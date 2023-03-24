@@ -45,13 +45,10 @@ class Database:
         :
             Connection to the database file.
         """
-        print(self.file)
         connection = sqlite3.connect(self.file, uri=True)
         return connection
 
-    def create_table(
-        self, table_name: str, table_spec: Union[Simulation, Analysis], stats: bool, info: bool
-    ) -> None:
+    def create_table(self, table_name: str, table_spec: Union[Simulation, Analysis]) -> None:
         """
         Creates table in connected database.
 
@@ -61,15 +58,10 @@ class Database:
             The name of the table.
         table_spec :
             Object specifying the table columns (Simulation or Analysis object).
-        stats :
-            True if adding stats table, False otherwise.
-        info :
-            True if adding info table, False otherwise.
-
         """
         connection = self.get_connection()
         cursor = connection.cursor()
-        query = Database.make_create_table_query(table_name, table_spec, stats, info)
+        query = Database.make_create_table_query(table_name, table_spec)
 
         cursor.execute(query)
         connection.commit()
@@ -119,10 +111,44 @@ class Database:
         connection.close()
         return data
 
+    def delete_data_from_table(self, table_name: str) -> None:
+        """
+        Delete data in specified table if it exists.
+
+        Parameters
+        ----------
+        table_name :
+            Name of the table.
+        """
+        connection = self.get_connection()
+        cursor = connection.cursor()
+        query = f"DELETE FROM {table_name} WHERE 1=1;"
+
+        cursor.execute(query)
+
+        connection.commit()
+        connection.close()
+
+    def drop_table(self, table_name: str) -> None:
+        """
+        Drop table.
+
+        Parameters
+        ----------
+        table_name :
+            Name of the table.
+        """
+        connection = self.get_connection()
+        cursor = connection.cursor()
+
+        query = f"DROP TABLE IF EXISTS {table_name};"
+        cursor.execute(query)
+
+        connection.commit()
+        connection.close()
+
     @staticmethod
-    def make_create_table_query(
-        table_name: str, table_spec: Union[Simulation, Analysis], stats: bool, info: bool
-    ) -> str:
+    def make_create_table_query(table_name: str, table_spec: Union[Simulation, Analysis]) -> str:
         """
         Return query string that creates the SQLite table.
 
@@ -132,20 +158,13 @@ class Database:
             The name of the table.
         table_spec :
             Object specifying the table columns (Simulation or Analysis object).
-        stats :
-            True if adding stats table, False otherwise.
-        info :
-            True if adding info table, False otherwise.
 
         Returns
         -------
         :
             Query string for creating table.
         """
-        if isinstance(table_spec, Analysis):
-            feature_list = table_spec.get_feature_list(stats=stats, info=info)
-        else:
-            feature_list = table_spec.get_feature_list()
+        feature_list = table_spec.get_feature_list()
 
         table_columns = []
         for feature in feature_list:

@@ -10,7 +10,6 @@ import numpy as np
 from metrics.feature.continuous_feature import ContinuousFeature
 from metrics.feature.discrete_feature import DiscreteFeature
 from metrics.analysis.simulation import Simulation
-from metrics.feature.feature import Feature
 
 
 class TestSimulation(unittest.TestCase):

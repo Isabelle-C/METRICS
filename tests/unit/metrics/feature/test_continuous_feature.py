@@ -95,82 +95,6 @@ class TestContinuousFeature(unittest.TestCase):
 
         self.assertAlmostEqual(expected_divergence, returned_divergence, places=5)
 
-    def test_write_feature_data_stats(self):
-        feature_name = "feature_name"
-        affinity = "numeric"
-        is_null = True
-        continuous_feature = ContinuousFeature(feature_name, affinity, is_null)
-
-        data_list = ["col1", "col2", "col3"]
-        stats = True
-        info = False
-        timepoint = 1.0
-        key = "SIMULATION_FILE"
-
-        simulation_data_dict = {
-            "key": [key] * 9,
-            "seed": [0, 0, 0, 0, 0, 0, 1, 1, 1],
-            "time": [1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0],
-            feature_name: [3001, 2500, 2600, 3002, 2400, 2900, 3050, 2550, 2650],
-        }
-        simulation_data = pd.DataFrame(simulation_data_dict)
-
-        sample_data_dict = {
-            "key": [key] * 4,
-            "seed": [0, 0, 1, 1],
-            "time": [timepoint] * 4,
-            feature_name: [3001, 2500, 3050, 2550],
-        }
-        sample_data = pd.DataFrame(sample_data_dict)
-
-        output_list = continuous_feature.write_feature_data(
-            data_list, stats, info, sample_data, simulation_data
-        )
-
-        expected_value = continuous_feature.compare_feature_stat(sample_data, simulation_data)
-        expected_list = [
-            ["col1", "col2", "col3", None, expected_value],
-        ]
-
-        self.assertEqual(output_list, expected_list)
-
-    def test_write_feature_data_info(self):
-        feature_name = "feature_name"
-        affinity = "numeric"
-        is_null = True
-        continuous_feature = ContinuousFeature(feature_name, affinity, is_null)
-
-        data_list = ["col1", "col2", "col3"]
-        stats = False
-        info = True
-        timepoint = 1.0
-        key = "SIMULATION_FILE"
-
-        simulation_data_dict = {
-            "key": [key] * 9,
-            "seed": [0, 0, 0, 0, 0, 0, 1, 1, 1],
-            "time": [1.0, 1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0],
-            feature_name: [3001, 2500, 2600, 3002, 2400, 2900, 3050, 2550, 2650],
-        }
-        simulation_data = pd.DataFrame(simulation_data_dict)
-
-        sample_data_dict = {
-            "key": [key] * 4,
-            "seed": [0, 0, 1, 1],
-            "time": [timepoint] * 4,
-            feature_name: [3001, 2500, 3050, 2550],
-        }
-        sample_data = pd.DataFrame(sample_data_dict)
-
-        output_list = continuous_feature.write_feature_data(
-            data_list, stats, info, sample_data, simulation_data
-        )
-
-        expected_value = continuous_feature.compare_feature_info(sample_data, simulation_data)
-        expected_list = [["col1", "col2", "col3", None, expected_value]]
-
-        self.assertEqual(output_list, expected_list)
-
     def test_write_feature_data_info_stat(self):
         feature_name = "feature_name"
         affinity = "numeric"
@@ -178,8 +102,6 @@ class TestContinuousFeature(unittest.TestCase):
         continuous_feature = ContinuousFeature(feature_name, affinity, is_null)
 
         data_list = ["col1", "col2", "col3"]
-        stats = True
-        info = True
         timepoint = 1.0
         key = "SIMULATION_FILE"
 
@@ -199,9 +121,7 @@ class TestContinuousFeature(unittest.TestCase):
         }
         sample_data = pd.DataFrame(sample_data_dict)
 
-        output_list = continuous_feature.write_feature_data(
-            data_list, stats, info, sample_data, simulation_data
-        )
+        output_list = continuous_feature.write_feature_data(data_list, sample_data, simulation_data)
 
         expected_value_info = continuous_feature.compare_feature_info(sample_data, simulation_data)
         expected_value_stats = continuous_feature.compare_feature_stat(sample_data, simulation_data)
