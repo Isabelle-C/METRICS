@@ -18,12 +18,12 @@ import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
-project = 'ABM biopsy!'
-copyright = 'YYYY, AUTHOR_NAME'
-author = 'AUTHOR_NAME'
+project = 'METRICS'
+copyright = '2023, Bagheri Lab'
+author = 'Guo Chen, Jessica Yu, Jacob Evarts'
 
 # The full version, including alpha/beta/rc tags
-release = 'VERSION NUMBER X.X.X'
+release = 'VERSION NUMBER 1.0.0'
 
 
 # -- General configuration ---------------------------------------------------

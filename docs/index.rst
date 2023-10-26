@@ -1,4 +1,4 @@
-Welcome to PROJECT-NAME's documentation!
+Welcome to METRICS's documentation!
 ========================================
 
 .. toctree::
