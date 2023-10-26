@@ -192,3 +192,25 @@ class Database:
         """
         query = f"SELECT * FROM {table_name} WHERE key= '{key}';"
         return query
+
+    def execute_query(self, query: str) -> pd.DataFrame:
+        """
+        Execute query.
+
+        Parameters
+        ----------
+        query :
+            Query to execute.
+
+        Returns
+        -------
+        :
+            Dataframe with query results.
+        """
+        connection = self.get_connection()
+
+        data = pd.read_sql_query(sql=query, con=connection)
+
+        connection.commit()
+        connection.close()
+        return data

@@ -1,12 +1,18 @@
 experiment:
-  database: data/databases/testDB.db
-  simulation: data/simulations/POPULATION_HETEROGENEITY_C_A_00
-  timepoints: [1.0, 3.0]
+  database: ./src/data/databases/
+  simulation_path: ./src/data/simulations/POPULATION_HETEROGENEITY_
+  contexts: ['CH', 'C']
+  populations: ['A', 'B', 'C', 'X']
+  # ['BC', 'XC', 'XB', 'XA', 'AC', 'ABC', 'XBC', 'XAC', 'XAB', 'XABC']
+  tissue_heterogeneity: '00'
+  cancer_heterogeneity: ['00', '10', '20', '30', '40', '50']
+
+  timepoints: [8.0, 15.0]
   timepoint_resolution: none
-  observation_timepoints: [1.0, 3.0]
+  observation_timepoints: [8.0, 15.0]
   observation_timepoint_resolution: none
-  seeds: [0]
-  seed_resolution: none
+  seeds: [0, 19]
+  seed_resolution: 1
 
 parse: True
 analyze: True
@@ -23,16 +29,34 @@ analysis:
   samples:
     punch_1:
       sample_shape: punch
-      sample_radius: 1
+      sample_radius: 5
       punch_center: [0, 0, 0]
-    needle_1:
-      sample_shape: needle
-      sample_radius: 1
-      needle_direction: 3
+    punch_10:
+       sample_shape: punch
+       sample_radius: 10
+       punch_center: [0, 0, 0]
+    punch_15:
+       sample_shape: punch
+       sample_radius: 15
+       punch_center: [0, 0, 0]
+    punch_20:
+       sample_shape: punch
+       sample_radius: 20
+       punch_center: [0, 0, 0]
+    #needle_example:
+    #  sample_shape: needle
+    #  sample_radius: 1
+    #  needle_direction: 3
   comparisons:
     0:
-      reference: punch_1
-      observation: needle_1
-    # 1:
-    #   reference: simulation
-    #   observation: needle_1
+      reference: simulation
+      observation: punch_10
+    1:
+      reference: simulation
+      observation: punch_15
+    2:
+      reference: simulation
+      observation: punch_20
+    3:
+      reference: simulation
+      observation: punch_1

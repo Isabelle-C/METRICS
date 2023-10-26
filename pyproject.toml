@@ -18,6 +18,10 @@ pandas = "^1.4.2"
 matplotlib = "^3.5.2"
 statsmodels = "^0.13.2"
 pyyaml = "^6.0"
+seaborn = "^0.12.2"
+pillow = "^10.0.0"
+scikit-learn = "^1.3.0"
+attrs = "^23.1.0"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.25.0"
@@ -32,6 +36,9 @@ Sphinx = "^4.1.1"
 
 [tool.poetry.scripts]
 metrics = "metrics.main:main"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.23.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
