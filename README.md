@@ -1,17 +1,9 @@
 # METRICS
 
-[![Build Status](https://github.com/aprybutok/abm_biopsy/workflows/build/badge.svg)](https://github.com/aprybutok/abm_biopsy/actions?query=workflow%3Abuild)
-[![Lint Status](https://github.com/aprybutok/abm_biopsy/workflows/lint/badge.svg)](https://github.com/aprybutok/abm_biopsy/actions?query=workflow%3Alint)
-[![Documentation](https://github.com/aprybutok/abm_biopsy/workflows/documentation/badge.svg)](https://aprybutok.github.io/abm_biopsy/)
+[![Build Status](https://github.com/bagherilab/METRICS/workflows/build/badge.svg)](https://github.com/bagherilab/METRICS/actions?query=workflow%3Abuild)
+[![Lint Status](https://github.com/bagherilab/METRICS/workflows/lint/badge.svg)](https://github.com/bagherilab/METRICS/actions?query=workflow%3Alint)
+[![Documentation](https://github.com/bagherilab/METRICS/workflows/documentation/badge.svg)](https://bagherilab.github.io/bagherilab/METRICS/)
 
-This repository is a template for Python projects that uses the following tools:
-
-- [Poetry](https://python-poetry.org/) for packaging and dependency management
-- [Tox](https://tox.readthedocs.io/en/latest/) for automated testing
-- [Black](https://black.readthedocs.io/en/stable/) for code formatting
-- [Pylint](https://www.pylint.org/) for linting
-
-as well as GitHub Actions to automatically build, test, lint, and generate documentation.
 
 ## Getting started
 
@@ -85,3 +77,14 @@ Simulations are labeled as: `[context]_[populations]_[population heterogeneity]_
     - `##` = heterogeneity value for cancerous cell populations (`##`/10)
 - `[background heterogeneity]`
     - `##` = heterogeneity value for healthy cell population (`##`/10)
+ 
+# Setup Information
+This repository is uses the following tools:
+
+- [Poetry](https://python-poetry.org/) for packaging and dependency management
+- [Tox](https://tox.readthedocs.io/en/latest/) for automated testing
+- [Black](https://black.readthedocs.io/en/stable/) for code formatting
+- [Pylint](https://www.pylint.org/) for linting
+
+as well as GitHub Actions to automatically build, test, lint, and generate documentation.
+
