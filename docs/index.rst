@@ -11,6 +11,16 @@ Welcome to METRICS's documentation!
 
 Hello!
 
+.. image:: _static/packages.png
+   :alt: Classes
+
+See the pylint diagram for more information on
+
+.. raw:: html
+
+   <a href="_static/classes.png" target="_blank">classes</a>
+
+
 Indices and tables
 ==================
 
