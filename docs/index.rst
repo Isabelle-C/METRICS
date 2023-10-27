@@ -10,6 +10,8 @@ Welcome to METRICS's documentation!
    metrics.script
 
 .. toctree::
+   :hidden:
+   :maxdepth: 3
    :caption: Contents:
 
    Overview <self>
