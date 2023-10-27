@@ -1,13 +1,17 @@
 Welcome to METRICS's documentation!
 ========================================
 
-.. autosummary::
-   :toctree: modules
+.. automodule:: metrics.analysis
+   :members:
 
-   metrics.analysis
-   metrics.sample
-   metrics.feature
-   metrics.script
+.. automodule:: metrics.feature
+   :members:
+
+.. automodule:: metrics.sample
+   :members:
+
+.. automodule:: metrics.script
+   :members:
 
 .. toctree::
    :hidden:
@@ -17,7 +21,6 @@ Welcome to METRICS's documentation!
    Overview <self>
    Package modules <modules>
 
-Hello!
 
 .. image:: _static/packages.png
    :alt: Classes
@@ -33,4 +36,3 @@ Indices and tables
 
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
