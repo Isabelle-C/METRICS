@@ -1,9 +1,15 @@
 Welcome to METRICS's documentation!
 ========================================
 
+.. autosummary::
+   :toctree: modules
+
+   metrics.analysis
+   metrics.sample
+   metrics.feature
+   metrics.script
+
 .. toctree::
-   :hidden:
-   :maxdepth: 3
    :caption: Contents:
 
    Overview <self>
