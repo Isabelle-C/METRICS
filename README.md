@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/bagherilab/METRICS/workflows/build/badge.svg)](https://github.com/bagherilab/METRICS/actions?query=workflow%3Abuild)
 [![Lint Status](https://github.com/bagherilab/METRICS/workflows/lint/badge.svg)](https://github.com/bagherilab/METRICS/actions?query=workflow%3Alint)
-[![Documentation](https://github.com/bagherilab/METRICS/workflows/documentation/badge.svg)](https://bagherilab.github.io/bagherilab/METRICS/)
+[![Documentation](https://github.com/bagherilab/METRICS/workflows/documentation/badge.svg)](https://bagherilab.github.io/METRICS/)
 
 
 ## Getting started
@@ -24,20 +24,15 @@ $ poetry install
 4. Run the CLI.
 
 ```bash
-$ python src/sandbox/cli.py 10
-55
+$ python3 src/main.py
 ```
 
-## General commands
+## Config Setup
+```
 
-The `Makefile` include three commands for working with the project.
+```
 
-- `make clean` will clean all the build and testing files
-- `make build` will run tests and lint your code (you can also just run `tox`)
-- `make docs` will generate documentation
-
-
-# ARCADE . POPULATION HETEROGENEITY
+## Data Information
 
 Data and results for `POPULATION_HETEROGENEITY` simulations.
 Simulations conditions include context, population mixture, population heterogeneity, and background heterogeneity.
@@ -78,7 +73,7 @@ Simulations are labeled as: `[context]_[populations]_[population heterogeneity]_
 - `[background heterogeneity]`
     - `##` = heterogeneity value for healthy cell population (`##`/10)
  
-# Setup Information
+## Setup Information
 This repository is uses the following tools:
 
 - [Poetry](https://python-poetry.org/) for packaging and dependency management
@@ -88,3 +83,10 @@ This repository is uses the following tools:
 
 as well as GitHub Actions to automatically build, test, lint, and generate documentation.
 
+## General commands
+
+The `Makefile` include three commands for working with the project.
+
+- `make clean` will clean all the build and testing files
+- `make build` will run tests and lint your code (you can also just run `tox`)
+- `make docs` will generate documentation
