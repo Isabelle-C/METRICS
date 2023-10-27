@@ -3,7 +3,7 @@ Welcome to METRICS's documentation!
 
 .. toctree::
    :hidden:
-   :maxdepth: 1
+   :maxdepth: 3
    :caption: Contents:
 
    Overview <self>
@@ -14,11 +14,10 @@ Hello!
 .. image:: _static/packages.png
    :alt: Classes
 
-See the pylint diagram for more information on
 
 .. raw:: html
 
-   <a href="_static/classes.png" target="_blank">classes</a>
+   <p> See the pylint diagram for more information on <a href="_static/classes.png" target="_blank">classes</a> </p>
 
 
 Indices and tables
