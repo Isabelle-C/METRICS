@@ -749,7 +749,7 @@ files = [
 name = "importlib-metadata"
 version = "6.8.0"
 description = "Read metadata from Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
@@ -2901,4 +2901,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "d0c3ab096050eb116ac75b2652bcb118810af03de7424e4e7fbeee25e48247c4"
+content-hash = "2da247c4866d264dfe71fa71cfdb3d99733e162bd86b2907eb60096b5510a772"

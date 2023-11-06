@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "metrics"
+name = "METRICS"
 version = "0.1.0"
 description = ""
 authors = [
@@ -21,6 +21,7 @@ pyyaml = "^6.0"
 seaborn = "^0.12.2"
 scikit-learn = "^1.3.0"
 attrs = "^23.1.0"
+importlib-metadata = "^6.8.0"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.25.0"

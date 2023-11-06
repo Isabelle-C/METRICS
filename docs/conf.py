@@ -10,20 +10,24 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
+
+import importlib.metadata
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../src'))
+from datetime import datetime
+
+from sphinx.ext.autosummary.generate import AutosummaryRenderer
+
+sys.path.insert(0, os.path.abspath("../src"))
 
 import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
 project = 'METRICS'
-copyright = '2023, Bagheri Lab'
-author = 'Guo Chen, Jessica Yu, Jacob Evarts'
-
-# The full version, including alpha/beta/rc tags
-release = 'VERSION NUMBER 1.0.0'
+author = importlib.metadata.metadata(project)["Author"]
+copyright = f"{datetime.now().year}, {author}, Bagheri Lab"
+release = importlib.metadata.version(project)
 
 
 # -- General configuration ---------------------------------------------------
@@ -35,8 +39,13 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
-    "sphinx_rtd_theme"
+    "sphinx_rtd_theme",
+    'sphinx.ext.autosummary'
 ]
+
+
+# Decides whether module names are prepended to all object names.
+add_module_names = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -57,3 +66,23 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# -- Patch custom template filters -------------------------------------------
+
+
+def custom_fullname_filter(fullname):
+    return ".".join(fullname.split(".")[1:])
+
+
+def custom_module_filter(module):
+    return module.split(".")[0]
+
+
+def patch_init(self, app):
+    AutosummaryRenderer.__original_init__(self, app)
+    self.env.filters["custom_fullname"] = custom_fullname_filter
+    self.env.filters["custom_module"] = custom_module_filter
+
+
+AutosummaryRenderer.__original_init__ = AutosummaryRenderer.__init__
+AutosummaryRenderer.__init__ = patch_init
