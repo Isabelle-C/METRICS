@@ -1,0 +1,7 @@
+metrics.sample.sample module
+============================
+
+.. automodule:: metrics.sample.sample
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,17 @@
+metrics.sample package
+======================
+
+.. automodule:: metrics.sample
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   metrics.sample.sample
+   metrics.sample.sample_needle
+   metrics.sample.sample_punch

@@ -1,0 +1,19 @@
+metrics.analysis package
+========================
+
+.. automodule:: metrics.analysis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   metrics.analysis.analysis
+   metrics.analysis.coordinate
+   metrics.analysis.database
+   metrics.analysis.experiment
+   metrics.analysis.simulation

@@ -1,0 +1,39 @@
+﻿metrics.analysis
+================
+
+.. automodule:: metrics.analysis
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+
+.. currentmodule:: metrics
+
+.. autosummary::
+   :toctree:
+   :template: custom_module.rst
+   :recursive:
+
+   analysis.analysis
+   analysis.coordinate
+   analysis.database
+   analysis.experiment
+   analysis.simulation
+

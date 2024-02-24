@@ -1,0 +1,37 @@
+﻿metrics.feature
+===============
+
+.. automodule:: metrics.feature
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+
+.. currentmodule:: metrics
+
+.. autosummary::
+   :toctree:
+   :template: custom_module.rst
+   :recursive:
+
+   feature.continuous_feature
+   feature.discrete_feature
+   feature.feature
+

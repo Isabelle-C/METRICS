@@ -1,0 +1,28 @@
+feature
+=======
+
+.. automodule:: metrics.feature.feature
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Feature
+   
+   
+
+   
+   
+   

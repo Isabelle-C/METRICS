@@ -1,0 +1,7 @@
+metrics.sample.sample\_punch module
+===================================
+
+.. automodule:: metrics.sample.sample_punch
+   :members:
+   :undoc-members:
+   :show-inheritance:

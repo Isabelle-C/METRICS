@@ -1,0 +1,7 @@
+metrics.analysis.simulation module
+==================================
+
+.. automodule:: metrics.analysis.simulation
+   :members:
+   :undoc-members:
+   :show-inheritance:

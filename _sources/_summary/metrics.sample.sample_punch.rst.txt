@@ -1,0 +1,28 @@
+sample\_punch
+=============
+
+.. automodule:: metrics.sample.sample_punch
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      SamplePunch
+   
+   
+
+   
+   
+   

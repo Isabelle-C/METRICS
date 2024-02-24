@@ -1,0 +1,7 @@
+metrics.analysis.coordinate module
+==================================
+
+.. automodule:: metrics.analysis.coordinate
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,17 @@
+metrics.feature package
+=======================
+
+.. automodule:: metrics.feature
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   metrics.feature.continuous_feature
+   metrics.feature.discrete_feature
+   metrics.feature.feature

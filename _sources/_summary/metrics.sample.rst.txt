@@ -1,0 +1,37 @@
+﻿metrics.sample
+==============
+
+.. automodule:: metrics.sample
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+
+.. currentmodule:: metrics
+
+.. autosummary::
+   :toctree:
+   :template: custom_module.rst
+   :recursive:
+
+   sample.sample
+   sample.sample_needle
+   sample.sample_punch
+

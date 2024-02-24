@@ -1,0 +1,7 @@
+metrics.feature.continuous\_feature module
+==========================================
+
+.. automodule:: metrics.feature.continuous_feature
+   :members:
+   :undoc-members:
+   :show-inheritance:

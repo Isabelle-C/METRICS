@@ -1,0 +1,7 @@
+metrics.analysis.experiment module
+==================================
+
+.. automodule:: metrics.analysis.experiment
+   :members:
+   :undoc-members:
+   :show-inheritance:

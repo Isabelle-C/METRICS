@@ -1,0 +1,28 @@
+simulation
+==========
+
+.. automodule:: metrics.analysis.simulation
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Simulation
+   
+   
+
+   
+   
+   

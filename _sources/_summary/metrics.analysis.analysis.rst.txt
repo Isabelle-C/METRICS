@@ -1,0 +1,28 @@
+analysis
+========
+
+.. automodule:: metrics.analysis.analysis
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Analysis
+   
+   
+
+   
+   
+   

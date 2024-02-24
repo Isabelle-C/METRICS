@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>database &mdash; METRICS 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="experiment" href="metrics.analysis.experiment.html" />
+    <link rel="prev" title="coordinate" href="metrics.analysis.coordinate.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            METRICS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Module reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="metrics.analysis.html">metrics.analysis</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="metrics.analysis.analysis.html">analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.analysis.coordinate.html">coordinate</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.analysis.experiment.html">experiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.analysis.simulation.html">simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.script.html">metrics.script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.feature.html">metrics.feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.sample.html">metrics.sample</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/bagherilab/METRICS">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://isabelle-c.github.io/METRICS-VIS/">Project Information</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">METRICS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="metrics.analysis.html">metrics.analysis</a></li>
+      <li class="breadcrumb-item active">database</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_summary/metrics.analysis.database.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-metrics.analysis.database">
+<span id="database"></span><h1>database<a class="headerlink" href="#module-metrics.analysis.database" title="Permalink to this headline"></a></h1>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../metrics.analysis.database.html#metrics.analysis.database.Database" title="metrics.analysis.database.Database"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Database</span></code></a>(database_file)</p></td>
+<td><p>Wrapper for interacting with SQLite3 database.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/metrics/analysis/database.html#Database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.database.Database" title="Permalink to this definition"></a></dt>
+<dd><p>Wrapper for interacting with SQLite3 database.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database.file">
+<span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#metrics.analysis.database.Database.file" title="Permalink to this definition"></a></dt>
+<dd><p>Database file name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database.add_dataframe">
+<span class="sig-name descname"><span class="pre">add_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/metrics/analysis/database.html#Database.add_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.database.Database.add_dataframe" title="Permalink to this definition"></a></dt>
+<dd><p>Adds data into specified table.</p>
+<p>If table exists, then data is appended to the existing table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> – The name of the table.</p></li>
+<li><p><strong>dataframe</strong> – Data to add to table.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database.create_table">
+<span class="sig-name descname"><span class="pre">create_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../metrics.analysis.simulation.html#metrics.analysis.simulation.Simulation" title="metrics.analysis.simulation.Simulation"><span class="pre">metrics.analysis.simulation.Simulation</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../metrics.analysis.analysis.html#metrics.analysis.analysis.Analysis" title="metrics.analysis.analysis.Analysis"><span class="pre">metrics.analysis.analysis.Analysis</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/metrics/analysis/database.html#Database.create_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.database.Database.create_table" title="Permalink to this definition"></a></dt>
+<dd><p>Creates table in connected database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> – The name of the table.</p></li>
+<li><p><strong>table_spec</strong> – Object specifying the table columns (Simulation or Analysis object).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database.delete_data_from_table">
+<span class="sig-name descname"><span class="pre">delete_data_from_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/metrics/analysis/database.html#Database.delete_data_from_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.database.Database.delete_data_from_table" title="Permalink to this definition"></a></dt>
+<dd><p>Delete data in specified table if it exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table_name</strong> – Name of the table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database.drop_table">
+<span class="sig-name descname"><span class="pre">drop_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/metrics/analysis/database.html#Database.drop_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.database.Database.drop_table" title="Permalink to this definition"></a></dt>
+<dd><p>Drop table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table_name</strong> – Name of the table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database.execute_query">
+<span class="sig-name descname"><span class="pre">execute_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="reference internal" href="../_modules/metrics/analysis/database.html#Database.execute_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.database.Database.execute_query" title="Permalink to this definition"></a></dt>
+<dd><p>Execute query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> – Query to execute.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dataframe with query results.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database.get_connection">
+<span class="sig-name descname"><span class="pre">get_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">sqlite3.Connection</span></span></span><a class="reference internal" href="../_modules/metrics/analysis/database.html#Database.get_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.database.Database.get_connection" title="Permalink to this definition"></a></dt>
+<dd><p>Obtains connection to a SQLite database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Connection to the database file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database.load_dataframe">
+<span class="sig-name descname"><span class="pre">load_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="reference internal" href="../_modules/metrics/analysis/database.html#Database.load_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.database.Database.load_dataframe" title="Permalink to this definition"></a></dt>
+<dd><p>Load data for specified simulation key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> – The name of the table.</p></li>
+<li><p><strong>key</strong> – Simulation key.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Selected data from the SQLite table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database.make_create_table_query">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_create_table_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../metrics.analysis.simulation.html#metrics.analysis.simulation.Simulation" title="metrics.analysis.simulation.Simulation"><span class="pre">metrics.analysis.simulation.Simulation</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../metrics.analysis.analysis.html#metrics.analysis.analysis.Analysis" title="metrics.analysis.analysis.Analysis"><span class="pre">metrics.analysis.analysis.Analysis</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/metrics/analysis/database.html#Database.make_create_table_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.database.Database.make_create_table_query" title="Permalink to this definition"></a></dt>
+<dd><p>Return query string that creates the SQLite table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> – The name of the table.</p></li>
+<li><p><strong>table_spec</strong> – Object specifying the table columns (Simulation or Analysis object).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Query string for creating table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.database.Database.make_select_from_query">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_select_from_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/metrics/analysis/database.html#Database.make_select_from_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.database.Database.make_select_from_query" title="Permalink to this definition"></a></dt>
+<dd><p>Return query string that selects rows with the specified key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>table_name</strong> – The name of the table.</p></li>
+<li><p><strong>key</strong> – Simulation key.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Query string for selecting from database table.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="metrics.analysis.coordinate.html" class="btn btn-neutral float-left" title="coordinate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="metrics.analysis.experiment.html" class="btn btn-neutral float-right" title="experiment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Isabelle Chen, Bagheri Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

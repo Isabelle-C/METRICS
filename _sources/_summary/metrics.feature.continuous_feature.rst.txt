@@ -1,0 +1,28 @@
+continuous\_feature
+===================
+
+.. automodule:: metrics.feature.continuous_feature
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ContinuousFeature
+   
+   
+
+   
+   
+   

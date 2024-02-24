@@ -1,0 +1,28 @@
+database
+========
+
+.. automodule:: metrics.analysis.database
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Database
+   
+   
+
+   
+   
+   

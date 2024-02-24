@@ -1,0 +1,7 @@
+metrics.script.script module
+============================
+
+.. automodule:: metrics.script.script
+   :members:
+   :undoc-members:
+   :show-inheritance:

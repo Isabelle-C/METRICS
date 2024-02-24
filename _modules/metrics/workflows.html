@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>metrics.workflows &mdash; METRICS 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            METRICS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Module reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_summary/metrics.analysis.html">metrics.analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_summary/metrics.script.html">metrics.script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_summary/metrics.feature.html">metrics.feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../_summary/metrics.sample.html">metrics.sample</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/bagherilab/METRICS">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://isabelle-c.github.io/METRICS-VIS/">Project Information</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">METRICS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">metrics.workflows</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for metrics.workflows</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">metrics.analysis.analysis</span> <span class="kn">import</span> <span class="n">Analysis</span>
+<span class="kn">from</span> <span class="nn">metrics.analysis.database</span> <span class="kn">import</span> <span class="n">Database</span>
+<span class="kn">from</span> <span class="nn">metrics.analysis.experiment</span> <span class="kn">import</span> <span class="n">Experiment</span>
+<span class="kn">from</span> <span class="nn">metrics.analysis.simulation</span> <span class="kn">import</span> <span class="n">Simulation</span>
+
+<span class="n">SIMULATION_TABLE</span> <span class="o">=</span> <span class="s2">&quot;simulations&quot;</span>
+<span class="n">ANALYSIS_TABLE</span> <span class="o">=</span> <span class="s2">&quot;stats&quot;</span>
+
+
+<div class="viewcode-block" id="run_parse_simulations"><a class="viewcode-back" href="../../metrics.workflows.html#metrics.workflows.run_parse_simulations">[docs]</a><span class="k">def</span> <span class="nf">run_parse_simulations</span><span class="p">(</span>
+    <span class="n">database_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">simulation_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timepoints</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parse the simulation and write data into databse file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    database_file :</span>
+<span class="sd">        File path to the database file.</span>
+<span class="sd">    simulation_path :</span>
+<span class="sd">        File path to a folder of simulation files.</span>
+<span class="sd">    seed :</span>
+<span class="sd">        The seed of simulation file.</span>
+<span class="sd">    timepoints :</span>
+<span class="sd">        The timepoints to parse the simulation data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">simulation_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">simulation_path</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">seed</span><span class="si">}</span><span class="s2">.json&quot;</span>
+
+    <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="n">database_file</span><span class="p">)</span>
+    <span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">simulation_file</span><span class="p">)</span>
+    <span class="c1"># database.drop_table(SIMULATION_TABLE)</span>
+    <span class="n">database</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">SIMULATION_TABLE</span><span class="p">,</span> <span class="n">simulation</span><span class="p">)</span>
+
+    <span class="c1"># print(simulation)</span>
+
+    <span class="k">for</span> <span class="n">timepoint</span> <span class="ow">in</span> <span class="n">timepoints</span><span class="p">:</span>
+        <span class="n">simulation_df</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">parse_timepoint</span><span class="p">(</span><span class="n">timepoint</span><span class="p">)</span>
+        <span class="n">database</span><span class="o">.</span><span class="n">add_dataframe</span><span class="p">(</span><span class="n">SIMULATION_TABLE</span><span class="p">,</span> <span class="n">simulation_df</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="run_calculate_analysis"><a class="viewcode-back" href="../../metrics.workflows.html#metrics.workflows.run_calculate_analysis">[docs]</a><span class="k">def</span> <span class="nf">run_calculate_analysis</span><span class="p">(</span>
+    <span class="n">database_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">simulation_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">features</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">timepoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">observation_timepoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">samples</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">comparisons</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run the statistical test on data with the specified feature and sampling method.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    database_path :</span>
+<span class="sd">        File path to the database file for reading simulation and for writing stats.</span>
+<span class="sd">    simulation_path :</span>
+<span class="sd">        File path to a folder of simulation files.</span>
+<span class="sd">    seed :</span>
+<span class="sd">        The seed of simulation file.</span>
+<span class="sd">    features :</span>
+<span class="sd">        The name of the features.</span>
+<span class="sd">    timepoints :</span>
+<span class="sd">        The timepoints to perform statistical test.</span>
+<span class="sd">    observation_timepoints :</span>
+<span class="sd">        The timepoints of observations to perform statistical test.</span>
+<span class="sd">    samples :</span>
+<span class="sd">        Sample parameter definitions.</span>
+<span class="sd">    comparisons :</span>
+<span class="sd">        The comparisons to perform.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">simulation_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">simulation_path</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">seed</span><span class="si">}</span><span class="s2">.json&quot;</span>
+
+    <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="n">database_path</span><span class="p">)</span>
+    <span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="n">simulation_file</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">load_dataframe</span><span class="p">(</span><span class="n">SIMULATION_TABLE</span><span class="p">,</span> <span class="n">simulation</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;seed&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">seed</span><span class="p">)]</span>
+
+    <span class="c1"># database.drop_table(ANALYSIS_TABLE)</span>
+
+    <span class="k">for</span> <span class="n">comparison</span> <span class="ow">in</span> <span class="n">comparisons</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="c1"># for key, value in comparison.items():</span>
+        <span class="c1">#    print(f&quot;{key} = {value}&quot;)</span>
+        <span class="c1"># print(f&quot;seed = {seed}&quot;)</span>
+        <span class="c1"># print(f&quot;reference timepoint | observation timepoint&quot;)</span>
+        <span class="c1"># print(&quot;--------------------------------------------&quot;)</span>
+        <span class="k">for</span> <span class="n">timepoint</span> <span class="ow">in</span> <span class="n">timepoints</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">observation_timepoint</span> <span class="ow">in</span> <span class="n">observation_timepoints</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">timepoint</span> <span class="o">==</span> <span class="n">observation_timepoint</span><span class="p">:</span>
+                    <span class="n">experiment</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">comparison</span><span class="p">,</span> <span class="n">samples</span><span class="p">,</span> <span class="n">simulation</span><span class="p">)</span>
+
+                    <span class="n">analysis</span> <span class="o">=</span> <span class="n">Analysis</span><span class="p">(</span>
+                        <span class="n">simulation</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+                        <span class="n">experiment</span><span class="p">,</span>
+                        <span class="n">timepoint</span><span class="p">,</span>
+                        <span class="n">observation_timepoint</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">Simulation</span><span class="o">.</span><span class="n">get_feature_object</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">],</span>
+                    <span class="p">)</span>
+                    <span class="n">analysis_df</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">calculate_features</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+                    <span class="n">database</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">ANALYSIS_TABLE</span><span class="p">,</span> <span class="n">analysis</span><span class="p">)</span>
+                    <span class="n">database</span><span class="o">.</span><span class="n">add_dataframe</span><span class="p">(</span><span class="n">ANALYSIS_TABLE</span><span class="p">,</span> <span class="n">analysis_df</span><span class="p">)</span></div>
+
+                    <span class="c1"># print(f&quot;{timepoint}{&#39; &#39; *(20-len(str(timepoint)))}| {observation_timepoint}&quot;)</span>
+
+        <span class="c1"># print(&quot;\n&quot;)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Isabelle Chen, Bagheri Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>metrics.feature.discrete_feature &mdash; METRICS 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            METRICS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Module reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_summary/metrics.analysis.html">metrics.analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_summary/metrics.script.html">metrics.script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_summary/metrics.feature.html">metrics.feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_summary/metrics.sample.html">metrics.sample</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/bagherilab/METRICS">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://isabelle-c.github.io/METRICS-VIS/">Project Information</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">METRICS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">metrics.feature.discrete_feature</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for metrics.feature.discrete_feature</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
+
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">hypergeom</span><span class="p">,</span> <span class="n">entropy</span>
+
+<span class="kn">from</span> <span class="nn">metrics.feature.feature</span> <span class="kn">import</span> <span class="n">Feature</span>
+
+
+<div class="viewcode-block" id="DiscreteFeature"><a class="viewcode-back" href="../../../metrics.feature.discrete_feature.html#metrics.feature.discrete_feature.DiscreteFeature">[docs]</a><span class="k">class</span> <span class="nc">DiscreteFeature</span><span class="p">(</span><span class="n">Feature</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of a discrete data feature.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name :</span>
+<span class="sd">        The name of the feature.</span>
+<span class="sd">    affinity : {&quot;NUMERIC&quot;, &quot;INTEGER&quot;, &quot;REAL&quot;, &quot;TEXT&quot;, &quot;BLOB&quot;}</span>
+<span class="sd">        The SQLite3 type affinity of the feature.</span>
+<span class="sd">    is_null :</span>
+<span class="sd">        True if feature data can be null, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">feature_type</span> <span class="o">=</span> <span class="s2">&quot;discrete&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;string: Type of the feature.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">affinity</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_null</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">affinity</span><span class="p">,</span> <span class="n">is_null</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;DISCRETE &quot;</span> <span class="o">+</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DiscreteFeature.compare_feature_stat"><a class="viewcode-back" href="../../../metrics.feature.discrete_feature.html#metrics.feature.discrete_feature.DiscreteFeature.compare_feature_stat">[docs]</a>    <span class="k">def</span> <span class="nf">compare_feature_stat</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">sample_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">simulation_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses statistical tests to compare discrete features.</span>
+
+<span class="sd">        Uses hypergeometric test to compare discrete feature between sample</span>
+<span class="sd">        and true distributions. Hypergeometric distribution describes the</span>
+<span class="sd">        probability of k successes in N draws, without replacement, from a</span>
+<span class="sd">        finite population of size M that contains exactly n objects.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sample_data :</span>
+<span class="sd">            Loaded sample data.</span>
+<span class="sd">        simulation_data :</span>
+<span class="sd">            Loaded tumor data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :</span>
+<span class="sd">            Result of statistical tests that are keyed by the category.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hypergeom_pmfs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">simulation_data</span><span class="o">.</span><span class="n">columns</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sample_data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;nan&quot;</span><span class="p">)</span>
+
+        <span class="n">sample</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sample_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+
+        <span class="n">categories</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+            <span class="n">hypergeom_pmfs</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="n">hypergeom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">hypergeom_pmfs</span></div>
+
+<div class="viewcode-block" id="DiscreteFeature.compare_feature_info"><a class="viewcode-back" href="../../../metrics.feature.discrete_feature.html#metrics.feature.discrete_feature.DiscreteFeature.compare_feature_info">[docs]</a>    <span class="k">def</span> <span class="nf">compare_feature_info</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">sample_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">simulation_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses KL-divergence to compare discrete features.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sample_data :</span>
+<span class="sd">            Loaded sample data.</span>
+<span class="sd">        simulation_data :</span>
+<span class="sd">            Loaded tumor data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :</span>
+<span class="sd">            Result of KL divergence that are keyed by the category.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">simulation_data</span><span class="o">.</span><span class="n">columns</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sample_data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;nan&quot;</span><span class="p">)</span>
+
+        <span class="n">sample</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sample_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+
+        <span class="n">sample_dist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">simulation_dist</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">categories</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
+            <span class="n">sample_dist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">category</span><span class="p">))</span>
+            <span class="n">simulation_dist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_count</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">category</span><span class="p">))</span>
+
+        <span class="n">sample_pdf</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sample_dist</span><span class="p">]</span>
+        <span class="n">simulation_pdf</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">simulation_dist</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">entropy</span><span class="p">(</span><span class="n">sample_pdf</span><span class="p">,</span> <span class="n">simulation_pdf</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiscreteFeature.write_feature_data"><a class="viewcode-back" href="../../../metrics.feature.discrete_feature.html#metrics.feature.discrete_feature.DiscreteFeature.write_feature_data">[docs]</a>    <span class="k">def</span> <span class="nf">write_feature_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">sample_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">simulation_data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uses KL-divergence compare continuous features.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data_list:</span>
+<span class="sd">            List of data in analysis table.</span>
+<span class="sd">        sample_data :</span>
+<span class="sd">            Loaded sample data.</span>
+<span class="sd">        simulation_data :</span>
+<span class="sd">            Loaded tumor data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :</span>
+<span class="sd">            List of data needed for analysis dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">stats_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_feature_stat</span><span class="p">(</span><span class="n">sample_data</span><span class="p">,</span> <span class="n">simulation_data</span><span class="p">)</span>
+        <span class="n">info_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_feature_info</span><span class="p">(</span><span class="n">sample_data</span><span class="p">,</span> <span class="n">simulation_data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stats_data</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">stats_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">output_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_list</span> <span class="o">+</span> <span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">value</span><span class="p">,</span> <span class="n">info_data</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">output_list</span>
+
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="DiscreteFeature.get_count"><a class="viewcode-back" href="../../../metrics.feature.discrete_feature.html#metrics.feature.discrete_feature.DiscreteFeature.get_count">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_count</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the number of categories of the feature.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data :</span>
+<span class="sd">            Loaded data.</span>
+<span class="sd">        category :</span>
+<span class="sd">            Categories of data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :</span>
+<span class="sd">            Number of categories of the feature.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">category</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Isabelle Chen, Bagheri Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

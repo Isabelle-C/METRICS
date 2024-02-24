@@ -1,0 +1,27 @@
+metrics package
+===============
+
+.. automodule:: metrics
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   metrics.analysis
+   metrics.feature
+   metrics.sample
+   metrics.script
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   metrics.main
+   metrics.workflows

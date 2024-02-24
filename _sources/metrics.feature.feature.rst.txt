@@ -1,0 +1,7 @@
+metrics.feature.feature module
+==============================
+
+.. automodule:: metrics.feature.feature
+   :members:
+   :undoc-members:
+   :show-inheritance:

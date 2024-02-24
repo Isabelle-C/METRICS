@@ -1,0 +1,28 @@
+experiment
+==========
+
+.. automodule:: metrics.analysis.experiment
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Experiment
+   
+   
+
+   
+   
+   

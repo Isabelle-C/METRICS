@@ -1,0 +1,7 @@
+metrics.workflows module
+========================
+
+.. automodule:: metrics.workflows
+   :members:
+   :undoc-members:
+   :show-inheritance:

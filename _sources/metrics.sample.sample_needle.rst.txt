@@ -1,0 +1,7 @@
+metrics.sample.sample\_needle module
+====================================
+
+.. automodule:: metrics.sample.sample_needle
+   :members:
+   :undoc-members:
+   :show-inheritance:

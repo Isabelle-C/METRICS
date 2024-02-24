@@ -1,0 +1,28 @@
+sample\_needle
+==============
+
+.. automodule:: metrics.sample.sample_needle
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      SampleNeedle
+   
+   
+
+   
+   
+   

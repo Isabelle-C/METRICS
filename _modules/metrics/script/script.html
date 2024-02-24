@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>metrics.script.script &mdash; METRICS 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            METRICS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Module reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../_summary/metrics.analysis.html">metrics.analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_summary/metrics.script.html">metrics.script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_summary/metrics.feature.html">metrics.feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_summary/metrics.sample.html">metrics.sample</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/bagherilab/METRICS">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://isabelle-c.github.io/METRICS-VIS/">Project Information</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">METRICS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">metrics.script.script</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for metrics.script.script</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">metrics.analysis.database</span> <span class="kn">import</span> <span class="n">Database</span>
+
+
+<div class="viewcode-block" id="Script"><a class="viewcode-back" href="../../../metrics.script.script.html#metrics.script.script.Script">[docs]</a><span class="k">class</span> <span class="nc">Script</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Script for visualizing the data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Script.create_databases"><a class="viewcode-back" href="../../../metrics.script.script.html#metrics.script.script.Script.create_databases">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create_databases</span><span class="p">(</span>
+        <span class="n">population</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">heterogeneity_levels</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;00&quot;</span><span class="p">,</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;20&quot;</span><span class="p">,</span> <span class="s2">&quot;30&quot;</span><span class="p">,</span> <span class="s2">&quot;40&quot;</span><span class="p">,</span> <span class="s2">&quot;50&quot;</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Database</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates database files for each context.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        population : str</span>
+<span class="sd">            The population.</span>
+<span class="sd">        context : str</span>
+<span class="sd">            The context.</span>
+<span class="sd">        heterogeneity_levels : list</span>
+<span class="sd">            The heterogeneity levels.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        : List[Database]</span>
+<span class="sd">            List of database objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">database_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">heterogeneity</span> <span class="ow">in</span> <span class="n">heterogeneity_levels</span><span class="p">:</span>
+            <span class="n">database_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Database</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;./data/databases/</span><span class="si">{</span><span class="n">population</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">context</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">heterogeneity</span><span class="si">}</span><span class="s2">.db&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">database_list</span></div>
+
+<div class="viewcode-block" id="Script.select_data"><a class="viewcode-back" href="../../../metrics.script.script.html#metrics.script.script.Script.select_data">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">select_data</span><span class="p">(</span>
+        <span class="n">database_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Database</span><span class="p">],</span>
+        <span class="n">context</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">reference_time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">observation_time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">feature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">comparison</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Selects data from the database.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        database_list : List[Database]</span>
+<span class="sd">            The database object.</span>
+<span class="sd">        reference_time : Optional[str]</span>
+<span class="sd">            The reference time.</span>
+<span class="sd">        observation_time : Optional[str]</span>
+<span class="sd">            The observation time.</span>
+<span class="sd">        feature : Optional[str]</span>
+<span class="sd">            The feature.</span>
+<span class="sd">        comparison: Optional[dict]</span>
+<span class="sd">            The comparison group.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        combined_table : pd.DataFrame</span>
+<span class="sd">            Combined selected dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">reference_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;reference_time = </span><span class="si">{</span><span class="n">reference_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">observation_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;obervation_time = </span><span class="si">{</span><span class="n">observation_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">feature</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;feature = &#39;</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">comparison</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;comparison_group = &#39;</span><span class="si">{</span><span class="s1">&#39; | &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">comparison</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">combined_table</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">database</span> <span class="ow">in</span> <span class="n">database_list</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT * FROM stats WHERE </span><span class="si">{</span><span class="s1">&#39; AND &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_list</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Add context column and change key column</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">context</span>
+
+            <span class="n">key_split</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">selected_columns</span> <span class="o">=</span> <span class="n">key_split</span><span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+            <span class="n">selected_columns</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;heterogeneity&quot;</span><span class="p">,</span> <span class="s2">&quot;cell_line&quot;</span><span class="p">]</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data</span><span class="p">,</span> <span class="n">selected_columns</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;heterogeneity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;heterogeneity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;divergence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;divergence&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;NULL&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+            <span class="n">combined_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">combined_table</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Script.find_unique_variables"><a class="viewcode-back" href="../../../metrics.script.script.html#metrics.script.script.Script.find_unique_variables">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">find_unique_variables</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">column_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;category&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find unique variables.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : pd.DataFrame</span>
+<span class="sd">            The data.</span>
+<span class="sd">        variable : Optional[str]</span>
+<span class="sd">            The variable.</span>
+<span class="sd">        column_name : Optional[str]</span>
+<span class="sd">            The column name.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        unique_variables : np.ndarray</span>
+<span class="sd">            Unique variables.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">unique_variables</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">variable</span> <span class="o">==</span> <span class="s2">&quot;population&quot;</span><span class="p">:</span>
+            <span class="c1"># Create a mask to identify the items to keep</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">unique_variables</span> <span class="o">!=</span> <span class="s2">&quot;4&quot;</span>
+
+            <span class="c1"># Remove item from the array</span>
+            <span class="n">unique_variables</span> <span class="o">=</span> <span class="n">unique_variables</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">unique_variables</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Isabelle Chen, Bagheri Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>metrics.analysis.analysis module &mdash; METRICS 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            METRICS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Module reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="_summary/metrics.analysis.html">metrics.analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_summary/metrics.script.html">metrics.script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_summary/metrics.feature.html">metrics.feature</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_summary/metrics.sample.html">metrics.sample</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/bagherilab/METRICS">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://isabelle-c.github.io/METRICS-VIS/">Project Information</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">METRICS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">metrics.analysis.analysis module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/metrics.analysis.analysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-metrics.analysis.analysis">
+<span id="metrics-analysis-analysis-module"></span><h1>metrics.analysis.analysis module<a class="headerlink" href="#module-metrics.analysis.analysis" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="metrics.analysis.analysis.Analysis">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experiment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="metrics.analysis.experiment.html#metrics.analysis.experiment.Experiment" title="metrics.analysis.experiment.Experiment"><span class="pre">metrics.analysis.experiment.Experiment</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">timepoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation_timepoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="metrics.feature.continuous_feature.html#metrics.feature.continuous_feature.ContinuousFeature" title="metrics.feature.continuous_feature.ContinuousFeature"><span class="pre">metrics.feature.continuous_feature.ContinuousFeature</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="metrics.feature.discrete_feature.html#metrics.feature.discrete_feature.DiscreteFeature" title="metrics.feature.discrete_feature.DiscreteFeature"><span class="pre">metrics.feature.discrete_feature.DiscreteFeature</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/metrics/analysis/analysis.html#Analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.analysis.Analysis" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Workflow for statistical testing on features of simulated tumor sample data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metrics.analysis.analysis.Analysis.key">
+<span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#metrics.analysis.analysis.Analysis.key" title="Permalink to this definition"></a></dt>
+<dd><p>Simulation key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metrics.analysis.analysis.Analysis.experiment">
+<span class="sig-name descname"><span class="pre">experiment</span></span><a class="headerlink" href="#metrics.analysis.analysis.Analysis.experiment" title="Permalink to this definition"></a></dt>
+<dd><p>Experiment object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="metrics.analysis.experiment.html#metrics.analysis.experiment.Experiment" title="metrics.analysis.experiment.Experiment">Experiment</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metrics.analysis.analysis.Analysis.timepoint">
+<span class="sig-name descname"><span class="pre">timepoint</span></span><a class="headerlink" href="#metrics.analysis.analysis.Analysis.timepoint" title="Permalink to this definition"></a></dt>
+<dd><p>Time point to execute statistical test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metrics.analysis.analysis.Analysis.observation_timepoint">
+<span class="sig-name descname"><span class="pre">observation_timepoint</span></span><a class="headerlink" href="#metrics.analysis.analysis.Analysis.observation_timepoint" title="Permalink to this definition"></a></dt>
+<dd><p>Time point of observation to execute statistical test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metrics.analysis.analysis.Analysis.features">
+<span class="sig-name descname"><span class="pre">features</span></span><a class="headerlink" href="#metrics.analysis.analysis.Analysis.features" title="Permalink to this definition"></a></dt>
+<dd><p>Feature object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[Union[<a class="reference internal" href="metrics.feature.continuous_feature.html#metrics.feature.continuous_feature.ContinuousFeature" title="metrics.feature.continuous_feature.ContinuousFeature">ContinuousFeature</a>, <a class="reference internal" href="metrics.feature.discrete_feature.html#metrics.feature.discrete_feature.DiscreteFeature" title="metrics.feature.discrete_feature.DiscreteFeature">DiscreteFeature</a>][</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.analysis.Analysis.calculate_feature">
+<span class="sig-name descname"><span class="pre">calculate_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="metrics.feature.continuous_feature.html#metrics.feature.continuous_feature.ContinuousFeature" title="metrics.feature.continuous_feature.ContinuousFeature"><span class="pre">metrics.feature.continuous_feature.ContinuousFeature</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="metrics.feature.discrete_feature.html#metrics.feature.discrete_feature.DiscreteFeature" title="metrics.feature.discrete_feature.DiscreteFeature"><span class="pre">metrics.feature.discrete_feature.DiscreteFeature</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="reference internal" href="_modules/metrics/analysis/analysis.html#Analysis.calculate_feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.analysis.Analysis.calculate_feature" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate statistical comparison of a feature between a sample and the simulation
+population.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Simulation data.</p></li>
+<li><p><strong>feature</strong> – Feature object.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.analysis.Analysis.calculate_features">
+<span class="sig-name descname"><span class="pre">calculate_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="reference internal" href="_modules/metrics/analysis/analysis.html#Analysis.calculate_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.analysis.Analysis.calculate_features" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate statistical comparison of features between a sample and the simulation population.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – Simulation data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Stats data calculated with the given features.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.analysis.Analysis.extract_sample_data">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extract_sample_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="metrics.sample.sample_needle.html#metrics.sample.sample_needle.SampleNeedle" title="metrics.sample.sample_needle.SampleNeedle"><span class="pre">metrics.sample.sample_needle.SampleNeedle</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="metrics.sample.sample_punch.html#metrics.sample.sample_punch.SamplePunch" title="metrics.sample.sample_punch.SamplePunch"><span class="pre">metrics.sample.sample_punch.SamplePunch</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="reference internal" href="_modules/metrics/analysis/analysis.html#Analysis.extract_sample_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.analysis.Analysis.extract_sample_data" title="Permalink to this definition"></a></dt>
+<dd><p>Extract sample from simulation data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sample</strong> (<em>Union</em><em>[</em><a class="reference internal" href="metrics.sample.sample_needle.html#metrics.sample.sample_needle.SampleNeedle" title="metrics.sample.sample_needle.SampleNeedle"><em>SampleNeedle</em></a><em>,</em><a class="reference internal" href="metrics.sample.sample_punch.html#metrics.sample.sample_punch.SamplePunch" title="metrics.sample.sample_punch.SamplePunch"><em>SamplePunch</em></a><em>]</em>) – Sample object.</p></li>
+<li><p><strong>simulation_data</strong> (<em>pd.DataFrame</em>) – Simulation data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sample_data</strong> – Extracted sample data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metrics.analysis.analysis.Analysis.get_feature_list">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_feature_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="metrics.feature.feature.html#metrics.feature.feature.Feature" title="metrics.feature.feature.Feature"><span class="pre">metrics.feature.feature.Feature</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/metrics/analysis/analysis.html#Analysis.get_feature_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#metrics.analysis.analysis.Analysis.get_feature_list" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of valid Feature objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of Feature objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Isabelle Chen, Bagheri Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

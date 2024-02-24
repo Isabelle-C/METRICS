@@ -1,0 +1,28 @@
+sample
+======
+
+.. automodule:: metrics.sample.sample
+   :members:
+   :undoc-members:
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Sample
+   
+   
+
+   
+   
+   

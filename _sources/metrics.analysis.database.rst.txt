@@ -1,0 +1,7 @@
+metrics.analysis.database module
+================================
+
+.. automodule:: metrics.analysis.database
+   :members:
+   :undoc-members:
+   :show-inheritance:
