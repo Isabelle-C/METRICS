@@ -2,9 +2,11 @@
 
 [![Build Status](https://github.com/Isabelle-C/METRICS/workflows/build/badge.svg)](https://github.com/Isabelle-C/METRICS/actions?query=workflow%3Abuild)
 [![Lint Status](https://github.com/Isabelle-C/METRICS/workflows/lint/badge.svg)](https://github.com/Isabelle-C/METRICS/actions?query=workflow%3Alint)
-[![Documentation](https://github.com/Isabelle-C/METRICS/workflows/documentation/badge.svg)](https://github.com/Isabelle-C.github.io/METRICS/)
+[![Documentation](https://github.com/Isabelle-C/METRICS/workflows/documentation/badge.svg)](https://isabelle-c.github.io/METRICS/)
 [![codecov](https://codecov.io/gh/Isabelle-C/METRICS/graph/badge.svg?token=0JRGNBJDTC)](https://codecov.io/gh/Isabelle-C/METRICS)
 
+# Project information
+See [here](https://isabelle-c.github.io/METRICS/)
 
 ## Getting started
 
