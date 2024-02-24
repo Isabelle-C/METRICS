@@ -5,7 +5,7 @@
 [![Documentation](https://github.com/Isabelle-C/METRICS/workflows/documentation/badge.svg)](https://isabelle-c.github.io/METRICS/)
 [![codecov](https://codecov.io/gh/Isabelle-C/METRICS/graph/badge.svg?token=0JRGNBJDTC)](https://codecov.io/gh/Isabelle-C/METRICS)
 
-# Project information
+## Project information
 See [here](https://isabelle-c.github.io/METRICS/)
 
 ## Getting started
