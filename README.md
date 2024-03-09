@@ -6,7 +6,9 @@
 [![codecov](https://codecov.io/gh/Isabelle-C/METRICS/graph/badge.svg?token=0JRGNBJDTC)](https://codecov.io/gh/Isabelle-C/METRICS)
 
 ## Project information
-See [here](https://isabelle-c.github.io/METRICS/)
+- This was the codebase I developed during a fun undergrad research experience at [Bagheri Lab](https://bagherilab.com).
+- See project design [here](https://isabelle-c.github.io/METRICS-VIS/)
+- See documentation [here](https://isabelle-c.github.io/METRICS/)
 
 ## Getting started
 
