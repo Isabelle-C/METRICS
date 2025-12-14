@@ -27,7 +27,7 @@ $ python3 src/main.py
 ```
  
 ## Setup Information
-This repository is uses the following tools:
+This repository uses the following tools:
 
 - [Poetry](https://python-poetry.org/) for packaging and dependency management
 - [Tox](https://tox.readthedocs.io/en/latest/) for automated testing
