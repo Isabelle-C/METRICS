@@ -1,7 +1,6 @@
 # METRICS
 
 ## Project information
-- This was the codebase I developed during a fun undergrad research experience at [Bagheri Lab](https://bagherilab.com).
 - See project design [here](https://isabelle-c.github.io/METRICS-VIS/)
 - See documentation [here](https://isabelle-c.github.io/METRICS/)
 
